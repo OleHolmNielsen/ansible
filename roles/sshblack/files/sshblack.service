@@ -1,0 +1,15 @@
+[Unit]
+Description=SSH blacklist daemon
+Requires=firewalld.service NetworkManager.service sshd.service
+Before=crond.service
+After=firewalld.service NetworkManager.service sshd.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/libexec/sshblack/init-sshblack start
+ExecStop=/usr/libexec/sshblack/init-sshblack stop
+ExecReload=/usr/libexec/sshblack/init-sshblack reload
+
+[Install]
+WantedBy=basic.target

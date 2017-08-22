@@ -1,0 +1,45 @@
+  - name: Install the firewalld and ipset packages
+    yum:
+      name: firewalld,ipset
+      state: present
+
+  - name: Get firewalld version 
+    command: firewall-cmd --version
+    register: firewalld_version
+    # Ignore the "changed" status
+    changed_when: False
+
+# The IPsets support was changed completely in firewalld version 0.4 (CentOS/RHEL 7.3)
+  - fail: msg="The firewalld version must be at least 0.4"
+    when: firewalld_version.stdout | version_compare('0.4', '<')
+
+  - name: Copy the {{ ipset7 }} file from this server
+    copy:
+      src: "{{ ipset7 }}"
+      dest: "{{ ipset7 }}"
+      backup: yes
+      owner: root
+      group: root
+      mode: u=rw,g=r,o=r
+    when: ansible_os_family|lower == "redhat" and ansible_distribution_major_version|int == 7
+
+  - name: Delete {{ ipsetname }} ipset
+    command: firewall-cmd --permanent --delete-ipset={{ ipsetname }}
+    # Ignore the "changed" status
+    changed_when: False
+
+  - name: Create {{ ipsetname }} ipset
+    command: firewall-cmd --permanent --new-ipset={{ ipsetname }} --type=hash:net
+    # Ignore the "changed" status
+    changed_when: False
+
+  - name: Add ipset {{ ipsetname }} to the drop zone
+    command: firewall-cmd --permanent --zone=drop --add-source=ipset:{{ ipsetname }}
+    # Ignore the "changed" status
+    changed_when: False
+
+  - name: Load ipset {{ ipsetname }} entries from file {{ ipset7 }}
+    command: firewall-cmd --permanent --ipset={{ ipsetname }} --add-entries-from-file={{ ipset7 }}
+
+  - name: Reload firewalld
+    command: firewall-cmd --reload

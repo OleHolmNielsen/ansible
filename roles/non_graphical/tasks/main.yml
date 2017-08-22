@@ -1,0 +1,12 @@
+  - include_role:
+      name: rhel7
+
+  - name: Get login default target 
+    command: "systemctl get-default"
+    register: default_target
+    # Ignore the "changed" status
+    changed_when: False
+
+  - name: Set non-graphical login target (reboot required)
+    command: "systemctl set-default multi-user.target"
+    when: "'multi-user.target' not in default_target.stdout"

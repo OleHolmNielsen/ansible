@@ -1,0 +1,4 @@
+  - name: Remove libvirt packages with virtual interfaces - reboot required
+    yum:
+      name: libvirt*
+      state: absent

@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# This script is a manual tool to add hosts to
+# the blacklist created by the sshblack script.
+#
+# Usage:
+#     bl [ip address or FQDN]
+#
+# Note that network notation is also allowed:
+#   e.g. 192.0.0.0/16
+
+/sbin/iptables -I BLACKLIST -s $1 -j DROP
+

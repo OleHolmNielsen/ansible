@@ -1,0 +1,5 @@
+# After configuring firewalld, it must be reloaded
+  - name: Reload firewalld
+    command: firewall-cmd --reload
+    # Inherited variables do not seem to get updated
+    # when: firewalld_needs_reload == "true"

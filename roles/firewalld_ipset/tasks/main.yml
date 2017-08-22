@@ -1,0 +1,62 @@
+  - include_role:
+      name: rhel7
+
+  - name: Install the firewalld and ipset packages
+    yum:
+      name: firewalld,ipset
+      state: latest
+
+  - name: Get firewalld version 
+    command: firewall-cmd --version
+    register: firewalld_version
+    # Ignore the "changed" status
+    changed_when: False
+
+# The IPsets support was changed completely in firewalld version 0.4 (CentOS/RHEL 7.3)
+  - name: Check for firewalld version at least 0.4
+    fail: msg="The firewalld version must be at least 0.4"
+    when: firewalld_version.stdout | version_compare('0.4', '<')
+
+  - name: Copy the {{ ipset7 }} file from this server
+    copy:
+      src: "{{ ipset7 }}"
+      dest: "{{ ipset7 }}"
+      backup: yes
+      owner: root
+      group: root
+      mode: u=rw,g=r,o=r
+    when: ansible_os_family|lower == "redhat" and ansible_distribution_major_version|int == 7
+
+  - name: Get ipset file name
+    command: firewall-cmd --permanent --path-ipset={{ ipsetname }}
+    register: ipset_filename
+    # Ignore the "changed" status
+    changed_when: False
+
+  - name: Delete {{ ipsetname }} ipset
+    vars:
+      firewalld_needs_reload: "true"
+    command: firewall-cmd --permanent --delete-ipset={{ ipsetname }}
+    when: ipset_filename.stdout != ''
+    # Ignore the "changed" status
+    changed_when: False
+
+  - name: Create {{ ipsetname }} ipset
+    command: firewall-cmd --permanent --new-ipset={{ ipsetname }} --type=hash:net
+
+  - name: Get drop zone sources
+    command: firewall-cmd --zone=drop --list-sources
+    register: list_sources
+    # Ignore the "changed" status
+    changed_when: False
+
+  - name: Add ipset {{ ipsetname }} to the drop zone
+    vars:
+      firewalld_needs_reload: "true"
+    command: firewall-cmd --permanent --zone=drop --add-source=ipset:{{ ipsetname }}
+    when: list_sources.stdout == ''
+
+  - name: Load ipset {{ ipsetname }} entries from file {{ ipset7 }}
+    vars:
+      firewalld_needs_reload: "true"
+    command: firewall-cmd --permanent --ipset={{ ipsetname }} --add-entries-from-file={{ ipset7 }}

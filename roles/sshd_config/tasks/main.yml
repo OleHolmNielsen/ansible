@@ -1,0 +1,19 @@
+  - name: Install the patch RPM package
+    yum:
+      name: patch
+      state: latest
+
+# We have to patch the sshd_config file, since modules like
+# blockinfile and lineinfile cannot handle this
+  - name: Patch lines in {{ sshd_config }} 
+    patch:
+      dest: "{{ sshd_config }}"
+      src: sshd_config.diff
+    register: sshd_config_changed
+
+  - name: Restart sshd
+    service:
+      name=sshd
+      state=restarted
+      enabled=yes
+    when: sshd_config_changed == "true"

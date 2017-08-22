@@ -1,0 +1,6 @@
+# This playbook should be run just once for each new host like this:
+#   ANSIBLE_HOST_KEY_CHECKING=false ansible-playbook --ask-pass init_authorized_key.yml
+
+roles:
+ - init_authorized_key
+ - authorized_key

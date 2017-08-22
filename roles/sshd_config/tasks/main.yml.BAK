@@ -1,0 +1,56 @@
+# Change the order of SSH keys tried: ed25519, dsa, rsa
+  - name: Remove RSA/DSA key lines in {{ sshd_config }} 
+    blockinfile:
+      path: "{{ sshd_config }}"
+      state: absent
+      insertafter: "HostKeys for protocol version 2"
+      marker: "# {mark} ANSIBLE MANAGED BLOCK"
+      block: |
+        HostKey /etc/ssh/ssh_host_rsa_key
+        #HostKey /etc/ssh/ssh_host_dsa_key
+        HostKey /etc/ssh/ssh_host_ecdsa_key
+
+  - name: Add new ECDSA/RSA key lines in {{ sshd_config }} 
+    blockinfile:
+      path: "{{ sshd_config }}"
+      state: present
+      insertafter: "HostKey /etc/ssh/ssh_host_ed25519_key"
+      marker: "# {mark} ANSIBLE MANAGED BLOCK"
+      block: |
+        HostKey /etc/ssh/ssh_host_rsa_key
+        HostKey /etc/ssh/ssh_host_ecdsa_key
+
+  - name: Add LogLevel in {{ sshd_config }} 
+    blockinfile:
+      path: "{{ sshd_config }}"
+      state: present
+      insertafter: "LogLevel INFO"
+      marker: "# {mark} ANSIBLE MANAGED BLOCK"
+      block: |
+        LogLevel VERBOSE
+
+  - name: Add PermitRootLogin in {{ sshd_config }} 
+    blockinfile:
+      path: "{{ sshd_config }}"
+      state: present
+      insertafter: EOF
+      marker: "# {mark} ANSIBLE MANAGED BLOCK"
+      block: |
+        PermitRootLogin without-password
+
+  - name: Add KexAlgorithms,Ciphers,MACs in {{ sshd_config }} 
+    blockinfile:
+      path: "{{ sshd_config }}"
+      state: present
+      insertafter: EOF
+      marker: "# {mark} ANSIBLE MANAGED BLOCK"
+      block: |
+        KexAlgorithms curve25519-sha256@libssh.org,ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256,diffie-hellman-group-exchange-sha256
+        Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
+        MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,umac-128@openssh.com
+
+  - name: Restart sshd
+    service:
+      name=sshd
+      state=restarted
+      enabled=yes

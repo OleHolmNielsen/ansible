@@ -1,0 +1,8 @@
+# Jan Kehres (JAKE) lab workstations
+- hosts: kehres-lab
+  roles:
+   - hostname
+   - bashrc
+   - epel_repo
+   - yum_updates
+   - sendmail_client

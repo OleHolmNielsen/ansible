@@ -1,0 +1,5 @@
+  - name: Set SSH authorized key from file on central server
+    authorized_key:
+      user: root
+      state: present
+      key: "{{ lookup('file', '/root/.ssh/id_ecdsa.pub') }}"

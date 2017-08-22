@@ -1,0 +1,4 @@
+- name: Restart firewalld_ipset
+  service:
+    name=firewalld
+    state=restarted

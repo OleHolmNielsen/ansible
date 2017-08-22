@@ -1,0 +1,10 @@
+- hosts: camd-desktops
+  roles:
+   - hostname
+   - bashrc
+   - epel_repo
+   - yum_updates
+   - firewalld_whitelist
+   - sendmail_client
+   - autofs
+   - firewalld_reload

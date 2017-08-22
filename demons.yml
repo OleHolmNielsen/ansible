@@ -1,0 +1,20 @@
+- hosts: demons
+  vars:
+    firewalld_needs_reload: "false"
+  roles:
+   - rhel7
+   - hostname
+   - non_graphical
+   - logwatch
+   - no_libvirt
+   - sshd_config
+   - bashrc
+   - epel_repo
+   - yum_updates
+   - sendmail_client
+   - autofs
+   - sshblack
+   - firewalld_whitelist
+   - firewalld_brute_force
+   - firewalld_ipset
+   - firewalld_reload

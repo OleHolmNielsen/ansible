@@ -1,0 +1,28 @@
+- name: Install the sendmail-cf package
+  yum:
+    name: sendmail-cf
+    state: present
+
+- name: Editing the {{ sendmail_mc }} file
+  blockinfile:
+    path: "{{ sendmail_mc }}"
+    state: present
+    insertafter: '^dnl define\(`SMART_HOST'', `smtp.your.provider''\)dnl'
+    marker: "dnl # {mark} ANSIBLE MANAGED BLOCK"
+    block: |
+      define(`SMART_HOST', `mail.fysik.dtu.dk')dnl
+      dnl # Relay also unqualified addresses /OHN
+      define(`LOCAL_RELAY', `mail.fysik.dtu.dk')dnl
+  notify:
+   - Restart Sendmail
+
+- name: Editing the {{ aliases }} file
+  blockinfile:
+    path: "{{ aliases }}"
+    state: present
+    insertafter: '^#root:          marc'
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    block: |
+      root: root@mail.fysik.dtu.dk
+  notify:
+   - Rebuild aliases database

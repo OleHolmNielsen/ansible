@@ -1,0 +1,76 @@
+# Copy sshblack files and start service
+# See https://wiki.fysik.dtu.dk/it/Linux_firewall_configuration
+
+  - include_role:
+      name: rhel7
+
+  - name: Ensure target directory {{ bin_dir }} exists
+    file:
+      dest: "{{ bin_dir }}"
+      state: directory
+
+  - name: Copy sshblack files from ansible server to local {{ bin_dir }}
+    copy:
+      src: "{{ item }}"
+      dest: "{{ bin_dir }}"
+      owner: root
+      group: root
+      mode: u=rwx,g=rx,o=rx
+    with_items:
+      - sshblack/sshblack.pl
+      - sshblack/bl
+      - sshblack/unbl
+      - sshblack/list
+      - sshblack/unlist
+      - sshblack-save-state
+
+# Create Systemd service sshblack
+
+  - name: Ensure service directory /usr/libexec/sshblack exists
+    file:
+      dest: /usr/libexec/sshblack
+      state: directory
+
+  - name: Copy file init-sshblack
+    copy:
+      src: init-sshblack
+      dest: /usr/libexec/sshblack
+      owner: root
+      group: root
+      mode: u=rwx,g=rx,o=rx
+
+  - name: Copy file sshblack.service
+    copy:
+      src: sshblack.service
+      dest: /usr/lib/systemd/system
+      owner: root
+      group: root
+      mode: u=rw,g=r,o=r
+
+  - name: Start sshblack service
+    service:
+      name=sshblack
+      state=started
+      enabled=yes
+
+# Create a firewalld BLACKLIST chain
+
+  - name: Get firewalld filter chains
+    command: "firewall-cmd --permanent --direct --get-chain ipv4 filter"
+    register: chains
+    # Ignore the "changed" status
+    changed_when: False
+
+  - name: firewalld add chain BLACKLIST
+    vars:
+      firewalld_needs_reload: "true"
+    command: firewall-cmd --permanent --direct --add-chain ipv4 filter BLACKLIST
+    when: "'BLACKLIST' not in chains.stdout"
+
+# Checkpoint and Restart: sshblack-save-state
+
+  - name: Create a cron job for sshblack-save-state (Checkpoint and Restart)
+    cron:
+      name: "sshblack-save-state"
+      minute: "*/5"
+      job: "{{ bin_dir }}sshblack-save-state"

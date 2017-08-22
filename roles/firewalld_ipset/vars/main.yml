@@ -1,0 +1,4 @@
+# The geoblocking ipset
+ipsetname: geoblock
+# File containing the ipsetname subnet list
+ipset7: /etc/sysconfig/ipset7

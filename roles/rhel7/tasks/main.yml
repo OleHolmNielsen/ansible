@@ -1,0 +1,3 @@
+  - name: Check for CentOS/RHEL 7
+    fail: msg="This only applies to CentOS/RHEL 7"
+    when: ansible_os_family|lower != "redhat" or ansible_distribution_major_version|int != 7

@@ -1,0 +1,93 @@
+#!/bin/sh
+
+# Initscript template from https://fedoraproject.org/wiki/Packaging:SysVInitScript?rd=Packaging/SysVInitScript#Initscript_template
+#
+# sshblack	Startup script for the sshblack daemon
+#
+# chkconfig:   2345 84 16
+# description: sshblack daemon
+
+### BEGIN INIT INFO
+# Provides: sshblack
+# Required-Start: $local_fs $network $syslog $time firewalld
+# Required-Stop: $local_fs $network $syslog $time 
+# Short-Description: start and stop sshblack daemon
+# Description: sshblack daemon
+### END INIT INFO
+
+# Daemon parameter default
+OPTIONS=""
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# Private sshblack state directory
+# In sshblack.pl the CACHE variable should refer to this directory:
+# my($CACHE) = '/var/lib/sshblack/ssh-blacklist-pending';
+SSHBLACK_HOME=/var/lib/sshblack
+if test ! -d $SSHBLACK_HOME
+then
+	echo Creating SSHBLACK_HOME directory $SSHBLACK_HOME
+	mkdir -v -p $SSHBLACK_HOME
+fi
+
+# Restart script restoring BLACKLIST DROP rules
+SSHBLACK_RESTART=$SSHBLACK_HOME/restart.sh
+
+exec="/usr/local/sbin/sshblack.pl"
+prog="sshblack.pl"
+
+lockfile=/var/lock/subsys/$prog
+
+start() {
+    [ -x $exec ] || exit 5
+    # Make sure that BLACKLIST chain has been created before adding rules
+    firewall-cmd --permanent --direct --add-chain ipv4 filter BLACKLIST
+    if test -x $SSHBLACK_RESTART
+    then
+	echo Restoring SSHBLACK BLACKLIST rules
+	cat $SSHBLACK_RESTART
+	. $SSHBLACK_RESTART
+	echo List the BLACKLIST rules
+	iptables -S BLACKLIST
+    else
+	echo No SSHBLACK BLACKLIST rules to restore
+    fi
+    echo -n $"Starting $prog: "
+    daemon $exec $OPTIONS
+    retval=$?
+    echo
+    [ $retval -eq 0 ] && touch $lockfile
+    return $retval
+}
+
+stop() {
+    echo -n $"Stopping $prog: "
+    killproc $prog
+    retval=$?
+    echo
+    [ $retval -eq 0 ] && rm -f $lockfile
+    return $retval
+}
+
+restart() {
+    stop
+    sleep 1
+    start
+}
+
+case "$1" in
+    start)
+        $1
+        ;;
+    stop)
+        $1
+        ;;
+    restart)
+        $1
+        ;;
+    *)
+        echo $"Usage: $0 {start|stop|restart}"
+        exit 2
+esac
+exit $?

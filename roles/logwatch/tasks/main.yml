@@ -1,0 +1,14 @@
+- name: Install the logwatch package
+  yum:
+    name: logwatch
+    state: present
+
+- name: Editing the {{ logwatch_conf }} file
+  blockinfile:
+    path: "{{ logwatch_conf }}"
+    state: present
+    insertafter: EOF
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    block: |
+      # Default person to mail reports to.  Can be a local account or a complete email address.
+      MailTo = logwatch@mail.fysik.dtu.dk

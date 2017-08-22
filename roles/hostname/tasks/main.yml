@@ -1,0 +1,3 @@
+- name: Set the permanent hostname {{ ansible_nodename }} with hostnamectl
+  hostname:
+    name: "{{ ansible_nodename }}"

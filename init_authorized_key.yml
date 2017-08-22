@@ -1,0 +1,9 @@
+# First-time setup of the SSH authorized_key
+
+# This playbook should be run just once for each new host like this:
+#   ANSIBLE_HOST_KEY_CHECKING=false ansible-playbook --ask-pass init_authorized_key.yml -l <hostname>
+
+- hosts: all
+  roles:
+   - init_authorized_key
+   - authorized_key

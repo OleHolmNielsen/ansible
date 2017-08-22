@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# This script is a manual removal tool for hosts already in
+# the blacklist created by the sshblack script.
+#
+# Usage:
+#     unbl [ip address or FQDN]
+#
+# Note that network notation is also allowed:
+#   e.g. 192.0.0.0/16
+
+/sbin/iptables -D BLACKLIST -s $1 -j DROP
+

@@ -1,0 +1,13 @@
+   - name: Install yum-cron
+     yum:
+       name: yum-cron
+       state: latest
+   - name: Start yum-cron
+     service:
+       name=yum-cron
+       state=started
+       enabled=yes
+   - name: Yum updates
+     yum:
+       name: '*'
+       state: latest
