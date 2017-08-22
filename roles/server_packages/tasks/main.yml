@@ -1,0 +1,4 @@
+  - name: Install server packages
+    yum:
+      name: bind-utils,net-tools,jwhois
+      state: present
