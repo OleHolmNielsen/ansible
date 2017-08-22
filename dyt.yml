@@ -1,4 +1,0 @@
-- hosts: demons
-  roles:
-   - sshblack
-#   - firewalld_reload
