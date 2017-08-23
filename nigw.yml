@@ -5,6 +5,7 @@
    - rhel7
    - hostname
    - non_graphical
+   - server_packages
    - logwatch
    - no_libvirt
    - sshd_config
