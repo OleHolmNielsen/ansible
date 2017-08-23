@@ -2,7 +2,8 @@
 # https://access.redhat.com/solutions/21432
 # Printer options (-o) are documented in
 # https://www.cups.org/doc/options.html#OPTIONS
-# Display available prinetr options by: lpoptions -p <printer> -l
+# Display available printer drivers by: lpinfo -m | grep <your model>
+# Display available printer options by: lpoptions -p <printer> -l
 
 - name: Install printer packages
   yum:
@@ -11,45 +12,45 @@
 
 # Printer b307-4015.fysik.dtu.dk
 
-- name: Install {{ printer }} printer name {{ name }}
-  command: lpadmin -p {{ name }} -v socket:{{ printer }}:9100 -m {{ driver }} -E
+- name: Install {{ printer }} printer name {{ destination }}
+  command: lpadmin -p {{ destination }} -v socket:{{ printer }}:9100 -m {{ driver }} -E
   vars:
     printer: b307-4015.fysik.dtu.dk
-    name: HP-LaserJet-p4015-b307-225
+    destination: HP-LaserJet-p4015-b307-225
     driver: drv:///hp/hpijs.drv/hp-laserjet_p4015dn-hpijs.ppd
   register: newprinter
   # Ignore the "changed" status
   # changed_when: False
 
-- name: Set {{ name }} options
-  command: lpadmin -p {{ name }} {{ options }}
+- name: Set {{ destination }} options
+  command: lpadmin -p {{ destination }} {{ options }}
   vars:
-    name: HP-LaserJet-p4015-b307-225
+    destination: HP-LaserJet-p4015-b307-225
     options: '-o sides=two-sided-long-edge -o media=A4'
   # when: newprinter.stdout == ""
 
 # Printer camd4525.fysik.dtu.dk
 
-- name: Install {{ printer }} printer name {{ name }}
-  command: lpadmin -p {{ name }} -v socket:{{ printer }}:9100 -m {{ driver }} -E
+- name: Install {{ printer }} printer name {{ destination }}
+  command: lpadmin -p {{ destination }} -v socket:{{ printer }}:9100 -m {{ driver }} -E
   vars:
     printer: camd4525.fysik.dtu.dk
-    name: HP-ColorLaserJet-CP4525-b307-225
+    destination: HP-ColorLaserJet-CP4525-b307-225
     driver: drv:///hp/hpcups.drv/hp-color_laserjet_cp4520_series-pcl3.ppd
   register: newprinter
 
-- name: Set {{ name }} plus options
-  command: lpadmin -p {{ name }} {{ options }}
+- name: Set {{ destination }} plus options
+  command: lpadmin -p {{ destination }} {{ options }}
   vars:
-    name: HP-ColorLaserJet-CP4525-b307-225
+    destination: HP-ColorLaserJet-CP4525-b307-225
     options: '-o OptionDuplex=True -o sides=two-sided-long-edge -o media=A4'
   # when: newprinter.stdout == ""
 
 # Default printer
 
-- name: Set {{ name }} as default (-d) printer
-  command: lpadmin -d {{ name }}
+- name: Set {{ destination }} as default (-d) printer
+  command: lpadmin -d {{ destination }}
   vars:
-    name: HP-LaserJet-p4015-b307-225
+    destination: HP-LaserJet-p4015-b307-225
   # Ignore the "changed" status
   changed_when: False
