@@ -7,4 +7,5 @@
    - firewalld_whitelist
    - sendmail_client
    - autofs
+   - printers_b307
    - firewalld_reload
