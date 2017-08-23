@@ -21,11 +21,6 @@
   # Ignore the "changed" status
   # changed_when: False
 
-- name: Set {{ name }} as default (-d) printer
-  command: lpadmin -d {{ name }}
-  vars:
-    name: HP-LaserJet-p4015-b307-225
-
 - name: Set {{ name }} options
   command: lpadmin -p {{ name }} {{ options }}
   vars:
@@ -49,3 +44,12 @@
     name: HP-ColorLaserJet-CP4525-b307-225
     options: '-o OptionDuplex=True -o sides=two-sided-long-edge -o media=A4'
   # when: newprinter.stdout == ""
+
+# Default printer
+
+- name: Set {{ name }} as default (-d) printer
+  command: lpadmin -d {{ name }}
+  vars:
+    name: HP-LaserJet-p4015-b307-225
+  # Ignore the "changed" status
+  changed_when: False
