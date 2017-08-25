@@ -1,5 +1,9 @@
-  - name: Set SSH authorized key from file on central server
+  - name: Set SSH authorized keys from files on central server
     authorized_key:
       user: root
       state: present
-      key: "{{ lookup('file', '/root/.ssh/id_ecdsa.pub') }}"
+      key: "{{ lookup('file', '{{ item }}') }}"
+      # key: "{{ item }}"
+    with_items:
+      - /root/.ssh/id_ecdsa.pub
+      - /root/.ssh/id_dsa_servauth2.pub
