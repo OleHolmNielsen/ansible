@@ -4,7 +4,7 @@
   - name: Install the firewalld and ipset packages
     yum:
       name: firewalld,ipset
-      state: latest
+      state: present
 
   - name: Get firewalld version 
     command: firewall-cmd --version

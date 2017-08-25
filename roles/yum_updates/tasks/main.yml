@@ -1,7 +1,7 @@
    - name: Install yum-cron
      yum:
        name: yum-cron
-       state: latest
+       state: present
    - name: Start yum-cron
      service:
        name=yum-cron

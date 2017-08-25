@@ -1,7 +1,7 @@
   - name: Install the patch RPM package
     yum:
       name: patch
-      state: latest
+      state: present
 
 # We have to patch the sshd_config file, since modules like
 # blockinfile and lineinfile cannot handle this
