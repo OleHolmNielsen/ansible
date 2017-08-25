@@ -11,6 +11,7 @@
    - bashrc
    - epel_repo
    - yum_updates
+   - yum_packages
    - sendmail_client
    - autofs
    - sshblack

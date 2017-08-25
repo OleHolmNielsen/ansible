@@ -5,6 +5,7 @@
    - rhel7
    - hostname
    - non_graphical
+   - epel_repo
    - server_packages
    - logwatch
    - no_libvirt

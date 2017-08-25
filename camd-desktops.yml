@@ -4,6 +4,7 @@
    - bashrc
    - epel_repo
    - yum_updates
+   - yum_packages
    - firewalld_whitelist
    - sendmail_client
    - autofs
