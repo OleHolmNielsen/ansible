@@ -2,7 +2,3 @@
     yum:
       name: epel-release
       state: present
-  - name: Install popular packages from the EPEL repository
-    yum:
-      name: Lmod,git-all,python34-pip,python2-pip
-      state: present
