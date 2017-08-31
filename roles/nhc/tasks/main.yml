@@ -1,0 +1,12 @@
+- name: Install the LBNL Node Health Check (NHC) package
+  yum:
+    name: https://github.com/mej/nhc/releases/download/1.4.2/lbnl-nhc-1.4.2-1.el7.noarch.rpm
+    state: present
+
+- name: Copy master file {{ nhc_conf }} 
+  copy:
+    src: "{{ nhc_conf }}"
+    dest: "{{ nhc_conf }}"
+    owner: root
+    group: root
+    mode: 0644

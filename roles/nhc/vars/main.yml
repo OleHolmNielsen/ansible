@@ -1,0 +1,2 @@
+# Our global NHC config file
+nhc_conf: /etc/nhc/nhc.conf
