@@ -4,5 +4,5 @@
       state: present
   - name: Install popular packages from the EPEL repository
     yum:
-      name: Lmod,git-all,python34-pip,python2-pip
+      name: Lmod,git-all,python34-pip,python2-pip,grace
       state: present
