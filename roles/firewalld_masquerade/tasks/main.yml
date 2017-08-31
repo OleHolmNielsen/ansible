@@ -1,0 +1,90 @@
+# Make a NAT masquerading gateway for interfaces on 10.2 and 10.5 subnets
+# See https://www.centos.org/forums/viewtopic.php?t=53819
+# and http://www.mjhall.org/centos7-firewalld-nat-router/
+
+  - name: Install the dnsmasq package
+    yum:
+      name: dnsmasq
+      state: present
+
+  - name: Editing the {{ sysctl_conf }} file
+    blockinfile:
+      path: "{{ sysctl_conf }}"
+      state: present
+      insertafter: EOF
+      marker: "# {mark} ANSIBLE MANAGED BLOCK"
+      block: |
+        # Enable IPv4 packet forwarding
+        net.ipv4.ip_forward = 1
+
+  - name: Get sysctl net.ipv4.ip_forward
+    command: "sysctl net.ipv4.ip_forward"
+    register: ip_forward
+    # Ignore the "changed" status
+    changed_when: False
+
+  - name: Apply sysctl settings
+    command: sysctl -p
+    when: "'net.ipv4.ip_forward = 1' not in ip_forward.stdout"
+
+#  - name: Change firewalld zone to internal for interface {{ eth_10_2 }}
+#    command: "firewall-cmd --permanent --zone=internal --change-interface={{ eth_10_2 }}
+#    # Ignore the "changed" status
+#    changed_when: False
+
+  - name: Change firewalld zone to internal for interface {{ eth_10_2 }}
+    firewalld:
+      zone: internal
+      interface: "{{ eth_10_2 }}"
+      permanent: true
+      state: enabled
+
+  - name: Change firewalld zone to internal for interface {{ eth_10_5 }}
+    firewalld:
+      zone: internal
+      interface: "{{ eth_10_5 }}"
+      permanent: true
+      state: enabled
+
+  - name: Add masquerade to zone public
+    firewalld:
+      masquerade: yes
+      state: enabled
+      permanent: true
+      zone: public
+
+  - name: Get firewalld rules
+    command: "firewall-cmd  --permanent --direct --get-all-rules"
+    register: rules
+    # Ignore the "changed" status
+    changed_when: False
+
+  - name: firewalld forward from internal to public on interface {{ eth_10_2 }}
+    vars:
+      firewalld_needs_reload: "true"
+    command: firewall-cmd --permanent --direct --add-rule ipv4 filter FORWARD 0 -i {{ eth_10_2 }} -o {{ eth_extern }} -j ACCEPT
+    # Cannot use variables in when: statement
+    # when: "filter FORWARD 0 -i " eth_10_2 " -o " eth_extern not in rules.stdout
+
+  - name: firewalld forward from public to internal on interface {{ eth_10_2 }}
+    vars:
+      firewalld_needs_reload: "true"
+    command: firewall-cmd --permanent --direct --add-rule ipv4 filter FORWARD 0 -i {{ eth_extern }} -o {{ eth_10_2 }} -m state --state RELATED,ESTABLISHED -j ACCEPT
+    # when: "'filter FORWARD 0 -i eth_10_2 -o eth_extern' not in rules.stdout"
+
+  - name: firewalld forward from internal to public on interface {{ eth_10_5 }}
+    vars:
+      firewalld_needs_reload: "true"
+    command: firewall-cmd --permanent --direct --add-rule ipv4 filter FORWARD 0 -i {{ eth_10_5 }} -o {{ eth_extern }} -j ACCEPT
+    # when: "'filter FORWARD 0 -i eth_10_5 -o eth_extern' not in rules.stdout"
+
+  - name: firewalld forward from public to internal on interface {{ eth_10_5 }}
+    vars:
+      firewalld_needs_reload: "true"
+    command: firewall-cmd --permanent --direct --add-rule ipv4 filter FORWARD 0 -i {{ eth_extern }} -o {{ eth_10_5 }} -m state --state RELATED,ESTABLISHED -j ACCEPT
+    # when: "'filter FORWARD 0 -i eth_10_5 -o eth_extern' not in rules.stdout"
+
+# Commands used:
+# firewall-cmd --direct --add-rule ipv4 nat POSTROUTING 0 -o eth_ext -j MASQUERADE
+# firewall-cmd --direct --add-rule ipv4 filter FORWARD 0 -i eth_int -o eth_ext -j ACCEPT
+# firewall-cmd --direct --add-rule ipv4 filter FORWARD 0 -i eth_ext -o eth_int -m state --state RELATED,ESTABLISHED -j ACCEPT

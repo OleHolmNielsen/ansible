@@ -1,0 +1,4 @@
+sysctl_conf: /etc/sysctl.conf
+eth_extern: enp5s0f0
+eth_10_2: enp7s0f0
+eth_10_5: enp7s0f1
