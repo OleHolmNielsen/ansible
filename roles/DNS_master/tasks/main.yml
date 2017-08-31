@@ -1,0 +1,10 @@
+  - name: Install BIND DNS packages
+    yum:
+      name: bind,bind-libs,bind-utils,net-tools,jwhois
+      state: present
+
+  - name: Enable firewall port 53 for DNS
+    firewalld:
+      service: dns
+      permanent: true
+      state: enabled
