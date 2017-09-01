@@ -1,0 +1,12 @@
+- name: Copy dtu_storage files to {{ bin_dir }}
+  vars:
+    bin_dir: /usr/local/bin
+  copy:
+    src: "{{ item }}"
+    dest: "{{ bin_dir }}"
+    owner: root
+    group: root
+    mode: u=rwx,g=rx,o=rx
+  with_items:
+    - dtustorage.sh
+    - dtustorage.csh
