@@ -5,13 +5,13 @@
 - name: Add the munge group
   group:
     name: munge
-    gid: {{ munge_id }}
+    gid: "{{ munge_id }}"
 
 - name: Add the munge user 
   user:
     name: munge
     comment: "MUNGE Uid N Gid Emporium"
-    uid: {{ munge_id }}
+    uid: "{{ munge_id }}"
     group: munge
     home: /var/lib/munge
     shell: /sbin/nologin
@@ -19,21 +19,21 @@
 - include_role:
     name: epel_repo
 
-- name: Install munge packages from the EPEL repository
+- name: Install Munge packages from the EPEL repository
   yum:
-    name: munge munge-libs munge-devel
+    name: munge,munge-libs,munge-devel
     state: present
 
 - name: Configure {{ key_dir }} directory
   file:
-    path: {{ key_dir }}
+    path: "{{ key_dir }}"
     owner: munge
     group: munge
     mode: 0700
 
 - name: Configure {{ log_dir }} directory
   file:
-    path: {{ log_dir }}
+    path: "{{ log_dir }}"
     owner: munge
     group: munge
     mode: 0700
@@ -49,4 +49,5 @@
 - name: Start the munge service
   service:
     name: munge
+    enabled: yes
     state: started

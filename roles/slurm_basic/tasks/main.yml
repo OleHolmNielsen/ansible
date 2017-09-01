@@ -1,0 +1,63 @@
+---
+
+# This role installs and configures the Slurm packages
+
+# Install Munge before Slurm
+- include_role:
+    name: munge
+
+- name: Add the slurm group
+  group:
+    name: slurm
+    gid: "{{ slurm_id }}"
+
+- name: Add the slurm user 
+  user:
+    name: slurm
+    comment: "SLURM workload manager"
+    uid: "{{ slurm_id }}"
+    group: slurm
+    home: /var/lib/slurm
+    shell: /bin/bash
+
+- name: Install Slurm prerequisite packages
+  yum:
+    name:
+    - openssl
+    - openssl-devel
+    - pam-devel
+    - numactl
+    - numactl-devel
+    - hwloc
+    - hwloc-devel
+    - lua
+    - lua-devel
+    - readline-devel
+    - rrdtool-devel
+    - ncurses-devel
+    - gtk2-devel
+    - man2html
+    - libibmad
+    - libibumad
+    - perl-Switch
+    state: present
+
+- name: Install basic Slurm version {{ slurm_version }} packages from local directory
+  yum:
+    name: 
+    - "{{ rpm_dir }}/slurm-plugins-{{ slurm_rpm }}"
+    - "{{ rpm_dir }}/slurm-{{ slurm_rpm }}"
+    - "{{ rpm_dir }}/slurm-devel-{{ slurm_rpm }}"
+    - "{{ rpm_dir }}/slurm-munge-{{ slurm_rpm }}"
+    - "{{ rpm_dir }}/slurm-perlapi-{{ slurm_rpm }}"
+    - "{{ rpm_dir }}/slurm-torque-{{ slurm_rpm }}"
+    - "{{ rpm_dir }}/slurm-contribs-{{ slurm_rpm }}"
+    state: present
+
+- name: Copy site {{ rpm_dir }}/slurm.conf to {{ slurm_dir }}
+  copy:
+    src: "{{ rpm_dir }}/slurm.conf"
+    dest: "{{ slurm_dir }}"
+    owner: slurm
+    group: slurm
+    mode: 0644
