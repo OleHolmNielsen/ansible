@@ -67,10 +67,15 @@
     command: firewall-cmd --permanent --direct --add-chain ipv4 filter BLACKLIST
     when: "'BLACKLIST' not in chains.stdout"
 
-# Checkpoint and Restart: sshblack-save-state
-
   - name: Create a cron job for sshblack-save-state (Checkpoint and Restart)
     cron:
       name: "sshblack-save-state"
       minute: "*/5"
       job: "{{ bin_dir }}sshblack-save-state"
+
+  - name: List unauthorized root login attempts
+    cron:
+      name: "Unauthorized root logins"
+      minute: "0"
+      hour: "8"
+      job: "/bin/grep user=root /var/log/secure; /bin/grep Evil /var/log/messages"
