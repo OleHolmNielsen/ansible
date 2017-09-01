@@ -1,0 +1,32 @@
+# Configure autofs, modify /etc/auto.home for Niflheim
+
+- include_role:
+    name: autofs
+
+# This ought to be inherited from the autofs role?
+# vars:
+#   auto_home: /etc/auto.home
+# We copy the autofs vars/ directory to this role in stead
+ 
+- name: Replace the line for camp in {{ auto_home }}
+  lineinfile:
+    path: "{{ auto_home }}"
+    state: present
+    regexp: '^camp'
+    line: 'camp		-rsize=8192,wsize=8192,tcp,vers=3	vid:/u/raid'
+  notify:
+   - Restart autofs
+ 
+- name: Add the line for /home/modules in {{ auto_home }}
+  vars:
+    # This must be different for each CPU hardware architecture:
+    cpuarch: broadwell
+  blockinfile:
+    path: "{{ auto_home }}"
+    state: present
+    insertafter: EOF
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    block: |
+      modules		-rsize=8192,wsize=8192,tcp,vers=3	niflopt1:/u/modules/{{ cpuarch }}
+  notify:
+   - Restart autofs
