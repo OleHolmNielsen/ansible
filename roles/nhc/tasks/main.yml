@@ -10,3 +10,9 @@
     owner: root
     group: root
     mode: 0644
+
+- name: Create a cron job for NHC
+  cron:
+    name: "Node_Health_Check"
+    minute: "3"
+    job: "/usr/sbin/nhc-wrapper -X 1d NHC_RM=pbs"
