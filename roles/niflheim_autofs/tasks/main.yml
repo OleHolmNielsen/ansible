@@ -19,8 +19,10 @@
  
 - name: Add the line for /home/modules in {{ auto_home }}
   vars:
-    # This must be different for each CPU hardware architecture:
-    cpuarch: broadwell
+    # This MUST be configured differently for each CPU hardware architecture:
+    # cpuarch: broadwell
+    # cpuarch: nehalem
+    cpuarch: sandybridge
   blockinfile:
     path: "{{ auto_home }}"
     state: present
