@@ -1,3 +1,5 @@
+# firewalld: whitelist local subnets
+
   - include_role:
       name: rhel7
 
