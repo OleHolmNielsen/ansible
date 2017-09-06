@@ -1,0 +1,10 @@
+- name: Add core limits to /etc/security/limits.conf
+  blockinfile:
+    path: /etc/security/limits.conf
+    state: present
+    insertafter: EOF
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    block: |
+      # Niflheim configurations
+      *		hard    core            0
+      *		soft    core            0

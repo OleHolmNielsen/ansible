@@ -1,0 +1,34 @@
+---
+
+# This role installs and configures the Lmod environment modules
+# See https://wiki.fysik.dtu.dk/niflheim/EasyBuild_modules
+
+- name: Add the modules group
+  group:
+    name: modules
+    gid: "{{ modules_id }}"
+
+- name: Add the modules user 
+  user:
+    name: modules
+    comment: "Modules user"
+    uid: "{{ modules_id }}"
+    group: modules
+    home: /home/opt/modules
+    shell: /bin/bash
+
+- include_role:
+    name: epel_repo
+
+- name: Install Lmod packages from the EPEL repository
+  yum:
+    name: Lmod
+    state: present
+
+- name: Install prerequisites for EasyBuild
+  yum:
+    name: 
+    - GitPython
+    - pysvn
+    - graphviz
+    state: present

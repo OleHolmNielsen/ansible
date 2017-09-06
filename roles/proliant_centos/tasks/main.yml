@@ -1,0 +1,75 @@
+# Management Component Pack for CentOS 7 is a collection of software packages
+# and can be used to update agents and other support software for HPE ProLiant servers. 
+# Site: https://downloads.linux.hpe.com/SDR/project/mcp/
+
+# https://downloads.linux.hpe.com/SDR/keys.html
+- name: Add HPE MCP repository GPG keys
+  rpm_key:
+    state: present
+    key: http://downloads.linux.hpe.com/SDR/hpePublicKey2048_key1.pub
+
+- name: Add HPE MCP repository
+  yum_repository:
+    name: HPE-MCP
+    description: HPE Management Component Pack
+    baseurl: http://downloads.linux.hpe.com/repo/mcp/centos/7/x86_64/current
+    enabled: yes
+    gpgcheck: yes
+    # gpgkey: https://downloads.linux.hpe.com/SDR/repo/mcp/GPG-KEY-mcp
+    gpgkey: file:///etc/pki/rpm-gpg/GPG-KEY-mcp
+
+- name: Install HPE MCP packages for CentOS 7
+  yum:
+    name:
+    - hp-ams
+    - hpdiags
+    - hp-health
+    - hponcfg
+    - hpsmh
+    - hp-smh-templates
+    - hp-snmp-agents
+    - ssa
+    - ssacli
+    - ssaducli
+    state: present
+
+- name: Run /sbin/hpsnmpconfig after installation of HPE MCP packages to configure /etc/snmp/snmpd.conf
+  command: hpsnmpconfig --a --rws public --ros public --rwmips 127.0.0.1 public --romips 127.0.0.1 public --tcs public --sci Our_department --sli Our_location
+# USAGE: hpsnmpconfig [APPLICATION OPTIONS]
+#   --help                 -display this help message
+#   --a                    -auto config
+#   --rws                  -read write community string
+#   --ros                  -read only string
+#   --rwmips               -read write management IP and string
+#   --romips               -read only management IP and string
+#   --tcs                  -trap community string
+#   --tdips                -trap synk IP and string
+#   --sci                  -system contact information
+#   --sli                  -system location information
+# Example: hpsnmpconfig --a --rws public --ros public --rwmips 127.0.0.1 public --romips 127.0.0.1 public --tcs public --tdips 127.0.0.1 public --sci Linux --sli USA
+
+- name: Restart the snmpd service after reconfiguration
+  service:
+    name: snmpd
+    state: restarted
+    enabled: yes
+
+- name: Copy smartshow script
+  copy:
+    src: smartshow
+    dest: /usr/local/sbin
+    owner: root
+    group: root
+    mode: 0700
+
+- name: Start the snmpd service (for HPSMH)
+  service:
+    name: snmpd
+    enabled: yes
+    state: started
+
+- name: Open firewall port 2381 (HPSMH homepage)
+  firewalld:
+    port: 2381/tcp
+    permanent: true
+    state: enabled
