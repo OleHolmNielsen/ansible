@@ -23,6 +23,8 @@
 - name: Install Slurm prerequisite packages
   yum:
     name:
+    - gcc
+    - rpm-build
     - openssl
     - openssl-devel
     - pam-devel
@@ -40,6 +42,7 @@
     - libibmad
     - libibumad
     - perl-Switch
+    - perl-ExtUtils-MakeMaker
     state: present
 
 - name: Install basic Slurm version {{ slurm_version }} packages from local directory
@@ -61,3 +64,15 @@
     owner: slurm
     group: slurm
     mode: 0644
+
+- name: Install Slurm tools from GitHub
+  get_url:
+    url: "{{ item }}"
+    # url: https://raw.githubusercontent.com/OleHolmNielsen/Slurm_tools/master/pestat/pestat
+    dest: /usr/local/bin
+    owner: root
+    group: root
+    mode: 0755
+  with_items:
+    - https://raw.githubusercontent.com/OleHolmNielsen/Slurm_tools/master/pestat/pestat
+    - https://raw.githubusercontent.com/OleHolmNielsen/Slurm_tools/master/showuserjobs/showuserjobs
