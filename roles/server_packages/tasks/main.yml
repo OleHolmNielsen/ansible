@@ -1,4 +1,26 @@
   - name: Install server packages
     yum:
-      name: bind-utils,net-tools,jwhois
+      name:
+      - bind-utils
+      - net-tools
+      - jwhois
+      - ipmiutil
+      - OpenIPMI
+      - htop
+      - python34
+      - Lmod
+      - git-all
+      - python34-pip
+      - python2-pip
+      - GitPython
+      - grace
+      - screen
+      - tree
       state: present
+
+  - name: remove unwanted packages
+    yum:
+      name:
+      - libreoffice*
+      - samba*
+      state: absent
