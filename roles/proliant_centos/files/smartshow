@@ -29,6 +29,7 @@ then
 	echo "ERROR: The $HPACUCLI tool for Proliant server is not installed (HP hpacucli/hpssacli RPM package)"
 	exit 1
 fi
+
 # Get list of controllers in the system
 CONTROLLERS=`$HPACUCLI controller all show | grep Smart | awk '{print $6}'`
 if test -z "$CONTROLLERS"
