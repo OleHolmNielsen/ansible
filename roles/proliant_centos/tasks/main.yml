@@ -7,6 +7,7 @@
   command: "rpm --import {{ key }}"
   vars:
     key: http://downloads.linux.hpe.com/SDR/hpePublicKey2048_key1.pub
+  changed_when: false
   # Does not seem to work:
   #rpm_key:
   #  state: present
@@ -38,7 +39,12 @@
     state: present
 
 - name: Run /sbin/hpsnmpconfig after installation of HPE MCP packages to configure /etc/snmp/snmpd.conf
-  command: hpsnmpconfig --a --ros public --romips 127.0.0.1 public --tcs public --sci Our_department --sli Our_location
+  # Mandatory options: --a --rws --ros
+  # The location is defined in host_vars/hostname/
+  command: "hpsnmpconfig --a --rws public --ros public --romips 127.0.0.1 public --tcs public --sci {{ contact }} --sli {{ location }}"
+  vars:
+    contact: support@fysik.dtu.dk
+
 # command: hpsnmpconfig --a --rws public --ros public --rwmips 127.0.0.1 public --romips 127.0.0.1 public --tcs public --sci Our_department --sli Our_location
 # USAGE: hpsnmpconfig [APPLICATION OPTIONS]
 #   --help                 -display this help message
@@ -53,25 +59,19 @@
 #   --sli                  -system location information
 # Example: hpsnmpconfig --a --rws public --ros public --rwmips 127.0.0.1 public --romips 127.0.0.1 public --tcs public --tdips 127.0.0.1 public --sci Linux --sli USA
 
-- name: Restart the snmpd service after reconfiguration
+- name: Restart the snmpd service after reconfiguration (for HPSMH)
   service:
     name: snmpd
     state: restarted
     enabled: yes
 
-- name: Copy smartshow script
+- name: Copy smartshow script (HPE Smart Array)
   copy:
     src: smartshow
     dest: /usr/local/sbin
     owner: root
     group: root
     mode: 0700
-
-- name: Start the snmpd service (for HPSMH)
-  service:
-    name: snmpd
-    enabled: yes
-    state: started
 
 - name: Open firewall port 2381 (HPSMH homepage)
   firewalld:
