@@ -7,3 +7,4 @@
     with_items:
       - /root/.ssh/id_ecdsa.pub
       - /root/.ssh/id_dsa_servauth2.pub
+      - /root/.ssh/id_ecdsa_ohni.pub
