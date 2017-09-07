@@ -4,9 +4,13 @@
 
 # https://downloads.linux.hpe.com/SDR/keys.html
 - name: Add HPE MCP repository GPG keys
-  rpm_key:
-    state: present
+  command: "rpm --import {{ key }}"
+  vars:
     key: http://downloads.linux.hpe.com/SDR/hpePublicKey2048_key1.pub
+  # Does not seem to work:
+  #rpm_key:
+  #  state: present
+  #  key: http://downloads.linux.hpe.com/SDR/hpePublicKey2048_key1.pub
 
 - name: Add HPE MCP repository
   yum_repository:
@@ -15,8 +19,8 @@
     baseurl: http://downloads.linux.hpe.com/repo/mcp/centos/7/x86_64/current
     enabled: yes
     gpgcheck: yes
-    # gpgkey: https://downloads.linux.hpe.com/SDR/repo/mcp/GPG-KEY-mcp
-    gpgkey: file:///etc/pki/rpm-gpg/GPG-KEY-mcp
+    gpgkey: https://downloads.linux.hpe.com/SDR/repo/mcp/GPG-KEY-mcp
+    # gpgkey: file:///etc/pki/rpm-gpg/GPG-KEY-mcp
 
 - name: Install HPE MCP packages for CentOS 7
   yum:
@@ -34,7 +38,8 @@
     state: present
 
 - name: Run /sbin/hpsnmpconfig after installation of HPE MCP packages to configure /etc/snmp/snmpd.conf
-  command: hpsnmpconfig --a --rws public --ros public --rwmips 127.0.0.1 public --romips 127.0.0.1 public --tcs public --sci Our_department --sli Our_location
+  command: hpsnmpconfig --a --ros public --romips 127.0.0.1 public --tcs public --sci Our_department --sli Our_location
+# command: hpsnmpconfig --a --rws public --ros public --rwmips 127.0.0.1 public --romips 127.0.0.1 public --tcs public --sci Our_department --sli Our_location
 # USAGE: hpsnmpconfig [APPLICATION OPTIONS]
 #   --help                 -display this help message
 #   --a                    -auto config
@@ -73,3 +78,13 @@
     port: 2381/tcp
     permanent: true
     state: enabled
+
+- name: Open firewall port 161-162/udp (SNMP)
+  firewalld:
+    port: 161-162/udp
+    permanent: true
+    state: enabled
+
+# After configuring firewalld, it must be reloaded
+- name: Reload firewalld
+  command: firewall-cmd --reload
