@@ -1,6 +1,6 @@
 # Configure Niflheim login node server
 
-- hosts: surt 
+- hosts: surt fjorm
   roles:
    - rhel7
    - hostname
