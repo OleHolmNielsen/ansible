@@ -31,6 +31,14 @@ then
 fi
 # Get list of controllers in the system
 CONTROLLERS=`$HPACUCLI controller all show | grep Smart | awk '{print $6}'`
+if test -z "$CONTROLLERS"
+then
+	echo Error: No HPE Smart Array RAID controllers found
+	echo PCI RAID device list:
+	lspci | grep RAID
+	exit -1
+fi
+
 DIAGFILE=smartdiags.txt
 
 # Temporary storage of alert data
