@@ -10,5 +10,6 @@
       - Lmod
       - git-all
       - python34-pip
-      - python2-pip,grace
+      - python2-pip
+      - grace
       state: present
