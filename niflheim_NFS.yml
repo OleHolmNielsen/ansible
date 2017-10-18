@@ -1,8 +1,9 @@
-# Configure Niflheim login node server
+# Configure Niflheim NFS file server
 
 - hosts: gunnthra 
   roles:
    - rhel7
+   - role: linux-system-roles.network
    - hostname
    - non_graphical
    - epel_repo

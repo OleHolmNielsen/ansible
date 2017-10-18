@@ -8,6 +8,7 @@
    - epel_repo
    - server_packages
    - yum_packages
+   - niflheim_profile
    - nhc
    - logwatch
    - proliant_centos
@@ -17,6 +18,7 @@
    - bashrc
    - yum_updates
    - niflheim_autofs
+   - niflheim_firewalld
    - sendmail_client
    - slurm_basic
    - modules
