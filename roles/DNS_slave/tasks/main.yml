@@ -14,4 +14,3 @@
       port: 53/tcp
       permanent: true
       state: enabled
-
