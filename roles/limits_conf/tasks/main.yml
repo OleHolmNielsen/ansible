@@ -8,3 +8,11 @@
       # Niflheim configurations
       *		hard    core            0
       *		soft    core            0
+      # User jensj runs nightly test
+      jensj           hard    cpu             240
+      # Normal user limits
+      *               hard    cpu             20
+      *               hard    rss             50000000
+      *               hard    data            50000000
+      *               hard    stack           50000000
+      *               hard    nproc           150

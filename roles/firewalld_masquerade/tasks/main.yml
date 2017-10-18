@@ -54,7 +54,8 @@
       zone: public
 
   - name: Get firewalld rules
-    command: "firewall-cmd  --permanent --direct --get-all-rules"
+    # command: "firewall-cmd  --permanent --direct --get-all-rules"
+    command: "firewall-cmd --direct --get-rules ipv4 filter FORWARD"
     register: rules
     # Ignore the "changed" status
     changed_when: False
@@ -63,26 +64,26 @@
     vars:
       firewalld_needs_reload: "true"
     command: firewall-cmd --permanent --direct --add-rule ipv4 filter FORWARD 0 -i {{ eth_10_2 }} -o {{ eth_extern }} -j ACCEPT
-    # Cannot use variables in when: statement
-    # when: "filter FORWARD 0 -i " eth_10_2 " -o " eth_extern not in rules.stdout
+    # Notice: when statements should not include jinja2 templating delimiters such as {{ }} 
+    when: "'-i enp7s0f0 -o enp5s0f0 -j ACCEPT' not in rules.stdout"
 
   - name: firewalld forward from public to internal on interface {{ eth_10_2 }}
     vars:
       firewalld_needs_reload: "true"
     command: firewall-cmd --permanent --direct --add-rule ipv4 filter FORWARD 0 -i {{ eth_extern }} -o {{ eth_10_2 }} -m state --state RELATED,ESTABLISHED -j ACCEPT
-    # when: "'filter FORWARD 0 -i eth_10_2 -o eth_extern' not in rules.stdout"
+    when: "'-i enp5s0f0 -o enp7s0f0 -m state --state RELATED,ESTABLISHED -j ACCEPT' not in rules.stdout"
 
   - name: firewalld forward from internal to public on interface {{ eth_10_5 }}
     vars:
       firewalld_needs_reload: "true"
     command: firewall-cmd --permanent --direct --add-rule ipv4 filter FORWARD 0 -i {{ eth_10_5 }} -o {{ eth_extern }} -j ACCEPT
-    # when: "'filter FORWARD 0 -i eth_10_5 -o eth_extern' not in rules.stdout"
+    when: "'-i enp7s0f1 -o enp5s0f0 -j ACCEPT' not in rules.stdout"
 
   - name: firewalld forward from public to internal on interface {{ eth_10_5 }}
     vars:
       firewalld_needs_reload: "true"
     command: firewall-cmd --permanent --direct --add-rule ipv4 filter FORWARD 0 -i {{ eth_extern }} -o {{ eth_10_5 }} -m state --state RELATED,ESTABLISHED -j ACCEPT
-    # when: "'filter FORWARD 0 -i eth_10_5 -o eth_extern' not in rules.stdout"
+    when: "'-i enp5s0f0 -o enp7s0f1 -m state --state RELATED,ESTABLISHED -j ACCEPT' not in rules.stdout"
 
 # Commands used:
 # firewall-cmd --direct --add-rule ipv4 nat POSTROUTING 0 -o eth_ext -j MASQUERADE

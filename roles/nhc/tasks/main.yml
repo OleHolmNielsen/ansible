@@ -1,6 +1,12 @@
+- name: Copy {{ nhc_rpm }} RPM file
+  copy:
+    src: "{{ nhc_rpm }}"
+    dest: "/tmp/{{ nhc_rpm }}"
+
 - name: Install the LBNL Node Health Check (NHC) package
   yum:
-    name: https://github.com/mej/nhc/releases/download/1.4.2/lbnl-nhc-1.4.2-1.el7.noarch.rpm
+    # name: https://github.com/mej/nhc/releases/download/1.4.2/lbnl-nhc-1.4.2-1.el7.noarch.rpm
+    name: "/tmp/{{ nhc_rpm }}"
     state: present
 
 - name: Copy master file {{ nhc_conf }} 

@@ -14,7 +14,7 @@
     comment: "Modules user"
     uid: "{{ modules_id }}"
     group: modules
-    home: /home/opt/modules
+    home: "{{ modules_home }}"
     shell: /bin/bash
 
 - include_role:

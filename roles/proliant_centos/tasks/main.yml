@@ -38,32 +38,38 @@
     - ssaducli
     state: present
 
-- name: Run /sbin/hpsnmpconfig after installation of HPE MCP packages to configure /etc/snmp/snmpd.conf
-  # Mandatory options: --a --rws --ros
-  # The location is defined in host_vars/hostname/
-  command: "hpsnmpconfig --a --rws public --ros public --romips 127.0.0.1 public --tcs public --sci {{ contact }} --sli {{ location }}"
+- name: Editing the {{ snmpd_conf }} file
+  blockinfile:
+    path: "{{ snmpd_conf }}"
+    state: present
+    insertbefore: BOF
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    block: |
+      # Add the cmaX extension from hp-snmp-agents RPM
+      dlmod cmaX /usr/lib64/libcmaX64.so
+      rwcommunity public 127.0.0.1
+      rocommunity public 127.0.0.1
+      rocommunity  public 127.0.0.1
+      trapcommunity public
+      syscontact {{ contact }}
+      syslocation {{ location }}
+  register: snmpd_conf_changed
   vars:
+    snmpd_conf: /etc/snmp/snmpd.conf
     contact: support@fysik.dtu.dk
 
-# command: hpsnmpconfig --a --rws public --ros public --rwmips 127.0.0.1 public --romips 127.0.0.1 public --tcs public --sci Our_department --sli Our_location
-# USAGE: hpsnmpconfig [APPLICATION OPTIONS]
-#   --help                 -display this help message
-#   --a                    -auto config
-#   --rws                  -read write community string
-#   --ros                  -read only string
-#   --rwmips               -read write management IP and string
-#   --romips               -read only management IP and string
-#   --tcs                  -trap community string
-#   --tdips                -trap synk IP and string
-#   --sci                  -system contact information
-#   --sli                  -system location information
-# Example: hpsnmpconfig --a --rws public --ros public --rwmips 127.0.0.1 public --romips 127.0.0.1 public --tcs public --tdips 127.0.0.1 public --sci Linux --sli USA
+  # Previously: Use HPE command
+  #- name: Run /sbin/hpsnmpconfig after installation of HPE MCP packages to configure /etc/snmp/snmpd.conf
+  #  # Mandatory options: --a --rws --ros
+  #  # The location is defined in host_vars/hostname/
+  #  command: "hpsnmpconfig --a --rws public --ros public --romips 127.0.0.1 public --tcs public --sci {{ contact }} --sli {{ location }}"
 
 - name: Restart the snmpd service after reconfiguration (for HPSMH)
   service:
     name: snmpd
     state: restarted
     enabled: yes
+  when: snmpd_conf_changed.changed
 
 - name: Copy smartshow script (HPE Smart Array)
   copy:
@@ -78,13 +84,16 @@
     port: 2381/tcp
     permanent: true
     state: enabled
+  register: firewall_changed1
 
 - name: Open firewall port 161-162/udp (SNMP)
   firewalld:
     port: 161-162/udp
     permanent: true
     state: enabled
+  register: firewall_changed2
 
 # After configuring firewalld, it must be reloaded
 - name: Reload firewalld
   command: firewall-cmd --reload
+  when: firewall_changed1 == "true" or firewall_changed2 == "true"

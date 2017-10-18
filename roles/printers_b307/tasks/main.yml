@@ -2,41 +2,66 @@
 # https://access.redhat.com/solutions/21432
 # Printer options (-o) are documented in
 # https://www.cups.org/doc/options.html#OPTIONS
+# Display installed printers: lpvtat -v 
 # Display available printer drivers by: lpinfo -m | grep <your model>
 # Display available printer options by: lpoptions -p <printer> -l
 
+- name: Install CUPS printing systems
+  yum:
+    name: cups
+    state: present
+
+- name: Start and enable CUPS printing systems
+  service:
+    name: cups
+    state: started
+    enabled: yes
+
 - name: Install printer packages
   yum:
-    name: foomatic,hplip
+    name:
+    - foomatic
+    - hplip
     state: present
+
+- name: List installed printers
+  command: lpstat -v
+  register: printerlist
+  # Ignore the "changed" status
+  changed_when: False
+  # Ignore error code when "lpstat: No destinations added"
+  ignore_errors: yes
 
 # Printer b307-4015.fysik.dtu.dk
 
 - name: Install {{ printer }} printer name {{ destination }}
-  command: lpadmin -p {{ destination }} -v socket:{{ printer }}:9100 -m {{ driver }} -E
+  command: lpadmin -p {{ destination }} -v {{ printer }} -m {{ driver }} -E
   vars:
-    printer: b307-4015.fysik.dtu.dk
+    # We MUST use the IP-address here:
+    printer: socket://130.225.86.102:9100
     destination: HP-LaserJet-p4015-b307-225
     driver: drv:///hp/hpijs.drv/hp-laserjet_p4015dn-hpijs.ppd
+  # Cannot use variables in when: statements
+  when: "'HP-LaserJet-p4015-b307-225' not in printerlist.stdout_lines"
   register: newprinter
-  # Ignore the "changed" status
-  # changed_when: False
 
 - name: Set {{ destination }} options
   command: lpadmin -p {{ destination }} {{ options }}
   vars:
     destination: HP-LaserJet-p4015-b307-225
     options: '-o sides=two-sided-long-edge -o media=A4'
-  # when: newprinter.stdout == ""
+  when: "'HP-LaserJet-p4015-b307-225' not in printerlist.stdout_lines"
 
 # Printer camd4525.fysik.dtu.dk
 
 - name: Install {{ printer }} printer name {{ destination }}
-  command: lpadmin -p {{ destination }} -v socket:{{ printer }}:9100 -m {{ driver }} -E
+  command: lpadmin -p {{ destination }} -v {{ printer }} -m {{ driver }} -E
   vars:
-    printer: camd4525.fysik.dtu.dk
+    # We MUST use the IP-address here:
+    printer: socket://130.225.86.98:9100
     destination: HP-ColorLaserJet-CP4525-b307-225
     driver: drv:///hp/hpcups.drv/hp-color_laserjet_cp4520_series-pcl3.ppd
+  when: "'HP-ColorLaserJet-CP4525-b307-225' not in printerlist.stdout_lines"
   register: newprinter
 
 - name: Set {{ destination }} plus options
@@ -44,13 +69,27 @@
   vars:
     destination: HP-ColorLaserJet-CP4525-b307-225
     options: '-o OptionDuplex=True -o sides=two-sided-long-edge -o media=A4'
-  # when: newprinter.stdout == ""
+  when: "'HP-ColorLaserJet-CP4525-b307-225' not in printerlist.stdout_lines"
 
 # Default printer
 
-- name: Set {{ destination }} as default (-d) printer
-  command: lpadmin -d {{ destination }}
-  vars:
-    destination: HP-LaserJet-p4015-b307-225
+- name: Get default printer
+  command: lpstat -d
+  register: newprinter
   # Ignore the "changed" status
   changed_when: False
+
+- name: Set {{ destination }} as default (-d) printer
+  command: "lpadmin -d {{ destination }}"
+  vars:
+    destination: HP-LaserJet-p4015-b307-225
+  when: "'HP-LaserJet-p4015-b307-225' not in newprinter.stdout"
+  # Ignore the "changed" status
+  changed_when: False
+
+- name: Restart printer queue
+  service:
+    name: cups
+    state: restarted
+    enabled: yes
+  when: newprinter == True

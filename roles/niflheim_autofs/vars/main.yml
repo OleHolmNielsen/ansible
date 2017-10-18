@@ -1,3 +1,6 @@
+# Niflheim specific auto.home file
+auto_home: auto.home
+etc_auto_home: /etc/{{ auto_home }}
+
 auto_master: /etc/auto.master
-auto_home: /etc/auto.home
 home_autofs: /etc/auto.master.d/home.autofs

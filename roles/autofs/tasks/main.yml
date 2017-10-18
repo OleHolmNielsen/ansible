@@ -1,60 +1,62 @@
-  - name: Install the autofs package
-    yum:
-      name: autofs
-      state: present
+# Set up autofs
 
-  - name: Start autofs
-    service:
-      name=autofs
-      state=started
-      enabled=yes
+- name: Install the autofs package
+  yum:
+    name: autofs
+    state: present
 
-  - name: Copy the {{ auto_home }} file from this server
-    copy:
-      src: "{{ auto_home }}"
-      dest: "{{ auto_home }}"
-      backup: yes
-      owner: root
-      group: root
-      mode: u=rw,g=r,o=r
-    notify:
-     - Restart autofs
+- name: Start and enable the autofs service
+  service:
+    name=autofs
+    state=started
+    enabled=yes
 
-  - name: Set SELinux context of file {{ auto_home }} to that of {{ auto_master }}
-    # Use ls -Z auto_master auto_home, check if they match
-    # This changes the target file auto_home:
-    command: /usr/bin/chcon --reference={{ auto_master|quote }} {{ auto_home|quote }}
-    # Ignore the "changed" status
-    changed_when: False
+- name: Copy the {{ auto_home }} file from this server
+  copy:
+    src: "{{ auto_home }}"
+    dest: "{{ auto_home }}"
+    backup: yes
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+  notify:
+   - Restart autofs
 
-  - name: Create file {{ home_autofs }} if it does not exist
-    # Method: https://stackoverflow.com/questions/28347717/how-to-create-an-empty-file-with-ansible
-    copy:
-      content: ""
-      dest: "{{ home_autofs }}"
-      force: no
-      owner: root
-      group: root
-      mode: 0644
+- name: Set SELinux context of file {{ auto_home }} to that of {{ auto_master }}
+  # Use ls -Z auto_master auto_home, check if they match
+  # This changes the target file auto_home:
+  command: /usr/bin/chcon --reference={{ auto_master|quote }} {{ auto_home|quote }}
+  # Ignore the "changed" status
+  changed_when: False
 
-  - name: Set SELinux context of file {{ home_autofs }} to that of {{ auto_master }}
-    command: /usr/bin/chcon --reference={{ auto_master|quote }} {{ home_autofs|quote }}
-    # Ignore the "changed" status
-    changed_when: False
+- name: Create file {{ home_autofs }} if it does not exist
+  # Method: https://stackoverflow.com/questions/28347717/how-to-create-an-empty-file-with-ansible
+  copy:
+    content: ""
+    dest: "{{ home_autofs }}"
+    force: no
+    owner: root
+    group: root
+    mode: 0644
 
-  - name: Editing the {{ home_autofs }} file
-    blockinfile:
-      path: "{{ home_autofs }}"
-      state: present
-      insertafter: EOF
-      marker: "# {mark} ANSIBLE MANAGED BLOCK"
-      block: |
-        /home /etc/auto.home --timeout=60
-    notify:
-     - Restart autofs
+- name: Set SELinux context of file {{ home_autofs }} to that of {{ auto_master }}
+  command: /usr/bin/chcon --reference={{ auto_master|quote }} {{ home_autofs|quote }}
+  # Ignore the "changed" status
+  changed_when: False
 
-  - name: SELinux seboolean - Allow NFS mounted home directories
-    seboolean:
-      name: use_nfs_home_dirs
-      state: yes
-      persistent: yes
+- name: Editing the {{ home_autofs }} file
+  blockinfile:
+    path: "{{ home_autofs }}"
+    state: present
+    insertafter: EOF
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    block: |
+      /home /etc/auto.home --timeout=60
+  notify:
+   - Restart autofs
+
+- name: SELinux seboolean - Allow NFS mounted home directories
+  seboolean:
+    name: use_nfs_home_dirs
+    state: yes
+    persistent: yes
