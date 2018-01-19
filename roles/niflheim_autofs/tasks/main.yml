@@ -29,14 +29,14 @@
     marker: "# {mark} ANSIBLE MANAGED BLOCK1"
     block: |
       # Niflheim login node /etc/auto.home
-      niflheim		-rsize=8192,wsize=8192,tcp,vers=3	vid:/u/raid
+      # niflheim		-rsize=8192,wsize=8192,tcp,vers=3	vid:/u/raid
       niflheim2		-rsize=8192,wsize=8192,tcp,vers=3	hrid:/u/raid
       niflheim3		-rsize=8192,wsize=8192,tcp,vers=3	ylgr:/u/raid
       qwise		-rsize=8192,wsize=8192,tcp,vers=3       ylgr:/u/qwise
       que		-rsize=8192,wsize=8192,tcp,vers=3	que:/scratch
       camd2		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/camd
       camp		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/camd
-      # niflheim		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/camd
+      niflheim		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/camd
       niflheim1		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/camd
       nexmap		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/nexmap
       compute		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/compute
@@ -45,10 +45,12 @@
       mek		-rsize=8192,wsize=8192,tcp,vers=3	niflfs2:/u/mek
       mek2		-rsize=8192,wsize=8192,tcp,vers=3	niflfs2:/u/mek
       ntch		-rsize=8192,wsize=8192,tcp,vers=3	niflfs2:/u/ntch
+      mic		-rsize=8192,wsize=8192,tcp,vers=3	niflfs2:/u/ntch
       energy		-rsize=8192,wsize=8192,tcp,vers=3	niflfs2:/u/energy
       byg		-rsize=8192,wsize=8192,tcp,vers=3	niflfs2:/u/byg
       opt		-rsize=8192,wsize=8192,tcp,vers=3	niflopt1:/u/opt
       scratch1		-rsize=8192,wsize=8192,tcp,vers=3	scratch1:/u/scratch
+      archive		-rsize=8192,wsize=8192,tcp,vers=3	hvergelmer:/u/archive
   notify:
    - Restart autofs
 
