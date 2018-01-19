@@ -1,0 +1,150 @@
+- name: Install the nfs-utils,quota packages
+  yum:
+    name: nfs-utils,quota
+    state: present
+
+- name: Editing the /etc/sysconfig/nfs file
+  blockinfile:
+    path: "/etc/sysconfig/nfs"
+    state: present
+    insertafter: EOF
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    block: |
+      RPCMOUNTDOPTS="-p 892"
+      LOCKD_TCPPORT=32803
+      LOCKD_UDPPORT=32769
+      RPCNFSDCOUNT=16
+
+- name: Editing the /etc/sysconfig/rpc-rquotad file
+  blockinfile:
+    path: "/etc/sysconfig/rpc-rquotad"
+    state: present
+    insertafter: EOF
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    block: |
+      RPCRQUOTADOPTS="-p 875"
+
+# Copy NFS exports file from files/<hostname>/ directory
+- name: Copy the NFS /etc/exports file 
+  copy:
+    src: "{{ inventory_hostname }}/exports"
+    dest: "/etc/exports"
+    backup: yes
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+
+- name: Start and enable the rpcbind service
+  service:
+    name=rpcbind
+    state=started
+    enabled=yes
+
+- name: Start and enable the nfs-lock service
+  service:
+    name=nfs-lock
+    state=started
+    enabled=yes
+
+- name: Start and enable the nfs-idmap service
+  service:
+    name=nfs-idmap
+    state=started
+    enabled=yes
+
+- name: Start and enable the rpc-rquotad service
+  service:
+    name=rpc-rquotad
+    state=started
+    enabled=yes
+
+- name: Start and enable the nfs-server service
+  service:
+    name=nfs-server
+    state=restarted
+    enabled=yes
+
+- name: Open port 111/tcp in firewalld
+  firewalld:
+    port: 111/tcp
+    permanent: true
+    state: enabled
+
+- name: Open port 111/udp in firewalld
+  firewalld:
+    port: 111/udp
+    permanent: true
+    state: enabled
+
+- name: Open port 875/tcp in firewalld
+  firewalld:
+    port: 875/tcp
+    permanent: true
+    state: enabled
+
+- name: Open port 875/udp in firewalld
+  firewalld:
+    port: 875/udp
+    permanent: true
+    state: enabled
+
+- name: Open port 892/tcp in firewalld
+  firewalld:
+    port: 892/tcp
+    permanent: true
+    state: enabled
+
+- name: Open port 892/udp in firewalld
+  firewalld:
+    port: 892/udp
+    permanent: true
+    state: enabled
+
+- name: Open port 2049/tcp in firewalld
+  firewalld:
+    port: 2049/tcp
+    permanent: true
+    state: enabled
+
+- name: Open port 2049/udp in firewalld
+  firewalld:
+    port: 2049/udp
+    permanent: true
+    state: enabled
+
+- name: Open port 20048/tcp in firewalld
+  firewalld:
+    port: 20048/tcp
+    permanent: true
+    state: enabled
+
+- name: Open port 20048/udp in firewalld
+  firewalld:
+    port: 20048/udp
+    permanent: true
+    state: enabled
+
+- name: Open port 32803/tcp in firewalld
+  firewalld:
+    port: 32803/tcp
+    permanent: true
+    state: enabled
+
+- name: Open port 32803/udp in firewalld
+  firewalld:
+    port: 32803/udp
+    permanent: true
+    state: enabled
+
+- name: Get firewalld rules
+  command: "firewall-cmd  --permanent --direct --get-all-rules"
+  register: rules
+  # Ignore the "changed" status
+  changed_when: False
+
+- name: firewalld whitelist local net 10.2.0.0/16
+  vars:
+    firewalld_needs_reload: "true"
+  command: firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT_direct 0 -s 10.2.0.0/16 -j ACCEPT
+  when: "'INPUT_direct 0' not in rules.stdout"
+
