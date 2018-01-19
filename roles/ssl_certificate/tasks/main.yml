@@ -1,0 +1,59 @@
+- name: Install the ca-certificates package
+  yum:
+    name: ca-certificates
+    state: present
+
+- name: "Copy the {{ local_key }} file from this server"
+  copy:
+    src: "{{ local_path }}/{{ local_key }}"
+    dest: "{{ key_path }}/"
+    backup: yes
+    owner: root
+    group: root
+    mode: u=r,g=,o=
+#  notify:
+#   - Restart httpd
+
+- name: "Make a soft link {{ key_file }}"
+  file:
+    path: "{{ key_file }}"
+    src: "{{ local_key }}"
+    state: link
+    force: yes
+
+- name: "Copy the {{ local_crt }} file from this server"
+  copy:
+    src: "{{ local_path }}/{{ local_crt }}"
+    dest: "{{ crt_path }}/"
+    backup: yes
+    owner: root
+    group: root
+    mode: u=r,g=r,o=r
+
+- name: "Make a soft link {{ crt_file }}"
+  file:
+    path: "{{ crt_file }}"
+    src: "{{ local_crt }}"
+    state: link
+    force: yes
+
+- name: "Copy the {{ local_intermediate }} file from this server"
+  copy:
+    src: "{{ local_path }}/{{ local_intermediate }}"
+    dest: "{{ crt_path }}/"
+    backup: yes
+    owner: root
+    group: root
+    mode: u=r,g=r,o=r
+
+- name: "Make a soft link {{ intermediate_file }}"
+  file:
+    path: "{{ intermediate_file }}"
+    src: "{{ local_intermediate }}"
+    state: link
+    force: yes
+
+- name: "Set SELinux context of certificate files"
+  command: /usr/bin/chcon "system_u:object_r:cert_t:s0" "{{ key_path }}/{{ local_key }}" "{{ crt_path }}/{{ local_crt }}" "{{ crt_path }}/{{ local_intermediate }}"
+  # Ignore the "changed" status
+  changed_when: False
