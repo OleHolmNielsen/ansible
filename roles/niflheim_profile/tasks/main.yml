@@ -1,0 +1,44 @@
+- name: Create Niflheim /etc/profile.d/ files
+  # Method: https://stackoverflow.com/questions/28347717/how-to-create-an-empty-file-with-ansible
+  copy:
+    src: profile.d/
+    dest: /etc/profile.d
+    force: no
+    owner: root
+    group: root
+    mode: "u=rw,g=r,o=r"
+
+- name: Editing the /etc/profile.d/cpu_arch.sh file
+  blockinfile:
+    path: "/etc/profile.d/cpu_arch.sh"
+    create: yes
+    state: present
+    owner: root
+    group: root
+    mode: "u=rw,g=r,o=r"
+    insertafter: EOF
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    block: |
+      # Set the CPU hardware type.  Determine by:
+      # Recent GCC 4.9 or later: gcc -march=native -Q --help=target | grep march
+      # This command may be somewhat informative: lscpu
+      export CPU_ARCH="{{ cpu_arch }}"
+      function cpu_arch {
+        echo $CPU_ARCH
+      }
+
+- name: Editing the /etc/profile.d/cpu_arch.csh file
+  blockinfile:
+    path: "/etc/profile.d/cpu_arch.csh"
+    create: yes
+    state: present
+    owner: root
+    group: root
+    mode: "u=rw,g=r,o=r"
+    insertafter: EOF
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    block: |
+      # Set the CPU hardware type.  Determine by:
+      # Recent GCC 4.9 or later: gcc -march=native -Q --help=target | grep march
+      # This command may be somewhat informative: lscpu
+      setenv CPU_ARCH "{{ cpu_arch }}"
