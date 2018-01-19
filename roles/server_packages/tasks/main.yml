@@ -16,11 +16,20 @@
       - grace
       - screen
       - tree
+      - glibc
+      - libgcc
+      - libstdc++
+      - nss-softokn-freebl
       state: present
 
   - name: remove unwanted packages
     yum:
       name:
+      - qemu-*
       - libreoffice*
       - samba*
+      - R-core
+      - libRmath
+      - vtk
+      - vtk-qt
       state: absent
