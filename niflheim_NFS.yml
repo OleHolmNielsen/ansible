@@ -1,6 +1,7 @@
 # Configure Niflheim NFS file server
 
-- hosts: gunnthra 
+## - hosts: gunnthra vid hvergelmer niflopt2 niflfs3
+- hosts: Niflheim-NFS
   roles:
    - rhel7
    - role: linux-system-roles.network
@@ -21,3 +22,5 @@
    - sendmail_client
    # - slurm_basic
    # - modules
+   - nfs_server
+   - firewalld_reload
