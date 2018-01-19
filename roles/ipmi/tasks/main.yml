@@ -1,0 +1,15 @@
+  - include_role:
+      name: rhel7
+
+  - name: Install the IPMI packages
+    yum:
+      name:
+      - OpenIPMI 
+      - ipmitool
+      state: present
+
+  - name: Enable and start the IPMI service
+    service:
+      name=ipmi
+      state=started
+      enabled=yes
