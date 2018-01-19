@@ -1,0 +1,21 @@
+---
+
+# This role installs and configures the Singularity packages
+
+- name: Install Singularity prerequisite packages
+# yum groupinstall 'Development Tools'
+  yum:
+    name:
+    - "@Development tools"
+    - epel-release
+    - debootstrap.noarch
+    - wget
+    state: present
+
+- name: Install Singularity version {{ singularity_version }} packages from local directory
+  yum:
+    name: 
+    - "{{ rpm_dir }}/singularity-{{ singularity_rpm }}"
+    - "{{ rpm_dir }}/singularity-runtime-{{ singularity_rpm }}"
+    - "{{ rpm_dir }}/singularity-devel-{{ singularity_rpm }}"
+    state: present
