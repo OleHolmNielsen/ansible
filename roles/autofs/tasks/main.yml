@@ -14,7 +14,7 @@
 - name: Copy the {{ auto_home }} file from this server
   copy:
     src: "{{ auto_home }}"
-    dest: "{{ auto_home }}"
+    dest: "/etc/auto.home"
     backup: yes
     owner: root
     group: root
@@ -22,10 +22,10 @@
   notify:
    - Restart autofs
 
-- name: Set SELinux context of file {{ auto_home }} to that of {{ auto_master }}
-  # Use ls -Z auto_master auto_home, check if they match
+- name: Set SELinux context of file /etc/auto.home to that of {{ auto_master }}
+  # Use ls -Z auto_master /etc/auto.home, check if they match
   # This changes the target file auto_home:
-  command: /usr/bin/chcon --reference={{ auto_master|quote }} {{ auto_home|quote }}
+  command: /usr/bin/chcon --reference={{ auto_master|quote }} /etc/auto.home
   # Ignore the "changed" status
   changed_when: False
 
@@ -60,3 +60,9 @@
     name: use_nfs_home_dirs
     state: yes
     persistent: yes
+
+- name: Restart the autofs service
+  service:
+    name=autofs
+    state=restarted
+    enabled=yes
