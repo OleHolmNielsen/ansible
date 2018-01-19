@@ -1,6 +1,6 @@
 # Configure Niflheim login node server
 
-- hosts: surt fjorm
+- hosts: surt fjorm slid
   roles:
    - rhel7
    - hostname
@@ -8,11 +8,12 @@
    - epel_repo
    - server_packages
    - yum_packages
+   - ipmi
    - niflheim_profile
    - nhc
    - logwatch
    - proliant_centos
-   - limits_conf
+   # - limits_conf
    - no_libvirt
    - sshd_config
    - bashrc
@@ -22,3 +23,4 @@
    - sendmail_client
    - slurm_basic
    - modules
+   - singularity
