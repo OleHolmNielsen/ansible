@@ -21,4 +21,5 @@
   cron:
     name: "Node_Health_Check"
     minute: "3"
-    job: "/usr/sbin/nhc-wrapper -X 1d NHC_RM=pbs"
+    job: "/usr/sbin/nhc-wrapper -X 1d"
+
