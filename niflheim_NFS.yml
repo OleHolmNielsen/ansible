@@ -9,13 +9,15 @@
    - non_graphical
    - epel_repo
    - server_packages
-   - yum_packages
+   - niflheim_packages
+   - ipmi
    - nhc
    - logwatch
    - proliant_centos
    # - limits_conf
    - no_libvirt
    - sshd_config
+   - sshd_allow_users
    - bashrc
    - yum_updates
    - niflheim_autofs

@@ -1,13 +1,13 @@
 # Configure Niflheim login node server
 
-- hosts: surt fjorm slid
+- hosts: Niflheim-login
   roles:
    - rhel7
    - hostname
    - non_graphical
    - epel_repo
    - server_packages
-   - yum_packages
+   - niflheim_packages
    - ipmi
    - niflheim_profile
    - nhc
