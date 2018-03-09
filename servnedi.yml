@@ -1,0 +1,18 @@
+# Configure NeDi server basic setup
+
+- hosts: NeDi
+  roles:
+   - rhel7
+   - bashrc
+   - hostname
+   - non_graphical
+   - epel_repo
+   - server_packages
+   - nhc
+   - logwatch
+   - proliant_centos
+   - no_libvirt
+   - sshd_config
+   - sshd_allow_users
+   - yum_updates
+   - sendmail_client

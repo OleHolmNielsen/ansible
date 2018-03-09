@@ -1,0 +1,20 @@
+# Configure intra5 server
+
+- hosts: intra5
+  roles:
+   - rhel7
+   - bashrc
+   - hostname
+   - non_graphical
+   - epel_repo
+   - server_packages
+   - samba
+   - nhc
+   - logwatch
+   - proliant_centos
+   # - limits_conf
+   - no_libvirt
+   - sshd_config
+   - sshd_allow_users
+   - yum_updates
+   - sendmail_client
