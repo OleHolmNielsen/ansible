@@ -6,6 +6,7 @@
       - libX11-devel
       - vim-enhanced
       - nano
+      - okular
       - python-matplotlib
       - dos2unix
       state: present
@@ -22,6 +23,7 @@
       - python34
       - python-pip
       - python34-pip
+      # Niflheim: Use modules in stead of these:
       - vtk-python
       - tkinter
       - lapack-devel

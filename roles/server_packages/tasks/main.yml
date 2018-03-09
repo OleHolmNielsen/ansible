@@ -20,14 +20,18 @@
       - libgcc
       - libstdc++
       - nss-softokn-freebl
+      - libselinux-python
+      - libsemanage-python
+      - selinux-policy-doc
       state: present
 
   - name: remove unwanted packages
     yum:
       name:
       - qemu-*
+      - blas*
+      - openblas*
       - libreoffice*
-      - samba*
       - R-core
       - libRmath
       - vtk
