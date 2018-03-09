@@ -17,7 +17,8 @@
   yum_repository:
     name: HPE-MCP
     description: HPE Management Component Pack
-    baseurl: http://downloads.linux.hpe.com/repo/mcp/centos/7/x86_64/current
+    # baseurl: http://downloads.linux.hpe.com/repo/mcp/centos/7/x86_64/current
+    baseurl: http://downloads.linux.hpe.com/repo/mcp/centos/7/x86_64/10.50
     enabled: yes
     gpgcheck: yes
     gpgkey: https://downloads.linux.hpe.com/SDR/repo/mcp/GPG-KEY-mcp
@@ -36,7 +37,7 @@
     - ssa
     - ssacli
     - ssaducli
-    state: present
+    state: latest
 
 - name: Editing the {{ snmpd_conf }} file
   blockinfile:
