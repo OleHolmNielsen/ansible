@@ -1,0 +1,29 @@
+  - name: Install popular packages 
+    yum:
+      name: 
+      - openssl-devel
+      - libibverbs-devel
+      - libX11-devel
+      - vim-enhanced
+      - nano
+      - dos2unix
+      state: present
+  - name: Install popular packages from the EPEL repository
+    yum:
+      name:
+      - Lmod
+      - git-all
+      - bash-completion
+      # DO NOT install the libxc package, it causes problems for GPAW (use modules)
+      - python34-pip
+      - python2-pip
+      - grace
+      - python34
+      - python-pip
+      - python34-pip
+      - python34-devel
+      - python34-tkinter 
+      - GitPython
+      - pysvn
+      - graphviz
+      state: present
