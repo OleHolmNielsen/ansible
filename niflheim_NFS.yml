@@ -1,6 +1,6 @@
 # Configure Niflheim NFS file server
 
-## - hosts: gunnthra vid hvergelmer niflopt2 niflfs3
+## - hosts: gunnthra vid niflbu2 niflopt2 niflfs3
 - hosts: Niflheim-NFS
   roles:
    - rhel7
@@ -20,9 +20,10 @@
    - sshd_allow_users
    - bashrc
    - yum_updates
-   - niflheim_autofs
+   - niflheim_autofs_servers
    - sendmail_client
    # - slurm_basic
    # - modules
    - nfs_server
+   - firewalld_whitelist_niflheim
    - firewalld_reload
