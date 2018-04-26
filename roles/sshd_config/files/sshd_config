@@ -158,7 +158,6 @@ Subsystem	sftp	/usr/libexec/openssh/sftp-server -f AUTHPRIV -l INFO
 # Customizations at fysik.dtu.dk
 # Allow only staff people to actually log in:
 # AllowUsers root ohni ohnielse jensj 
-AllowUsers root ohni jensj
 
 # Only key login for root
 # PermitRootLogin without-password
