@@ -38,7 +38,7 @@
   command: lpadmin -p {{ destination }} -v {{ printer }} -m {{ driver }} -E
   vars:
     # We MUST use the IP-address here:
-    printer: socket://130.225.86.102:9100
+    printer: socket://10.54.10.102:9100
     destination: HP-LaserJet-p4015-b307-225
     driver: drv:///hp/hpijs.drv/hp-laserjet_p4015dn-hpijs.ppd
   # Cannot use variables in when: statements
@@ -58,7 +58,7 @@
   command: lpadmin -p {{ destination }} -v {{ printer }} -m {{ driver }} -E
   vars:
     # We MUST use the IP-address here:
-    printer: socket://130.225.86.98:9100
+    printer: socket://10.54.10.98:9100
     destination: HP-ColorLaserJet-CP4525-b307-225
     driver: drv:///hp/hpcups.drv/hp-color_laserjet_cp4520_series-pcl3.ppd
   when: "'HP-ColorLaserJet-CP4525-b307-225' not in printerlist.stdout_lines"
