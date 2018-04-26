@@ -29,10 +29,15 @@
   copy:
     src: "{{ inventory_hostname }}/exports"
     dest: "/etc/exports"
+    # register: exports
     backup: yes
     owner: root
     group: root
     mode: u=rw,g=r,o=r
+
+- name: Run exportfs -a
+  command: exportfs -a
+  # when: "exports"
 
 - name: Start and enable the rpcbind service
   service:
@@ -147,4 +152,3 @@
     firewalld_needs_reload: "true"
   command: firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT_direct 0 -s 10.2.0.0/16 -j ACCEPT
   when: "'INPUT_direct 0' not in rules.stdout"
-
