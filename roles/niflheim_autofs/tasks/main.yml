@@ -29,7 +29,8 @@
     marker: "# {mark} ANSIBLE MANAGED BLOCK1"
     block: |
       # Niflheim login node /etc/auto.home
-      niflheim2		-rsize=8192,wsize=8192,tcp,vers=3	hrid:/u/raid
+      # niflheim2		-rsize=8192,wsize=8192,tcp,vers=3	hrid:/u/raid
+      niflheim2		-rsize=8192,wsize=8192,tcp,vers=3	niflfs3:/u/niflheim2
       niflheim3		-rsize=8192,wsize=8192,tcp,vers=3	ylgr:/u/raid
       que		-rsize=8192,wsize=8192,tcp,vers=3	que:/scratch
       camd2		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/camd
