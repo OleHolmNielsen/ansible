@@ -9,6 +9,11 @@
       - okular
       - python-matplotlib
       - dos2unix
+      - ntfs-3g
+      - vim-X11
+      - screen
+      - reptyr
+      - fuse-sshfs
       state: present
   - name: Install popular packages from the EPEL repository
     yum:
@@ -16,6 +21,7 @@
       - Lmod
       - git-all
       - bash-completion
+      - htop
       # DO NOT install the libxc package, it causes problems for GPAW (use modules)
       - python34-pip
       - python2-pip
@@ -30,6 +36,8 @@
       - openblas-devel
       - python34-devel
       - python34-tkinter 
+      - python36-devel
+      - python36-tools 
       - GitPython
       - pysvn
       - graphviz
