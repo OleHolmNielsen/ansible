@@ -6,7 +6,4 @@ then
 	exit 1
 fi
 
-DOMAIN=fysik.dtu.dk
-
-# ANSIBLE_HOST_KEY_CHECKING=false ansible-playbook --ask-pass init_authorized_key.yml -l $1.$DOMAIN
 ANSIBLE_HOST_KEY_CHECKING=false ansible-playbook --ask-pass init_authorized_key.yml -l $1
