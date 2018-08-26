@@ -12,10 +12,12 @@
    - niflheim_profile
    - nhc
    - logwatch
-   - proliant_centos
+   # Limits disabled, different on slid, sylg etc.
    # - limits_conf
+   - proliant_centos
    - no_libvirt
    - sshd_config
+   - authorized_keys_command
    - bashrc
    - yum_updates
    - niflheim_autofs
