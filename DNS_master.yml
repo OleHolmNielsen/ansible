@@ -1,0 +1,20 @@
+- hosts: DNS_master
+  vars:
+    firewalld_needs_reload: "false"
+  roles:
+   - rhel7
+   - hostname
+   - non_graphical
+   - epel_repo
+   - server_packages
+   - logwatch
+   - nhc
+   - no_libvirt
+   - sshd_config
+   - sshd_allow_users
+   - bashrc
+   - proliant_centos
+   - yum_updates
+   - sendmail_client
+   - DNS_master
+   - firewalld_reload

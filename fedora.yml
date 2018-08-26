@@ -1,0 +1,12 @@
+- hosts: Fedora-PCs
+  roles:
+   - hostname
+   - bashrc
+   - dnf_packages
+#   - dnf_updates
+   - samba_fedora
+   - firewalld_whitelist
+   - sendmail_client
+   - autofs
+   - printers_b307
+   - firewalld_reload
