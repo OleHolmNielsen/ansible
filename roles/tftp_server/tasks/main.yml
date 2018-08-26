@@ -1,0 +1,43 @@
+- name: Install TFTP packages
+  yum:
+    name: tftp-server,tftp
+    state: present
+
+- name: Create /tftpboot symlink
+  file:
+    src: /var/lib/tftpboot
+    dest: /tftpboot
+    owner: root
+    group: root
+    state: link
+
+- name: Copy tftp.service to /etc/systemd/system/ for customized service
+  command: cp -Z /usr/lib/systemd/system/tftp.service /etc/systemd/system/tftp.service
+  #args:
+  #  creates: /etc/systemd/system/tftp.service
+
+- name: Edit /etc/systemd/system/tftp.service
+  lineinfile:
+    path: /etc/systemd/system/tftp.service
+    regexp: '^ExecStart='
+    line: 'ExecStart=/usr/sbin/in.tftpd -v -s /var/lib/tftpboot'
+
+- name: Open firewall for the TFTP service
+  firewalld:
+    service: tftp
+    immediate: true
+    permanent: true
+    state: enabled
+
+- name: Open firewall for TFTP port 69/udp
+  firewalld:
+    port: 69/udp
+    immediate: true
+    permanent: true
+    state: enabled
+
+- name: Start and enable the TFTP service 
+  service:
+    name=tftp
+    state=restarted
+    enabled=yes

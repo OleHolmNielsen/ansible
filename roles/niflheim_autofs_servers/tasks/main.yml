@@ -1,0 +1,105 @@
+# Niflheim autofs setup
+
+- name: Install the autofs package
+  yum:
+    name: autofs
+    state: present
+
+- name: Start autofs
+  service:
+    name=autofs
+    state=started
+    enabled=yes
+
+- name: Touch the {{ etc_auto_home }} file
+  file:
+    path: "{{ etc_auto_home }}"
+    state: touch
+    owner: root
+    group: root
+    mode: "u=rw,g=r,o=r"
+  # Ignore the "changed" status
+  changed_when: False
+
+- name: Copy generic mount-points to the {{ etc_auto_home }} file
+  blockinfile:
+    path: "{{ etc_auto_home }}"
+    state: present
+    insertbefore: BOF
+    marker: "# {mark} ANSIBLE MANAGED BLOCK1"
+    block: |
+      # Niflheim NFS server 10.2 subnet /etc/auto.home
+      # niflheim3		-rsize=8192,wsize=8192,tcp,vers=3	ylgr2:/u/raid
+      que		-rsize=8192,wsize=8192,tcp,vers=3	que:/scratch
+      camd2		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1.nifl:/u/camd
+      camp		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1.nifl:/u/camd
+      niflheim		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1.nifl:/u/camd
+      niflheim1		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1.nifl:/u/camd
+      niflheim2		-rsize=8192,wsize=8192,tcp,vers=3	niflfs3.nifl:/u/niflheim2
+      nexmap		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1.nifl:/u/nexmap
+      compute		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1.nifl:/u/compute
+      topsoe		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1.nifl:/u/topsoe
+      fotonik		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1.nifl:/u/fotonik
+      qwise		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1.nifl:/u/qwise
+      ppfe		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1.nifl:/u/ppfe
+      cat		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1.nifl:/u/cat
+      mek		-rsize=8192,wsize=8192,tcp,vers=3	niflfs2.nifl:/u/mek
+      mek2		-rsize=8192,wsize=8192,tcp,vers=3	niflfs2.nifl:/u/mek
+      ntch		-rsize=8192,wsize=8192,tcp,vers=3	niflfs2.nifl:/u/ntch
+      mic		-rsize=8192,wsize=8192,tcp,vers=3	niflfs2.nifl:/u/ntch
+      energy		-rsize=8192,wsize=8192,tcp,vers=3	niflfs2.nifl:/u/energy
+      byg		-rsize=8192,wsize=8192,tcp,vers=3	niflfs2.nifl:/u/byg
+      opt		-rsize=8192,wsize=8192,tcp,vers=3	niflopt1.nifl:/u/opt
+      scratch1		-rsize=8192,wsize=8192,tcp,vers=3	scratch1.nifl:/u/scratch
+  notify:
+   - Restart autofs
+
+- name: Append modules mount-point to the "{{ etc_auto_home }}" file
+  blockinfile:
+    path: "{{ etc_auto_home }}"
+    state: present
+    insertafter: EOF
+    marker: "# {mark} ANSIBLE MANAGED BLOCK2"
+    block: |
+      modules		-rsize=8192,wsize=8192,tcp,vers=3	{{ module_path }}
+  notify:
+   - Restart autofs
+
+- name: Set SELinux context of file {{ etc_auto_home }} to that of {{ auto_master }}
+  # Use ls -Z auto_master auto_home, check if they match
+  # This changes the target file auto_home:
+  command: /usr/bin/chcon --reference={{ auto_master|quote }} {{ etc_auto_home|quote }}
+  # Ignore the "changed" status
+  changed_when: False
+
+- name: Create file {{ home_autofs }} if it does not exist
+  # Method: https://stackoverflow.com/questions/28347717/how-to-create-an-empty-file-with-ansible
+  copy:
+    content: ""
+    dest: "{{ home_autofs }}"
+    force: no
+    owner: root
+    group: root
+    mode: "u=rw,g=r,o=r"
+
+- name: Set SELinux context of file {{ home_autofs }} to that of {{ auto_master }}
+  command: /usr/bin/chcon --reference={{ auto_master|quote }} {{ home_autofs|quote }}
+  # Ignore the "changed" status
+  changed_when: False
+
+- name: Editing the {{ home_autofs }} file
+  blockinfile:
+    path: "{{ home_autofs }}"
+    state: present
+    insertafter: EOF
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    block: |
+      /home {{ etc_auto_home }} --timeout=60
+  notify:
+   - Restart autofs
+
+- name: SELinux seboolean - Allow NFS mounted home directories
+  seboolean:
+    name: use_nfs_home_dirs
+    state: yes
+    persistent: yes

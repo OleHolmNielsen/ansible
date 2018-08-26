@@ -1,0 +1,32 @@
+- name: Install Samba packages
+  dnf:
+    name:
+    - samba
+    - samba-client
+
+- name: Copy the Samba smb.conf file 
+  copy:
+    src: "{{ inventory_hostname }}/smb.conf"
+    dest: "/etc/samba/smb.conf"
+    backup: yes
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+
+- name: Start and enable the Samba service
+  service:
+    name=smb
+    state=restarted
+    enabled=yes
+
+
+- name: firewalld register INPUT_direct rule for port 139
+  vars:
+    firewalld_needs_reload: "true"
+  command: firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT_direct 2 -p tcp --dport 139 -m state --state NEW -m recent --set
+
+- name: firewalld register INPUT_direct rule for port 445
+  vars:
+    firewalld_needs_reload: "true"
+  command: firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT_direct 3 -p tcp --dport 445 -m state --state NEW -m recent --set
+

@@ -1,0 +1,25 @@
+- name: Change kernel network parameters in /etc/sysctl.conf
+  blockinfile:
+    path: "/etc/sysctl.conf"
+    state: present
+    insertafter: EOF
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    block: |
+      # Don't allow the arp table to become bigger than this
+      net.ipv4.neigh.default.gc_thresh3 = 4096
+      # Tell the gc when to become aggressive with arp table cleaning.
+      # Adjust this based on size of the LAN.
+      net.ipv4.neigh.default.gc_thresh2 = 2048
+      # Adjust where the gc will leave arp table alone
+      net.ipv4.neigh.default.gc_thresh1 = 1024
+      # Adjust to arp table gc to clean-up more often
+      net.ipv4.neigh.default.gc_interval = 3600
+      # ARP cache entry timeout
+      net.ipv4.neigh.default.gc_stale_time = 3600
+      # Limit of socket listen() backlog, known in userspace as SOMAXCONN
+      net.core.somaxconn = 2048
+
+# The blockinfile module has no way to register if the block has been changed,
+# so we always have to execute sysctl -p :-(
+- name: Apply sysctl settings
+  command: sysctl -p

@@ -1,0 +1,7 @@
+- name: Copy command /usr/local/bin/authorized_keys
+  copy:
+    src: "/usr/local/bin/authorized_keys"
+    dest: "/usr/local/bin/authorized_keys"
+    owner: root
+    group: root
+    mode: 0755

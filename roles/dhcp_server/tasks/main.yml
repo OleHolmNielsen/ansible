@@ -1,0 +1,40 @@
+- name: Install DHCPD packages
+  yum:
+    name: dhcp,dhcp-common,dhcp-devel,dhcp-libs
+    state: present
+
+- name: Create /etc/dhcp/dhcpd.conf.d/ directory for client files
+  file:
+    path: /etc/dhcp/dhcpd.conf.d
+    state: directory
+    mode: 0750
+    owner: root
+    group: root
+
+- name: Create /root/dhcp symlink
+  file:
+    src: /etc/dhcp/dhcpd.conf.d/
+    dest: /root/dhcp
+    owner: root
+    group: root
+    state: link
+
+- name: Open firewall for the DHCPD service
+  firewalld:
+    service: dhcp
+    immediate: true
+    permanent: true
+    state: enabled
+
+- name: Open firewall for DHCPD port 67/tcp
+  firewalld:
+    port: 67/tcp
+    immediate: true
+    permanent: true
+    state: enabled
+
+# - name: Start and enable the DHCPD service 
+#   service:
+#     name=xinetd
+#     state=started
+#     enabled=yes

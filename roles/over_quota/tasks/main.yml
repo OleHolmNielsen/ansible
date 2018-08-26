@@ -1,0 +1,16 @@
+# Set up over-quota notifications
+
+- name: Copy the over_quota script from this server
+  copy:
+    src: "over_quota"
+    dest: "/usr/local/bin/over_quota"
+    backup: yes
+    owner: root
+    group: root
+    mode: u=rwx,g=rx,o=rx
+
+- cron:
+    name: "Warn users of disk quota exceeded"
+    minute: "10"
+    hour: "8,13,17"
+    job: "/usr/local/bin/over_quota"

@@ -1,0 +1,31 @@
+# firewalld: whitelist local subnets
+
+  - name: Get firewalld rules
+    command: "firewall-cmd  --permanent --direct --get-all-rules"
+    register: rules
+    # Ignore the "changed" status
+    changed_when: False
+
+  - name: firewalld whitelist local net 130.225.86.0/23
+    vars:
+      firewalld_needs_reload: "true"
+    command: firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT_direct 0 -s 130.225.86.0/23 -j ACCEPT
+    when: "'INPUT_direct 0' not in rules.stdout"
+
+  - name: firewalld whitelist local net 10.2.0.0/16
+    vars:
+      firewalld_needs_reload: "true"
+    command: firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT_direct 1 -s 10.2.0.0/16 -j ACCEPT
+    when: "'INPUT_direct 1' not in rules.stdout"
+
+  - name: firewalld whitelist local net 10.3.0.0/16
+    vars:
+      firewalld_needs_reload: "true"
+    command: firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT_direct 2 -s 10.3.0.0/16 -j ACCEPT
+    when: "'INPUT_direct 2' not in rules.stdout"
+
+  - name: firewalld whitelist local net 10.4.0.0/16
+    vars:
+      firewalld_needs_reload: "true"
+    command: firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT_direct 3 -s 10.4.0.0/16 -j ACCEPT
+    when: "'INPUT_direct 3' not in rules.stdout"
