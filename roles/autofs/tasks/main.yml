@@ -1,10 +1,5 @@
 # Set up autofs
 
-- name: Install the autofs package
-  yum:
-    name: autofs
-    state: present
-
 - name: Start and enable the autofs service
   service:
     name=autofs
