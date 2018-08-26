@@ -6,23 +6,11 @@
 # Display available printer drivers by: lpinfo -m | grep <your model>
 # Display available printer options by: lpoptions -p <printer> -l
 
-- name: Install CUPS printing systems
-  yum:
-    name: cups
-    state: present
-
 - name: Start and enable CUPS printing systems
   service:
     name: cups
     state: started
     enabled: yes
-
-- name: Install printer packages
-  yum:
-    name:
-    - foomatic
-    - hplip
-    state: present
 
 - name: List installed printers
   command: lpstat -v
@@ -52,24 +40,25 @@
     options: '-o sides=two-sided-long-edge -o media=A4'
   when: "'HP-LaserJet-p4015-b307-225' not in printerlist.stdout_lines"
 
-# Printer camd4525.fysik.dtu.dk
+# Printer ly307-225-co1.fysik.dtu.dk (HP M552)
 
 - name: Install {{ printer }} printer name {{ destination }}
   command: lpadmin -p {{ destination }} -v {{ printer }} -m {{ driver }} -E
   vars:
     # We MUST use the IP-address here:
     printer: socket://10.54.10.98:9100
-    destination: HP-ColorLaserJet-CP4525-b307-225
-    driver: drv:///hp/hpcups.drv/hp-color_laserjet_cp4520_series-pcl3.ppd
-  when: "'HP-ColorLaserJet-CP4525-b307-225' not in printerlist.stdout_lines"
+    destination: HP-ColorLaserJet-M552-b307-225
+    # driver: drv:///hp/hpcups.drv/hp-color_laserjet_cp4520_series-pcl3.ppd
+    driver: lsb/usr/HP/hp-color_laserjet_m552-ps.ppd.gz
+  when: "'HP-ColorLaserJet-M552-b307-225' not in printerlist.stdout_lines"
   register: newprinter
 
 - name: Set {{ destination }} plus options
   command: lpadmin -p {{ destination }} {{ options }}
   vars:
-    destination: HP-ColorLaserJet-CP4525-b307-225
+    destination: HP-ColorLaserJet-M552-b307-225
     options: '-o OptionDuplex=True -o sides=two-sided-long-edge -o media=A4'
-  when: "'HP-ColorLaserJet-CP4525-b307-225' not in printerlist.stdout_lines"
+  when: "'HP-ColorLaserJet-M552-b307-225' not in printerlist.stdout_lines"
 
 # Default printer
 
