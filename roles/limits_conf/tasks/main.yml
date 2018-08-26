@@ -14,5 +14,6 @@
       *               hard    cpu             20
       *               hard    rss             50000000
       *               hard    data            50000000
+      *               soft    stack           40000000
       *               hard    stack           50000000
       *               hard    nproc           150
