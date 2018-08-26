@@ -1,6 +1,13 @@
   - name: Install popular packages 
     yum:
       name: 
+      - libsemanage-python
+      - libselinux-python
+      - autofs
+      - cups
+      - foomatic
+      - hplip
+      - sendmail-cf
       - openssl-devel
       - libibverbs-devel
       - libX11-devel
@@ -21,6 +28,7 @@
       - Lmod
       - git-all
       - bash-completion
+      - meld
       - htop
       # DO NOT install the libxc package, it causes problems for GPAW (use modules)
       - python34-pip
@@ -42,3 +50,7 @@
       - pysvn
       - graphviz
       state: present
+  - name: Install popular packages from the RPM Fusion repository
+    yum:
+      name:
+      - vlc
