@@ -43,6 +43,7 @@
       fotonik		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/fotonik
       qwise		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/qwise
       ppfe		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/ppfe
+      cat		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/cat
       mek		-rsize=8192,wsize=8192,tcp,vers=3	niflfs2:/u/mek
       mek2		-rsize=8192,wsize=8192,tcp,vers=3	niflfs2:/u/mek
       ntch		-rsize=8192,wsize=8192,tcp,vers=3	niflfs2:/u/ntch

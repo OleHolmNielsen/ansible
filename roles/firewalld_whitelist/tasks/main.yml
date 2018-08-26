@@ -1,7 +1,7 @@
 # firewalld: whitelist local subnets
 
-  - include_role:
-      name: rhel7
+#  - include_role:
+#      name: rhel7
 
   - name: Get firewalld rules
     command: "firewall-cmd  --permanent --direct --get-all-rules"

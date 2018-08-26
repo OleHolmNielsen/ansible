@@ -4,7 +4,11 @@
       - openssl-devel
       - libibverbs-devel
       - libX11-devel
+      - libpciaccess-devel
+      - libxml2-devel 
+      - glibc-static
       - vim-enhanced
+      - redhat-lsb-core
       - nano
       - dos2unix
       state: present
@@ -12,11 +16,13 @@
     yum:
       name:
       - Lmod
+      - meld
       - git-all
       - bash-completion
       # DO NOT install the libxc package, it causes problems for GPAW (use modules)
       - python34-pip
       - python2-pip
+      - python2-keyring
       - grace
       - python34
       - python-pip
