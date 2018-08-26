@@ -1,7 +1,6 @@
 niflheim	-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/camd
 niflheim1	-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/camd
 niflheim2	-rsize=8192,wsize=8192,tcp,vers=3	niflfs3:/u/niflheim2
-niflheim3	-rsize=8192,wsize=8192,tcp,vers=3	ylgr:/u/raid
 qwise		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/qwise
 camp		-rsize=8192,wsize=8192,tcp,vers=3	servcamd:/u/camp
 camd		-rsize=8192,wsize=8192,tcp,vers=3	servcamd:/u/camp
@@ -9,6 +8,7 @@ camd2		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/camd
 compute		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/compute
 topsoe		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/topsoe
 fotonik		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/fotonik
+cat		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/cat
 nexmap		-rsize=8192,wsize=8192,tcp,vers=3	servcamd:/u/nexmap
 panda2		-rsize=8192,wsize=8192,tcp,vers=3	panda2:/u/nexmap
 panda2data	-rsize=8192,wsize=8192,tcp,vers=3	panda2:/u/data
