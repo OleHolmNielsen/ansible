@@ -1,6 +1,7 @@
-  - name: Install server packages
+  - name: Install CentOS server packages
     yum:
       name:
+      - man-pages
       - bind-utils
       - net-tools
       - jwhois
@@ -25,7 +26,7 @@
       - selinux-policy-doc
       state: present
 
-  - name: remove unwanted packages
+  - name: Remove unwanted packages
     yum:
       name:
       - qemu-*
