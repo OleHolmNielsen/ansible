@@ -4,6 +4,7 @@
       - man-pages
       - bind-utils
       - net-tools
+      - telnet
       - jwhois
       - ipmiutil
       - OpenIPMI
