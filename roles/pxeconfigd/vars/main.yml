@@ -1,0 +1,4 @@
+# pxeconfig from https://oss.trac.surfsara.nl/pxeconfig
+tarball: ftp://ftp.surfsara.nl/pub/outgoing/pxeconfig.tar.gz
+version: 4.2.0
+portnumber: 6611

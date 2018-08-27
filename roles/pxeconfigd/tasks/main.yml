@@ -1,0 +1,66 @@
+# Install the pxeconfig tools from https://oss.trac.surfsara.nl/pxeconfig
+
+- name: Unarchive pxeconfig.tar.gz
+  unarchive:
+    remote_src: yes
+    src: "{{ tarball }}"
+    dest: "$HOME"
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Configure pxeconfig
+  command: "./configure"
+  args:
+    chdir: pxeconfig-{{ version }}
+    creates: Makefile
+
+- name: Build and install pxeconfig in /usr/local
+  command: "make install"
+  args:
+    chdir: pxeconfig-{{ version }}
+    creates: /usr/local/sbin/pxeconfigd
+
+- name: Add pxeconfigd service to /etc/services
+  blockinfile:
+    path: /etc/services
+    block: |
+      pxeconfigd	{{ portnumber }}/tcp		# pxeconfig daemon
+
+- name: Install xinetd package
+  yum:
+    name:
+    - xinetd
+
+- name: Add pxeconfigd service to xinetd
+  blockinfile:
+    path: /etc/xinetd.d/pxeconfigd
+    create: yes
+    mode: '0600'
+    block: |
+      service pxeconfigd
+      {
+        disable		= no
+        socket_type	= stream
+        protocol	= tcp
+        user		= root
+        group		= sys
+        wait		= no
+        server		= /usr/local/sbin/pxeconfigd
+        # server_args	= -d /tftpboot/pxelinux.cfg
+      }
+
+- name: Start xinetd service
+  service:
+    name=xinetd
+    state=started
+    enabled=yes
+
+- name: Open firewall for pxeconfigd port {{ portnumber }}/tcp
+  firewalld:
+    port: "{{ portnumber }}/tcp"
+    immediate: true
+    permanent: true
+    state: enabled
+    # Possible selection of specific network interface
+    # interface: eno2
