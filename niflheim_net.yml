@@ -27,6 +27,7 @@
    - sendmail_client
    - tftp_server
    - dhcp_server
+   - pxeconfigd
    # - slurm_basic
    # - modules
    - nfs_server
