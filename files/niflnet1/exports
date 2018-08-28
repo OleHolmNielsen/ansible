@@ -1,0 +1,1 @@
+/scratch 10.2.0.0/16(async,wdelay,hide,secure,root_squash,no_all_squash,subtree_check,secure_locks,anonuid=-2,anongid=-2)

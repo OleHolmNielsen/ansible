@@ -1,0 +1,3 @@
+# NFS exports file from Ansible server
+/u/snapshots/niflheim2 servauth2(ro) surt(ro) sylg(ro) fjorm(ro) thul(ro) audhumbla(ro) audhumbla2(ro) bardeen(ro) ylgr2(ro)
+/u/archive 10.1.0.0/16(rw) 10.2.0.0/16(rw) 10.3.0.0/16(rw) servauth2(rw,no_root_squash,insecure,sync) hvergelmer2(rw,no_root_squash,insecure,sync) finbul2(rw,no_root_squash,insecure,sync) *.nifl.fysik.dtu.dk(rw) web4(rw) intra4(rw) sylg(rw) fjorm(rw) surt(rw) thul(rw) muspel(rw) demon(rw) demon2(rw) cmr-server(rw) jordan(rw) localhost(rw)
