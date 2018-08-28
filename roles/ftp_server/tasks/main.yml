@@ -1,0 +1,17 @@
+- name: Install FTP server packages
+  yum:
+    name: vsftpd,ftp
+    state: present
+
+- name: Open firewall for the FTP service
+  firewalld:
+    service: ftp
+    immediate: true
+    permanent: true
+    state: enabled
+
+- name: Start and enable the FTP service 
+  service:
+    name=vsftpd
+    state=restarted
+    enabled=yes
