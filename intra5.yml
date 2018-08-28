@@ -18,3 +18,8 @@
    - sshd_allow_users
    - yum_updates
    - sendmail_client
+   - tftp_server
+   - ftp_server
+   - dhcp_server
+   - pxeconfigd
+   - nfs_server

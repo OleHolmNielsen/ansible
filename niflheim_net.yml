@@ -26,6 +26,7 @@
    - niflheim_autofs_servers
    - sendmail_client
    - tftp_server
+   - ftp_server
    - dhcp_server
    - pxeconfigd
    # - slurm_basic
