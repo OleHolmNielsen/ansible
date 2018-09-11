@@ -8,6 +8,9 @@
    - non_graphical
    - epel_repo
    - server_packages
+   - postgresql
+   - python36
+   - cmr_user
    - nhc
    - logwatch
    - proliant_centos
