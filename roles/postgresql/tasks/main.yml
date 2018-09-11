@@ -1,0 +1,28 @@
+# PostgreSQL RPM Building Project - Yum Repository:
+# https://yum.postgresql.org/
+
+- name: Install Postgresql 10 Yum repository
+  yum:
+    name:
+    - https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-7-x86_64/pgdg-centos10-10-2.noarch.rpm
+
+- name: Install Postgresql 10 packages
+  yum:
+    name:
+    - postgresql10
+    - postgresql10-server
+    - postgresql10-libs
+    - postgresql10-devel
+    - postgresql10-odbc
+    - postgresql10-plpython
+
+- name: Initialize the database
+  command: /usr/pgsql-10/bin/postgresql-10-setup initdb
+  args:
+    creates: /var/lib/pgsql/10/initdb.log
+
+- name: Start the postgresql-10.service 
+  service:
+    name=postgresql-10
+    state=started
+    enabled=yes
