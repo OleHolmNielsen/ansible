@@ -18,6 +18,7 @@
       - dos2unix
       - ntfs-3g
       - vim-X11
+      - xemacs
       - screen
       - reptyr
       - fuse-sshfs
