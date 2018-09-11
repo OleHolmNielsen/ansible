@@ -35,10 +35,6 @@
     group: root
     mode: u=rw,g=r,o=r
 
-- name: Run exportfs -a
-  command: exportfs -a
-  # when: "exports"
-
 - name: Start and enable the rpcbind service
   service:
     name=rpcbind
@@ -68,6 +64,10 @@
     name=nfs-server
     state=restarted
     enabled=yes
+
+- name: Run exportfs -a
+  command: exportfs -a
+  # when: "exports"
 
 - name: Open port 111/tcp in firewalld
   firewalld:
