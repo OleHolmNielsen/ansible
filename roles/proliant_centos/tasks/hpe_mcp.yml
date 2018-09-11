@@ -39,6 +39,11 @@
     - ssaducli
     state: latest
 
+- name: Install updated ssacli RPM package required for Gen10 servers
+  yum:
+    name:
+    - ssacli-3.30-14.0.x86_64.rpm
+
 - name: Editing the {{ snmpd_conf }} file
   blockinfile:
     path: "{{ snmpd_conf }}"
