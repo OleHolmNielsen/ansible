@@ -6,6 +6,7 @@
       - net-tools
       - telnet
       - jwhois
+      - expect
       - ipmiutil
       - OpenIPMI
       - htop
