@@ -9,7 +9,6 @@
    - epel_repo
    - server_packages
    - postgresql
-   - python36
    - cmr_user
    - nhc
    - logwatch
