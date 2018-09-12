@@ -1,10 +1,25 @@
-# CMR database server: Create the "cmr" user
-# See https://docs.ansible.com/ansible/2.6/modules/user_module.html
+# CMR database server: Create the "cmr" user and requisite setups
 
 # NOTE: We permit the CMR administrator (JJ) to make SSH logins to this server
 # by adding his SSH public key to ~/.ssh/authorized_keys
 
+# See https://docs.ansible.com/ansible/2.6/modules/user_module.html
 - name: Add the user 'cmr' 
   user:
     name: cmr
     comment: Computational Materials Repository
+
+- name: Open firewall port 8000/tcp for user "cmr" twistd server
+  firewalld:
+    port: 8000/tcp
+    immediate: true
+    permanent: true
+    state: enabled
+
+- name: Install required packages from EPEL (python36 etc.)
+  yum:
+    name:
+    - epel-release
+    - python36
+    - python36-devel
+    - xclip
