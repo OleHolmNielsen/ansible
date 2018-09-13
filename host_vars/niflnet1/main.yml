@@ -1,0 +1,53 @@
+# CPU architecture
+cpu_arch: broadwell
+
+# Environment modules for this CPU architecture
+module_path: niflopt1:/u/modules/haswell
+
+location: "DK;Lyngby;Niflheim;B309;059;rack 2;33"
+
+# Roles downloaded from https://galaxy.ansible.com/linux-system-roles/network/
+# See https://access.redhat.com/articles/3050101 (Red Hat Enterprise Linux (RHEL) System Roles)
+network_connections:
+  # Subnet 130.225.86.0/23 on adapter eno1
+  - name: "eno1"
+    type: "ethernet"
+    autoconnect: yes
+    mac: 14:02:ec:05:fa:6c
+    ip:
+      dhcp4: no
+      route_metric4: 1
+      gateway4: 130.225.86.1
+      auto6: no
+      address:
+        - 130.225.87.147/23
+      dns:
+        - 130.225.87.140
+        - 130.225.87.145
+        - 10.2.128.110
+      dns_search:
+        - nifl.fysik.dtu.dk
+        - fysik.dtu.dk
+  # Subnet 10.2.0.0/16 on PCIe dual-port Ethernet adapter eno2
+  - name: "eno2"
+    type: "ethernet"
+    autoconnect: yes
+    mac: 14:02:ec:05:fa:6d
+    ip:
+      dhcp4: no
+      route_metric4: 500
+      auto6: no
+      address:
+        - 10.2.128.3/16
+  # Subnet 10.5.0.0/16 on PCIe dual-port Ethernet adapter eno3
+  - name: "eno3"
+    type: "ethernet"
+    autoconnect: yes
+    mac: 14:02:ec:05:fa:6e
+    ip:
+      dhcp4: no
+      route_metric4: 500
+      auto6: no
+      address:
+        - 10.5.128.3/16
+

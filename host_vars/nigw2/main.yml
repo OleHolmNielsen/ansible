@@ -1,0 +1,47 @@
+location: "DK;Lyngby;Niflheim;B309;059;rack 2;34"
+
+# Roles downloaded from https://galaxy.ansible.com/linux-system-roles/network/
+# See https://access.redhat.com/articles/3050101 (Red Hat Enterprise Linux (RHEL) System Roles)
+network_connections:
+  # Subnet 130.225.86.0/23 on adapter enp5s0f0 (MAC 00:26:55:22:64:78)
+  - name: "enp5s0f0"
+    type: "ethernet"
+    autoconnect: yes
+    mac: 00:26:55:22:64:78
+    ip:
+      dhcp4: no
+      route_metric4: 1
+      gateway4: 130.225.86.1
+      auto6: no
+      address:
+        - 130.225.87.140/23
+  # Subnet 10.2.0.0/16 on PCIe dual-port Ethernet adapter enp7s0f0 (MAC 90:e2:ba:ef:6e:c2)
+  - name: "enp7s0f0"
+    type: "ethernet"
+    autoconnect: yes
+    mac: 90:e2:ba:ef:6e:c2
+    ip:
+      dhcp4: no
+      route_metric4: 500
+      auto6: no
+      address:
+        - 10.2.128.2/16
+      dns:
+        - 130.225.87.140
+        - 130.225.87.145
+        - 10.2.128.110
+      dns_search:
+        - nifl.fysik.dtu.dk
+        - fysik.dtu.dk
+  # Subnet 10.5.0.0/16 on PCIe dual-port Ethernet adapter enp7s0f1 (MAC 90:e2:ba:ef:6e:c3)
+  - name: "enp7s0f1"
+    type: "ethernet"
+    autoconnect: yes
+    mac: 90:e2:ba:ef:6e:c3
+    ip:
+      dhcp4: no
+      route_metric4: 500
+      auto6: no
+      address:
+        - 10.5.128.1/16
+
