@@ -39,6 +39,14 @@
     - ssaducli
     state: latest
 
+- name: Copy ssacli-3.30-14.0.x86_64.rpm
+  copy:
+    src: ssacli-3.30-14.0.x86_64.rpm
+    dest: /root
+    owner: root
+    group: root
+    mode: 0644
+
 - name: Install updated ssacli RPM package required for Gen10 servers
   yum:
     name:
