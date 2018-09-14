@@ -1,0 +1,56 @@
+#!/bin/bash
+
+#
+# Check all Huawei nodes in a cluster by pinging each one
+#
+# Author: Ole Holm Nielsen, Ole.H.Nielsen@fysik.dtu.dk
+#
+
+# Exit the script in case of control-C etc.
+trap "exit -1" SIGTERM SIGINT SIGQUIT
+
+PING="/bin/ping -c 1 -w 2"
+# PING="/bin/ping -c 1 -w 10"
+# Node iBMC DNS names are x???b
+NODELIST=`seq -w 001 192`
+CHASSSISLIST=`seq -w 01 24`
+
+STOPFILEDIR=/var/lib/alive
+if test ! -d $STOPFILEDIR
+then
+	mkdir -v $STOPFILEDIR
+fi
+
+function checknode() {
+	STOPFILE=$STOPFILEDIR/alive.$1
+	if $PING $1 2>&1 > /dev/null
+	then
+		if [ -f $STOPFILE ]
+		then
+			echo Host $1 is up again
+			rm -f $STOPFILE
+		fi
+	else
+		if [ ! -f $STOPFILE ]
+		then
+			echo Cannot ping host $1 !
+			touch $STOPFILE
+		fi
+
+	fi
+}
+
+for i in $NODELIST 
+do
+	# Node iBMC DNS names are x???b
+	node="x${i}b"
+	checknode ${node}
+done
+
+# Check also chassis xchlo
+for i in $CHASSSISLIST lo
+do
+	# Node iBMC DNS names are xch??
+	node="xch${i}"
+	checknode ${node}
+done
