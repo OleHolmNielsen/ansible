@@ -1,0 +1,16 @@
+- name: Backup of file {{ sshd_config }}
+  command: "cp -p {{ sshd_config }} {{ sshd_config }}.orig"
+  args:
+    creates: "{{ sshd_config }}.orig"
+
+- name: Append lines to {{ sshd_config }}
+  blockinfile:
+    path: "{{ sshd_config }}"
+    state: present
+    insertafter: EOF
+    block: |
+      # Customizations at fysik.dtu.dk
+      # Allow only staff people to actually log in:
+      AllowUsers root ohni jensj
+  notify:
+   - Restart sshd
