@@ -1,0 +1,21 @@
+# Configure Niflheim database file server (MySQL)
+
+- hosts: Niflheim-db
+  roles:
+   - rhel7
+   - role: linux-system-roles.network
+   - hostname
+   - non_graphical
+   - epel_repo
+   - server_packages
+   - ipmi
+   - nhc
+   - logwatch
+   - proliant_centos
+   - no_libvirt
+   - sshd_config
+   - sshd_allow_users
+   - bashrc
+   - yum_updates
+   - sendmail_client
+   - firewalld_reload
