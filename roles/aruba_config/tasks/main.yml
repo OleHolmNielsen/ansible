@@ -1,0 +1,17 @@
+- name: configure top level configuration
+  aruba_config:
+    # save_when: modified
+    backup: yes
+    lines:
+      - "hostname {{ inventory_hostname }}"
+      - console idle-timeout serial-usb 600
+      - timesync sntp
+      - sntp unicast
+      - "sntp server priority 1 {{ ntp_server }}"
+      - time daylight-time-rule western-europe
+      - time timezone 60
+      - web-management ssl
+      - no snmp-server community public unrestricted
+      - snmp-server community public operator
+      - "snmp-server host {{ nedi_server }} community public trap-level not-info"
+      - "snmp-server contact {{ contact }} location '{{ location }}'"

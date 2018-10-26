@@ -1,0 +1,103 @@
+#
+# Upgrade Firmware of ArubaOS-Switch
+#
+
+# Rewrite image file {{ path_to_swi }} to switch image version format
+- set_fact:
+    new_image: '{{ path_to_swi | replace(".swi", "") | replace("_",".") }}'
+
+- debug:
+     msg: "New image is {{ new_image }}"
+
+- name: Inquire switch firmware images
+  aruba_command:
+    commands:
+      - show flash
+      - show version
+  register: show_output
+#- debug:
+#    msg: "{{ show_output.stdout_lines }}"
+
+- name: "Extract firmware image versions"
+  block:
+    - set_fact: 
+        # Read the primary firmware from "show flash" as the field [5] on the 'Image' line [2]
+        primary_image: "{{ show_output.stdout_lines[0][2].split()[5] }}"
+    - debug:
+        msg: "Primary image is {{ primary_image }}"
+    - set_fact: 
+        # Read the secondary firmware from "show flash" as the field [5] on the 'Image' line [3]
+        secondary_image: "{{ show_output.stdout_lines[0][3].split()[5] }}"
+    - debug:
+        msg: "Secondary image is {{ secondary_image }}"
+    - set_fact: 
+        # Read the running image from line [4] of the "show version" command 
+        running_image: "{{ show_output.stdout_lines[1][4].split()[0] }}"
+    - debug:
+        msg: "Running image is {{ running_image }}"
+  when: show_output is defined
+
+# 
+# Handle firmware versions: primary, secondary, running, new firmware file.
+# Version comparison: https://docs.ansible.com/ansible/latest/user_guide/playbooks_tests.html#version-comparison
+# 
+
+- name: "Copy primary to secondary image"
+  # If running==primary and running!=secondary then copy primary to secondary.
+  # If running==secondary then DO NOT copy primary to secondary.
+  block: 
+    - name: "Copy primary {{ primary_image }} to secondary image {{ secondary_image }}"
+      aruba_command:
+        provider:
+          timeout: 300
+        commands:
+          - "copy flash flash secondary"
+      register: copy_flash
+    - debug:
+        msg: "Copy flash output is {{ copy_flash.stdout_lines }}"
+  when: running_image > secondary_image
+
+- name: "Upload firmware"
+  block: 
+    - name: "Upload firmware {{ path_to_swi }} by TFTP from {{ tftp_server }}"
+      aruba_command:
+        # The copy command requires a "yes" reply to the question "Continue (y/n)?"
+        commands:
+          - "copy tftp flash {{ tftp_server }} {{ path_to_swi }}"
+        # prompt: "Continue (y/n)?"
+        # response: 'y'
+
+      #  wait_for:
+      #    - "result[0] contains 'Continue'"
+      #cli_command:
+      #  command: "copy tftp flash {{ tftp_server }} {{ path_to_swi }}"
+      #  prompt:
+      #    - "Continue (y/n)?"
+      #  answer: 'y'
+      when: (path_to_swi is defined) and (tftp_server is defined)
+
+    - name: "Confirm firmware upload"
+      aruba_command:
+        provider:
+          timeout: 300
+        # Required environment variables:
+        # export ANSIBLE_PERSISTENT_CONNECT_TIMEOUT=600
+        # export ANSIBLE_PERSISTENT_COMMAND_TIMEOUT=550
+        # The persistent_command_timeout must be < persistent_connect_timeout
+        # See https://docs.ansible.com/ansible/2.5/network/user_guide/network_debug_troubleshooting.html
+        retries: 1
+        interval: 300
+        timeout: 300
+        commands:
+          - "yes"
+      register: upload_flash
+    - debug:
+        msg: "Upload flash output is {{ upload_flash.stdout_lines }}"
+    - name: Inquire firmware images by the "show flash" command
+      aruba_command:
+        commands:
+          - show flash
+      register: show_flash
+    - debug:
+        msg: "{{ show_flash.stdout_lines }}"
+  when: new_image > primary_image

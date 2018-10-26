@@ -1,0 +1,10 @@
+# HPE Procurve/Aruba switches
+
+- hosts: Aruba
+  vars:
+    tftp_server: "10.5.128.3"
+    path_to_swi: "YA_16_07_0002.swi"
+  # The connection: local is crucial!
+  connection: local
+  roles:
+   - aruba_firmware

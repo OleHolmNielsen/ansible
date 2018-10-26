@@ -1,0 +1,8 @@
+# Need to set ANSIBLE_NET_USERNAME and ANSIBLE_NET_PASSWORD environment variables
+- name: Run show version on remote devices
+  aruba_command:
+    commands:
+      - show version
+      - show flash
+      - show ip
+      - show interfaces brief

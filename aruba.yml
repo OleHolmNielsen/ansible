@@ -1,0 +1,8 @@
+# HPE Procurve/Aruba switches
+
+- hosts: Aruba
+  # The connection: local is crucial!
+  connection: local
+  roles:
+  # - aruba_switches
+   - aruba_config
