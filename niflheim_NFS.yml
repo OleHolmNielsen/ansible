@@ -10,10 +10,12 @@
    - epel_repo
    - server_packages
    - niflheim_packages
+   - authorized_keys_command
    - over_quota
    - ipmi
    - nhc
    - logwatch
+   - logrotate
    - proliant_centos
    # - limits_conf
    - no_libvirt

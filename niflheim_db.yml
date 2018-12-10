@@ -8,9 +8,11 @@
    - non_graphical
    - epel_repo
    - server_packages
+   - authorized_keys_command
    - ipmi
    - nhc
    - logwatch
+   - logrotate
    - proliant_centos
    - no_libvirt
    - sshd_config

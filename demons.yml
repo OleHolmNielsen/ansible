@@ -5,8 +5,10 @@
    - rhel7
    - hostname
    - non_graphical
+   - authorized_keys_command
    - nhc
    - logwatch
+   - logrotate
    - no_libvirt
    - sshd_config
    - bashrc
@@ -14,7 +16,7 @@
    - yum_updates
    - yum_packages
    - sendmail_client
-   - autofs
+   - desktops_autofs
    - sshblack
    - firewalld_whitelist
    - firewalld_brute_force

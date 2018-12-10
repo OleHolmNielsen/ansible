@@ -6,3 +6,4 @@
    - epel_repo
    - yum_updates
    - sendmail_client
+   - authorized_keys_command

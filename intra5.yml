@@ -8,7 +8,8 @@
    - non_graphical
    - epel_repo
    - server_packages
-   - samba
+   - moinmoin
+   - authorized_keys_command
    - nhc
    - logwatch
    - proliant_centos
@@ -18,8 +19,13 @@
    - sshd_allow_users
    - yum_updates
    - sendmail_client
+   - DNS_slave
    - tftp_server
    - ftp_server
    - dhcp_server
+   - samba_server
+   - samba_nmbd
    - pxeconfigd
    - nfs_server
+   - web_server
+   - firewalld_reload

@@ -12,6 +12,7 @@
    - niflheim_profile
    - nhc
    - logwatch
+   - logrotate
    # Limits disabled, different on slid, sylg etc.
    # - limits_conf
    - proliant_centos
@@ -24,5 +25,6 @@
    - niflheim_firewalld
    - sendmail_client
    - slurm_basic
+   - slurm_tools
    - modules
    - singularity

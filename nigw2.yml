@@ -10,6 +10,7 @@
    - non_graphical
    - epel_repo
    - server_packages
+   - authorized_keys_command
    - nhc
    - logwatch
    - proliant_centos

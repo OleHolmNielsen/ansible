@@ -7,6 +7,6 @@
    - samba_fedora
    - firewalld_whitelist
    - sendmail_client
-   - autofs
+   - desktops_autofs
    - printers_b307
    - firewalld_reload

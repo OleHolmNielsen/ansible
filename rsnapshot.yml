@@ -5,25 +5,20 @@
    - rhel7
    - role: linux-system-roles.network
    - hostname
+   - authorized_keys_command
    - non_graphical
    - epel_repo
+   - rsnapshot_autofs
    - server_packages
-   - niflheim_packages
+   - rsnapshot
+   - ssh_known_hosts
    - ipmi
    - nhc
    - logwatch
    - proliant_centos
-   # - limits_conf
    - no_libvirt
    - sshd_config
    - sshd_allow_users
    - bashrc
    - yum_updates
-   # - sysctl_bignet
-   - niflheim_autofs_servers
    - sendmail_client
-   # - slurm_basic
-   # - modules
-   # - nfs_server
-   # - firewalld_whitelist_niflheim
-   # - firewalld_reload

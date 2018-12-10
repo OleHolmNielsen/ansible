@@ -9,11 +9,13 @@
    - non_graphical
    - epel_repo
    - server_packages
+   - authorized_keys_command
    # - niflheim_packages
    # - over_quota
    - ipmi
    - nhc
    - logwatch
+   - logrotate
    - proliant_centos
    # - limits_conf
    - no_libvirt
