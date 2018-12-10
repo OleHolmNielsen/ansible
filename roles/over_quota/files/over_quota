@@ -1,0 +1,56 @@
+#!/bin/sh
+
+# Notify users that are over their disk quota
+
+REPQUOTA=/usr/sbin/repquota
+QUOTA=/usr/bin/quota
+MAIL=/bin/mail
+
+USERS=`${REPQUOTA} -a -s -v | grep + | sed /none/d | awk '{print $1}'`
+HOST=`hostname`
+
+# Exclude users who don't want these warnings:
+WUSERS=`echo $USERS | sed -e '
+/root/d
+'`
+
+# Temporary storage of alert data
+TMPDIR=/var/lib/over_quota
+if test ! -d $TMPDIR
+then
+        mkdir -v $TMPDIR
+fi
+MESSAGE=$TMPDIR/mesg.$$
+cat <<EOF > $MESSAGE
+
+========================================================================
+
+WARNING: Your disk quota is exceeded on the fileserver named ${HOST}.
+
+========================================================================
+
+This is the location of your directory on one of the NIFLHEIM fileservers.
+
+NOTICE: When the "quota" has been exceeded for 7 days, or if you reach the
+hard "limit", you will no longer be able to write new files.
+
+Please reduce your files as soon as possible, or contact the IT Support staff
+(niflheim-support@fysik.dtu.dk) for an adjustment of your disk quota (make sure to
+include the present mail for the support).
+
+EOF
+
+for i in `echo $WUSERS`
+do
+	( cat $MESSAGE; ${QUOTA} -iv $i) | \
+		${MAIL} -s "WARNING: Your disk quota is exceeded" ${i}
+
+	# Send a log to myself:
+	NAME=`grep "^$i:" /etc/passwd | awk -F: '{print $5}'`
+	echo
+	echo Sent quota warning for host ${HOST} to user $i, ${NAME}
+	echo
+	${QUOTA} -s -v $i
+done
+
+rm -f $MESSAGE
