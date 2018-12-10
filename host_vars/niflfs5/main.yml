@@ -1,27 +1,27 @@
 # CPU architecture
-cpu_arch: broadwell
+cpu_arch: skylake
 
 # Environment modules for this CPU architecture
-module_path: niflopt1:/u/modules/broadwell
+module_path: niflopt1:/u/modules/skylake
 
 # SNMP location
-location: "DK;Lyngby;Niflheim;B309;059;rack 16;30;4"
+location: "DK;Lyngby;Niflheim;B309;059;rack 2;29;2"
 
 # Roles downloaded from https://galaxy.ansible.com/linux-system-roles/network/
 # See https://access.redhat.com/articles/3050101 (Red Hat Enterprise Linux (RHEL) System Roles)
 network_connections:
-  # Subnet 130.225.86.0/23 on adapter eno1 (MAC 98:f2:b3:ea:a4:4a)
+  # Subnet 130.225.86.0/23 on adapter eno1 
   - name: "eno1"
     type: "ethernet"
     autoconnect: yes
-    mac: 98:f2:b3:ea:a4:4a
+    mac: d0:67:26:d2:fb:5c
     ip:
       dhcp4: no
       route_metric4: 1
       gateway4: 130.225.86.1
       auto6: no
       address:
-        - 130.225.87.129/23
+        - 130.225.87.131/23
       dns:
         - 130.225.87.140
         - 130.225.87.145
@@ -29,14 +29,14 @@ network_connections:
       dns_search:
         - nifl.fysik.dtu.dk
         - fysik.dtu.dk
-  # Subnet 10.2.0.0/16 on PCIe dual-port 10 Gbit Ethernet adapter eno49 (MAC 48:df:37:1e:21:60)
-  - name: "eno49"
+  # Subnet 10.2.0.0/16 on PCIe dual-port 10/25 Gbit Ethernet adapter eno5
+  - name: "eno5"
     type: "ethernet"
     autoconnect: yes
-    mac: 48:df:37:1e:21:60
+    mac: b8:83:03:60:b9:f0
     ip:
       dhcp4: no
       route_metric4: 500
       auto6: no
       address:
-        - 10.2.128.113/16
+        - 10.2.128.115/16

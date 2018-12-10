@@ -13,7 +13,7 @@
       RPCMOUNTDOPTS="-p 892"
       LOCKD_TCPPORT=32803
       LOCKD_UDPPORT=32769
-      RPCNFSDCOUNT=16
+      RPCNFSDCOUNT=32
 
 - name: Editing the /etc/sysconfig/rpc-rquotad file
   blockinfile:
@@ -69,75 +69,75 @@
   command: exportfs -a
   # when: "exports"
 
-- name: Open port 111/tcp in firewalld
+- name: Open port 111/tcp portmapper in firewalld
   firewalld:
     port: 111/tcp
     permanent: true
     state: enabled
 
-- name: Open port 111/udp in firewalld
+- name: Open port 111/udp portmapper in firewalld
   firewalld:
     port: 111/udp
     permanent: true
     state: enabled
 
-- name: Open port 875/tcp in firewalld
+- name: Open port 875/tcp rquotad in firewalld
   firewalld:
     port: 875/tcp
     permanent: true
     state: enabled
 
-- name: Open port 875/udp in firewalld
+- name: Open port 875/udp rquotad in firewalld
   firewalld:
     port: 875/udp
     permanent: true
     state: enabled
 
-- name: Open port 892/tcp in firewalld
+- name: Open port 892/tcp mountd in firewalld
   firewalld:
     port: 892/tcp
     permanent: true
     state: enabled
 
-- name: Open port 892/udp in firewalld
+- name: Open port 892/udp mountd in firewalld
   firewalld:
     port: 892/udp
     permanent: true
     state: enabled
 
-- name: Open port 2049/tcp in firewalld
+- name: Open port 2049/tcp NFS in firewalld
   firewalld:
     port: 2049/tcp
     permanent: true
     state: enabled
 
-- name: Open port 2049/udp in firewalld
+- name: Open port 2049/udp NFS in firewalld
   firewalld:
     port: 2049/udp
     permanent: true
     state: enabled
 
-- name: Open port 20048/tcp in firewalld
+- name: Open port 20048/tcp NFS mountd in firewalld
   firewalld:
     port: 20048/tcp
     permanent: true
     state: enabled
 
-- name: Open port 20048/udp in firewalld
+- name: Open port 20048/udp NFS mountd in firewalld
   firewalld:
     port: 20048/udp
     permanent: true
     state: enabled
 
-- name: Open port 32803/tcp in firewalld
+- name: Open port 32803/tcp LOCKD_TCPPORT in firewalld
   firewalld:
     port: 32803/tcp
     permanent: true
     state: enabled
 
-- name: Open port 32803/udp in firewalld
+- name: Open port 32769/udp LOCKD_UDPPORT in firewalld
   firewalld:
-    port: 32803/udp
+    port: 32769/udp
     permanent: true
     state: enabled
 

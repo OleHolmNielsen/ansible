@@ -20,9 +20,13 @@
       - vim-X11
       - emacs
       - xemacs
+      - gnome-shell
+      - gnome-tweak-tool
       - screen
       - reptyr
       - fuse-sshfs
+      - exfat-utils
+      - fuse-exfat
       state: present
   - name: Install popular packages from the EPEL repository
     yum:
@@ -52,7 +56,3 @@
       - pysvn
       - graphviz
       state: present
-  - name: Install popular packages from the RPM Fusion repository
-    yum:
-      name:
-      - vlc

@@ -9,7 +9,9 @@
       - expect
       - ipmiutil
       - OpenIPMI
+      - net-snmp-utils
       - htop
+      - nmap
       - python34
       - Lmod
       - git-all
@@ -25,6 +27,7 @@
       - nss-softokn-freebl
       - libselinux-python
       - libsemanage-python
+      - policycoreutils-python
       - selinux-policy-doc
       state: present
 

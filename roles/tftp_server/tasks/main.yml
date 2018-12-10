@@ -20,7 +20,7 @@
   lineinfile:
     path: /etc/systemd/system/tftp.service
     regexp: '^ExecStart='
-    line: 'ExecStart=/usr/sbin/in.tftpd -v -s /var/lib/tftpboot'
+    line: 'ExecStart=/usr/sbin/in.tftpd -4 -v -s /var/lib/tftpboot'
 
 - name: Open firewall for the TFTP service
   firewalld:

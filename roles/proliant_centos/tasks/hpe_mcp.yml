@@ -52,6 +52,11 @@
     name:
     - ssacli-3.30-14.0.x86_64.rpm
 
+- name: Removing default syslocation,syscontact in the {{ snmpd_conf }} file
+  command: "sed -i.BAK -e '/^syslocation Unknown/d' -e '/^syscontact Root/d' /etc/snmp/snmpd.conf"
+  args:
+    warn: no
+
 - name: Editing the {{ snmpd_conf }} file
   blockinfile:
     path: "{{ snmpd_conf }}"
@@ -65,12 +70,13 @@
       rocommunity public 127.0.0.1
       rocommunity  public 127.0.0.1
       trapcommunity public
+      trapsink 130.225.86.89 public
       syscontact {{ contact }}
       syslocation {{ location }}
   register: snmpd_conf_changed
   vars:
     snmpd_conf: /etc/snmp/snmpd.conf
-    contact: support@fysik.dtu.dk
+    contact: support@mail.fysik.dtu.dk
 
   # Previously: Use HPE command
   #- name: Run /sbin/hpsnmpconfig after installation of HPE MCP packages to configure /etc/snmp/snmpd.conf

@@ -3,7 +3,7 @@
   args:
     creates: "{{ sshd_config }}.orig"
 
-- name: Append lines to {{ sshd_config }}
+- name: "Append lines to {{ sshd_config }} allowing users: {{ allow_users }}"
   blockinfile:
     path: "{{ sshd_config }}"
     state: present
@@ -11,6 +11,6 @@
     block: |
       # Customizations at fysik.dtu.dk
       # Allow only staff people to actually log in:
-      AllowUsers root ohni jensj
+      AllowUsers root {{ allow_users }}
   notify:
    - Restart sshd

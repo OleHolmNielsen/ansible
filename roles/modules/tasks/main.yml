@@ -32,3 +32,12 @@
     - pysvn
     - graphviz
     state: present
+
+- name: Copy command /usr/local/bin/make-modulerc
+  copy:
+    src: "make-modulerc"
+    dest: "/usr/local/bin/make-modulerc"
+    owner: root
+    group: root
+    mode: 0755
+

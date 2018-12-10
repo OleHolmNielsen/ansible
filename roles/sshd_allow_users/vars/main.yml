@@ -1,1 +1,2 @@
 sshd_config: /etc/ssh/sshd_config
+allow_users: ohni jensj cmr postgres

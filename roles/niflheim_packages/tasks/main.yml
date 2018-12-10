@@ -11,10 +11,12 @@
       - redhat-lsb-core
       - nano
       - dos2unix
+      - harfbuzz-devel
       state: present
   - name: Install popular packages from the EPEL repository
     yum:
       name:
+      - epel-release
       - Lmod
       - meld
       - git-all

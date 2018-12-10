@@ -44,7 +44,7 @@
       ppfe		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1.nifl:/u/ppfe
       cat		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1.nifl:/u/cat
       mek		-rsize=8192,wsize=8192,tcp,vers=3	niflfs2.nifl:/u/mek
-      mek2		-rsize=8192,wsize=8192,tcp,vers=3	niflfs2.nifl:/u/mek
+      mek2		-rsize=8192,wsize=8192,tcp,vers=3	niflfs4.nifl:/u/mek
       ntch		-rsize=8192,wsize=8192,tcp,vers=3	niflfs2.nifl:/u/ntch
       mic		-rsize=8192,wsize=8192,tcp,vers=3	niflfs2.nifl:/u/ntch
       energy		-rsize=8192,wsize=8192,tcp,vers=3	niflfs2.nifl:/u/energy

@@ -16,6 +16,4 @@
   yum:
     name: 
     - "{{ rpm_dir }}/singularity-{{ singularity_rpm }}"
-    - "{{ rpm_dir }}/singularity-runtime-{{ singularity_rpm }}"
-    - "{{ rpm_dir }}/singularity-devel-{{ singularity_rpm }}"
     state: present
