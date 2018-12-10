@@ -1,0 +1,5 @@
+- name: Start nmbd - NetBIOS name server to provide NetBIOS over IP naming services to clients
+  service:
+    name=nmb
+    state=restarted
+    enabled=yes

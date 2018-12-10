@@ -1,0 +1,48 @@
+- name: Install CentOS server packages for Apache web server
+  yum:
+    name:
+    - httpd
+    - mod_ssl
+    - libselinux-python
+    - libsemanage-python
+    - policycoreutils-python
+    - selinux-policy-doc
+    - rsync
+    state: present
+
+- name: SELinux context /u/mirrors
+  command:
+    chcon -R -t httpd_sys_content_t /u/mirrors
+
+- name: Copy Apache config file mirror.conf
+  copy:
+    src: "{{ inventory_hostname }}/mirror.conf"
+    dest: /etc/httpd/conf.d/
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Create Apache 01mirror.conf symlink
+  file:
+    # src: /etc/httpd/conf.d/mirror.conf
+    src: mirror.conf
+    dest: /etc/httpd/conf.d/01mirror.conf
+    owner: root
+    group: root
+    state: link
+
+- name: Copy mirror crontab script
+  copy:
+    src: rsync-centos
+    dest: /root/
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Create a cron job for CentOS mirror
+  cron:
+    name: "CentOS mirror"
+    minute: "15"
+    hour: "3,8,12,20"
+    job: "/root/rsync-centos"
+

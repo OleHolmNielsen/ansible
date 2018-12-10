@@ -1,0 +1,39 @@
+# Create SSH known_hosts file containing a list of hosts
+
+- name: Copy the add_known_hosts scripts from this server
+  copy:
+    src: add_known_hosts
+    dest: "/usr/local/bin/"
+    backup: yes
+    owner: root
+    group: root
+    mode: u=rwx,g=rx,o=rx
+
+- name: "Add new hostnames to {{ ssh_known_hosts_file }}"
+  command: "add_known_hosts -K {{ ssh_known_hosts_file }} {{ item }}"
+  # ignore_errors: yes
+  with_items:
+    - servauth2
+    - servauth3
+    - intra4
+    - mail3
+    - web4
+    - servnedi
+    - servcamd3
+    - serv309
+    - audhumbla
+    - que
+    - niflbu1
+    - niflbu2
+    - niflnet1
+    - niflfs1
+    - niflfs2
+    - niflfs3
+    - niflfs4
+    - niflfs5
+    - niflopt1
+    - niflmgt
+    - listserv3
+    - cinfsql
+    - servcinf
+    - servxp

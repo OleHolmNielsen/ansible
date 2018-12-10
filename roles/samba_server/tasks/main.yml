@@ -1,0 +1,33 @@
+- name: Install CentOS server packages for Samba
+  yum:
+    name:
+    - libselinux-python
+    - libsemanage-python
+    - policycoreutils-python
+    - selinux-policy-doc
+    state: present
+
+- name: Set SELinux samba_enable_home_dirs
+  seboolean:
+    name: samba_enable_home_dirs
+    state: yes
+    persistent: yes
+
+- name: Set SELinux samba_export_all_rw
+  seboolean:
+    name: samba_export_all_rw
+    state: yes
+    persistent: yes
+
+- name: Open firewall for the Samba service
+  firewalld:
+    service: samba
+    immediate: true
+    permanent: true
+    state: enabled
+
+- name: Start and enable the Samba smb service 
+  service:
+    name=smb
+    state=restarted
+    enabled=yes

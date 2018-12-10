@@ -1,0 +1,7 @@
+- name: Restart Sendmail
+  service:
+    name=sendmail
+    state=restarted
+
+- name: Rebuild aliases database
+  shell: /usr/bin/newaliases

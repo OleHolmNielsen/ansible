@@ -1,0 +1,38 @@
+#!/bin/sh
+
+# This script mirrors the Centos distribution
+
+# Temporary storage of alert data
+TMPDIR=/var/lib/rsync-centos
+if test ! -d $TMPDIR
+then
+	mkdir -v $TMPDIR
+fi
+STOPFILE=$TMPDIR/rsync-centos.stop
+LOCALDIR=/u/mirrors/pub/linux/centos
+MIRROR=eu-msync.centos.org::CentOS/
+# MIRROR=us-msync.centos.org::CentOS/
+# EXCLUDES='--exclude /5* --exclude /4* --exclude /3* --exclude /2* --exclude RPM-GPG-KEY-CentOS-2'
+# VERBOSE="-v"
+QUIET="-q"
+
+# Remove the stopfile if this script crashes
+trap "rm -f $STOPFILE" EXIT TERM INT QUIT
+
+# Make sure that we do not run more than 1 copy of this script (fx. by cron)
+if [ ! -f $STOPFILE ]
+then
+	touch $STOPFILE
+	# rsync -azH $VERBOSE $QUIET --delete --partial $EXCLUDES $MIRROR $LOCALDIR
+	rsync -aH $VERBOSE $QUIET --delay-updates --delete --partial $EXCLUDES $MIRROR $LOCALDIR
+	rm -f $STOPFILE
+else
+	echo Error: Another rsync script is already running
+	exit 1
+fi
+
+sleep 1
+# Fix ownerships
+chown -R -f root: $LOCALDIR
+
+exit 0

@@ -1,0 +1,48 @@
+- name: Install CentOS server packages for MoinMoin
+  yum:
+    name:
+    - httpd
+    - mod_ssl
+    - python-docutils
+    - libselinux-python
+    - libsemanage-python
+    - policycoreutils-python
+    - selinux-policy-doc
+    state: present
+
+- name: Set SELinux httpd_enable_cgi
+  seboolean:
+    name: httpd_enable_cgi
+    state: yes
+    persistent: yes
+
+- name: SELinux context moin.cgi
+  sefcontext:
+    target: /var/www/wiki/cgi-bin/moin.cgi
+    setype: httpd_unconfined_script_exec_t
+    state: present
+
+- name: Apply new SELinux file context to /var/www/wiki/cgi-bin/moin.cgi
+  command: restorecon -iv /var/www/wiki/cgi-bin/moin.cgi
+
+- name: SELinux context /var/moin
+  command:
+    chcon -R -t httpd_sys_content_t /var/moin
+
+- name: Copy Apache config file wiki.conf
+  copy:
+    src: "{{ inventory_hostname }}/wiki.conf"
+    dest: /etc/httpd/conf.d/
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Create Apache 01wiki.conf symlink
+  file:
+    # src: /etc/httpd/conf.d/wiki.conf
+    src: wiki.conf
+    dest: /etc/httpd/conf.d/01wiki.conf
+    owner: root
+    group: root
+    state: link
+

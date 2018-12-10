@@ -1,0 +1,14 @@
+- name: Install the logrotate package
+  yum:
+    name: logrotate
+    state: present
+
+- name: Editing the {{ syslog_conf }} file
+  blockinfile:
+    path: "{{ syslog_conf }}"
+    state: present
+    insertafter: "missingok"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    block: |
+      # Keep 13 weeks of logfiles
+      rotate 13

@@ -1,0 +1,74 @@
+- name: Install Apache web server packages 
+  yum:
+    name:
+    - httpd
+    - mod_ssl
+    - libselinux-python
+    - libsemanage-python
+    - policycoreutils-python
+    - selinux-policy-doc
+    state: present
+
+# Edit the Apache ssl.conf file
+- name: Apache ssl.conf SSLCipherSuite
+  replace:
+    path: /etc/httpd/conf.d/ssl.conf
+    regexp: 'SSLCipherSuite HIGH:3DES:!aNULL:!MD5:!SEED:!IDEA'
+    replace: ''
+- name: Apache ssl.conf SSLCertificateFile
+  replace:
+    path: /etc/httpd/conf.d/ssl.conf
+    regexp: 'SSLCertificateFile /etc/pki/tls/certs/localhost.crt'
+    replace: ''
+- name: Apache ssl.conf SSLCertificateKeyFile
+  replace:
+    path: /etc/httpd/conf.d/ssl.conf
+    regexp: 'SSLCertificateKeyFile /etc/pki/tls/private/localhost.key'
+    replace: ''
+
+- name: Apache SSL configuration at fysik.dtu.dk
+  blockinfile:
+    path: "/etc/httpd/conf.d/ssl.conf"
+    state: present
+    insertafter: EOF
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    block: |
+      SSLCipherSuite "ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA"
+      SSLCertificateFile /etc/pki/tls/certs/fysik.dtu.dk.crt
+      SSLCertificateKeyFile /etc/pki/tls/private/fysik.dtu.dk.key
+      SSLCACertificateFile /etc/pki/tls/certs/intermediate.crt
+      SSLHonorCipherOrder On
+      # HSTS (mod_headers is required) (15768000 seconds = 6 months)
+      Header always add Strict-Transport-Security "max-age=15768000"
+
+- name: Set SELinux httpd_use_nfs
+  seboolean:
+    name: httpd_use_nfs
+    state: yes
+    persistent: yes
+
+- name: Set SELinux httpd_enable_homedirs
+  seboolean:
+    name: httpd_enable_homedirs
+    state: yes
+    persistent: yes
+
+- name: Open firewall for the HTTP service
+  firewalld:
+    service: http
+    immediate: true
+    permanent: true
+    state: enabled
+
+- name: Open firewall for the HTTPS service
+  firewalld:
+    service: https
+    immediate: true
+    permanent: true
+    state: enabled
+
+- name: Restart and enable the Apache service 
+  service:
+    name=httpd
+    state=restarted
+    enabled=yes

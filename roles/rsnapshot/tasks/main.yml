@@ -1,0 +1,141 @@
+# Setup rsnapshot Remote snapshot
+
+- name: Install required packages from EPEL
+  yum:
+    name:
+    - rsync
+    - epel-release
+    - rsnapshot
+    - bash-completion
+    - git-all
+    - vim-enhanced
+
+- name: Copy the rsnapshot configuration files from this server
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/"
+    backup: yes
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+  with_items:
+    - rsnapshot.exclude
+    - rsnapshot-master.conf
+    - rsnapshot-localhost.conf
+    - rsnapshot-root-servauth2.conf
+    - rsnapshot-root-servauth3.conf
+    - rsnapshot-root-intra4.conf
+    - rsnapshot-root-mail3.conf
+    - rsnapshot-root-web4.conf
+    - rsnapshot-root-servnedi.conf
+    - rsnapshot-root-servcamd3.conf
+    - rsnapshot-root-serv309.conf
+    - rsnapshot-root-que.conf
+    - rsnapshot-root-niflbu1.conf
+    - rsnapshot-root-niflbu2.conf
+    - rsnapshot-root-niflnet1.conf
+    - rsnapshot-root-niflfs1.conf
+    - rsnapshot-root-niflfs2.conf
+    - rsnapshot-root-niflfs3.conf
+    - rsnapshot-root-niflfs4.conf
+    - rsnapshot-root-niflfs5.conf
+    - rsnapshot-root-niflopt1.conf
+    - rsnapshot-root-niflmgt.conf
+    - rsnapshot-root-audhumbla.conf
+    - rsnapshot-root-listserv3.conf
+    - rsnapshot-root-cinfsql.conf
+    - rsnapshot-root-servcinf.conf
+    - rsnapshot-root-servxp.conf
+    - rsnapshot-cmr.conf
+    - rsnapshot-nexmap.conf
+    - rsnapshot-ppfe.conf
+    - rsnapshot-tap.conf
+    - rsnapshot-staff.conf
+    - rsnapshot-fysadm.conf
+    - rsnapshot-fluids.conf
+    - rsnapshot-qpit.conf
+    - rsnapshot-TMF.conf
+    - rsnapshot-tekhist.conf
+    - rsnapshot-fys.conf
+    - rsnapshot-camp.conf
+    - rsnapshot-servcinf.conf
+    - rsnapshot-niflopt1.conf
+    - rsnapshot-modules.conf
+    - rsnapshot-cinfsql.conf
+
+- name: Create the rsnapshot top-level directories in /u/snapshots/
+  file:
+    path: "/u/snapshots/{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: u=rwx,g=,o=
+  with_items:
+    - localhost
+    - root-servauth2
+    - root-servauth3
+    - root-intra4
+    - root-mail3
+    - root-servnedi
+    - root-servcamd3
+    - root-serv309
+    - root-audhumbla
+    - root-que
+    - root-niflbu1
+    - root-niflbu2
+    - root-niflnet1
+    - root-niflfs1
+    - root-niflfs2
+    - root-niflfs3
+    - root-niflfs4
+    - root-niflfs5
+    - root-niflopt1
+    - root-niflmgt
+    - root-listserv3
+    - root-cinfsql
+    - root-servxp
+
+- name: Create the rsnapshot top-level directories in /u/snapshots2/
+  file:
+    path: "/u/snapshots2/{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: u=rwx,g=,o=
+  with_items:
+    - root-web4
+    - root-servcinf
+    - cmr
+    - nexmap
+    - ppfe
+    - tap
+    - staff
+    - fysadm
+    - fluids
+    - qpit
+    - TMF
+    - tekhist
+    - fys
+    - camp
+    - servcinf
+    - niflopt1
+    - modules
+    - cinfsql
+
+- name: Copy the rsnapshots script from this server
+  copy:
+    src: "{{ item }}"
+    dest: "/root/"
+    backup: yes
+    owner: root
+    group: root
+    mode: u=rwx,g=rx,o=rx
+  with_items:
+    - rsnapshots
+
+- cron:
+    name: "Make daily snapshots of roots and NFS server file systems"
+    minute: "1"
+    hour: "23"
+    job: "/root/rsnapshots"
+

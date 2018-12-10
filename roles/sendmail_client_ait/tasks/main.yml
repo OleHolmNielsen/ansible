@@ -1,0 +1,24 @@
+- name: "Editing the {{ sendmail_mc }} file setting SMTP relay {{ smtp_relay }}"
+  blockinfile:
+    path: "{{ sendmail_mc }}"
+    state: present
+    insertafter: '^dnl define\(`SMART_HOST'', `smtp.your.provider''\)dnl'
+    marker: "dnl # {mark} ANSIBLE MANAGED BLOCK"
+    block: |
+      define(`SMART_HOST', `{{ smtp_relay }}')dnl
+      dnl # Relay also unqualified addresses: Not good for AIT server
+      dnl define(`LOCAL_RELAY', `{{ smtp_relay }}')dnl
+  notify:
+   - Restart Sendmail
+
+- name: Editing the {{ aliases }} file
+  blockinfile:
+    path: "{{ aliases }}"
+    state: present
+    insertafter: '^#root:          marc'
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    block: |
+      root: root@mail.fysik.dtu.dk
+      cmr: jensj@fysik.dtu.dk
+  notify:
+   - Rebuild aliases database
