@@ -1,0 +1,81 @@
+#!/bin/sh
+
+# Executing rsnapshot backups
+# Usage: rsnapshots [daily|weekly|monthly|hourly] (default: daily)
+
+# First the root file systems
+FILESYSTEMS="localhost root-servauth2 root-servauth3 root-intra4 root-mail3 root-servnedi root-servcamd3 root-serv309 root-que root-audhumbla root-niflbu1 root-niflbu2 root-niflnet1 root-niflfs1 root-niflfs2 root-niflopt1 root-niflmgt root-listserv3 root-cinfsql root-servcinf root-servxp root-web4"
+# Add the data file systems
+FILESYSTEMS="$FILESYSTEMS cmr camp niflopt1 modules servcinf cinfsql fys nexmap ppfe tap staff fysadm fluids qpit TMF tekhist"
+
+# Commands
+RSNAPSHOT=/usr/bin/rsnapshot
+# RSNAPSHOTARGS="-v"
+RSNAPREPORT=/usr/local/bin/rsnapreport.pl
+RSNAPCONFIG=/etc/rsnapshot
+# Node health check
+NHC=/usr/sbin/nhc
+
+# First a health check
+$NHC
+
+if test $# -gt 0
+then
+	# Perform backup specified by command arguments
+	BACKUPNAME=$*
+else
+	# This scripts gets called daily, and runs only the "daily" task.
+	# On certain days, run the monthly and weekly tasks before that.
+	case `LANG=C date +%d` in
+		01) $0 monthly ;;
+	esac
+	
+	case `LANG=C date +%a` in
+		Sun) $0 weekly ;;
+	esac
+	# Default: daily backup
+	BACKUPNAME=daily
+fi
+
+echo
+$NHC
+echo
+echo Executing rsnapshot backups: $BACKUPNAME
+echo
+
+# Loop over file systems
+for i in $FILESYSTEMS
+do
+	# Configuration file for this backup
+	CONF=$RSNAPCONFIG-$i.conf
+	if ! test -s $CONF
+	then
+		echo ERROR: Configuration file $CONF does not exist or is empty
+		continue
+	fi
+	echo "====================================================================="
+	echo
+	echo Rsnapshot $BACKUPNAME backup of file system $i starting at `date`
+	echo
+	# NAS box grahams2 needs extra time to wake up, so first change directory to /home/grahams2
+	if test "$i" = "grahams2"
+	then
+		DIR=/home/$i
+		echo Change directory to filesystem $DIR
+		(cd $DIR; df -Ph .)
+	fi
+
+	$RSNAPSHOT $RSNAPSHOTARGS -c $CONF $BACKUPNAME 2>&1 
+	# $RSNAPSHOT $RSNAPSHOTARGS -c $CONF $BACKUPNAME 2>&1 | $RSNAPREPORT
+	# $RSNAPSHOT -c $CONF $BACKUPNAME 
+done
+
+echo Backups ended at `date`
+
+# Display filesystem data
+echo
+echo "====================================================================="
+df -Phx tmpfs
+
+echo
+$NHC
