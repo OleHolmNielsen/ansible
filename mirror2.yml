@@ -1,0 +1,24 @@
+# Configure web5 server
+
+- hosts: mirror2
+  roles:
+   - rhel7
+   - bashrc
+   - hostname
+   - non_graphical
+   - epel_repo
+   - server_packages
+   # - desktops_autofs
+   # - authorized_keys_command
+   - nhc
+   - logwatch
+   - logrotate
+   - proliant_centos
+   - no_libvirt
+   - sshd_config
+   - sshd_allow_users
+   - yum_updates
+   - sendmail_client
+   - mirror
+   - web_server
+   - firewalld_reload
