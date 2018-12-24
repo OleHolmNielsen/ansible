@@ -22,7 +22,7 @@
    - sshd_config
    - sshd_allow_users
    - bashrc
-   - yum_updates
+   # Do not update automatically the file servers: yum_updates
    - sysctl_bignet
    - niflheim_autofs_servers
    - sendmail_client
