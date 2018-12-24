@@ -8,8 +8,6 @@
    - non_graphical
    - epel_repo
    - server_packages
-   # - desktops_autofs
-   # - authorized_keys_command
    - nhc
    - logwatch
    - logrotate
@@ -18,6 +16,6 @@
    - sshd_config
    - sshd_allow_users
    - yum_updates
-   # - sendmail_client
-   # - web_server
+   - firewalld_whitelist
+   - sendmail_server
    - firewalld_reload

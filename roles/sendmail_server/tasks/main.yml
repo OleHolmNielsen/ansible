@@ -1,0 +1,61 @@
+- name: Copy the Sendmail aliases files from this server
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/"
+    backup: yes
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+  with_items:
+    - aliases.orig
+    - aliases.fysik
+
+- name: Copy the Sendmail aliases.sh script from this server
+  copy:
+    src: "aliases.sh"
+    dest: "/etc/"
+    backup: yes
+    owner: root
+    group: root
+    mode: u=rwx,g=rx,o=rx
+
+- name: Generate a combined /etc/aliases file
+  command: /etc/aliases.sh
+
+- name: Create a cron job for executing aliases.sh
+  cron:
+    name: "Execute /etc/aliases.sh"
+    minute: "*/10"
+    job: "/etc/aliases.sh"
+
+- name: "Remove loopback restriction in {{ sendmail_mc }} to enable sendmail service"
+  lineinfile:
+    path: "{{ sendmail_mc }}"
+    regexp: 'Addr=127\.0\.0\.1'
+    line: 'dnl #'
+
+- name: "Add SMTP relay {{ smtp_relay }} to {{ sendmail_mc }}"
+  blockinfile:
+    path: "{{ sendmail_mc }}"
+    state: present
+    insertafter: '^dnl define\(`SMART_HOST'', `smtp.your.provider''\)dnl'
+    marker: "dnl # {mark} ANSIBLE MANAGED BLOCK"
+    block: |
+      define(`SMART_HOST', `{{ smtp_relay }}')dnl
+      dnl # Relay also unqualified addresses
+      define(`LOCAL_RELAY', `{{ smtp_relay }}')dnl
+  notify:
+   - Restart Sendmail
+
+- name: Restart and enable the Sendmail service
+  service:
+    name=sendmail
+    state=restarted
+    enabled=yes
+
+- name: Create a cron job for daily restart of sendmail
+  cron:
+    name: "Sendmail_restart"
+    hour: "8,20"
+    job: "systemctl restart sendmail"
+
