@@ -1,0 +1,61 @@
+#!/bin/sh
+
+# This script takes a list of hostnames and adds their SSH public key to the
+# user's SSH known_hosts file.  Only new keys are added.
+
+# Defaults:
+# SSH keys file
+KEYFILE=$HOME/.ssh/known_hosts
+export remove_flag=0
+KEYSCAN_ARGS="-4 -H -T 5 -t ed25519,ecdsa,dsa"
+
+# Command usage:
+function usage()
+{
+cat <<EOF
+Usage: $0 [-R] [-K keyfile] <host-list>
+where:
+        -R: Remove preexisting host keys
+        -K keyfile: Specify keyfile [Default: $KEYFILE]
+        -h: Print this help information
+EOF
+}
+
+while getopts "RK:" options; do
+        case $options in
+                R )     export remove_flag=1
+                        echo NOTICE: Remove preexisting host keys
+			shift
+                        ;;
+                K )     export KEYFILE=$OPTARG
+                        echo Using keyfile $KEYFILE
+			shift 2
+                        ;;
+                h|?|* ) usage
+                        exit 1;;
+        esac
+done
+
+if test $# -gt 0
+then
+	HOSTLIST=$*
+else
+	echo No hosts listed
+	usage
+	exit 1
+fi
+
+for i in $HOSTLIST
+do
+	if test $remove_flag -gt 0
+	then
+		# Remove key for host $i
+		ssh-keygen -q -f $KEYFILE -R $i
+	elif test -n "`ssh-keygen -f $KEYFILE -F $i`"
+	then
+		# Skip: Host already in the key file
+		continue
+	fi
+	# Host $i: Unknown SSH key, scan for it
+	ssh-keyscan $KEYSCAN_ARGS $i >> $KEYFILE
+done
