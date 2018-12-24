@@ -22,3 +22,16 @@
       cmr: jensj@fysik.dtu.dk
   notify:
    - Rebuild aliases database
+
+- name: Restart and enable the Sendmail service 
+  service:
+    name=sendmail
+    state=restarted
+    enabled=yes
+
+- name: Create a cron job for daily restart of sendmail
+  cron:
+    name: "Sendmail_restart"
+    hour: "8"
+    job: "systemctl restart sendmail"
+
