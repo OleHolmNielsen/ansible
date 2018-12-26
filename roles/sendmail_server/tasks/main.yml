@@ -34,7 +34,7 @@
     regexp: 'Addr=127\.0\.0\.1'
     line: 'dnl #'
 
-- name: "Add SMTP relay {{ smtp_relay }} to {{ sendmail_mc }}"
+- name: "Add SMTP relay {{ smtp_relay }} to {{ sendmail_mc }} and mail relaying"
   blockinfile:
     path: "{{ sendmail_mc }}"
     state: present
@@ -44,6 +44,8 @@
       define(`SMART_HOST', `{{ smtp_relay }}')dnl
       dnl # Relay also unqualified addresses
       define(`LOCAL_RELAY', `{{ smtp_relay }}')dnl
+      dnl # Relay mails from our domain
+      FEATURE(relay_entire_domain)dnl
   notify:
    - Restart Sendmail
 
@@ -56,6 +58,7 @@
 - name: Create a cron job for daily restart of sendmail
   cron:
     name: "Sendmail_restart"
+    minute: "0"
     hour: "8,20"
     job: "systemctl restart sendmail"
 

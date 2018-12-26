@@ -23,4 +23,7 @@ EOF
 done
 
 # Update aliases database
-newaliases > /dev/null
+if test -n "`diff $ALIASES $ALIASES.BAK`"
+then
+	newaliases > /dev/null
+fi
