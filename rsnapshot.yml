@@ -21,4 +21,5 @@
    - sshd_allow_users
    - bashrc
    - yum_updates
+   - sendmail_aliases
    - sendmail_client

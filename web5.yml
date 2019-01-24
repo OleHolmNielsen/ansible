@@ -18,6 +18,7 @@
    - sshd_config
    - sshd_allow_users
    - yum_updates
+   - sendmail_aliases
    - sendmail_client
    - web_server
    - firewalld_reload
