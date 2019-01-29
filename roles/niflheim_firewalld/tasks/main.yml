@@ -1,51 +1,53 @@
 # firewalld: Niflheim: whitelist special servers
-# ipv4 filter INPUT_direct 0 -s 130.225.87.134/32 -j ACCEPT
-# ipv4 filter INPUT_direct 0 -s 130.225.86.7/32 -j ACCEPT
-# ipv4 filter INPUT_direct 0 -s 130.225.86.90/32 -j ACCEPT
-# ipv4 filter INPUT_direct 0 -s 130.225.86.129/32 -j ACCEPT
-# ipv4 filter INPUT_direct 0 -s 130.225.87.140/32 -j ACCEPT
+
+- include_role:
+    name: rhel7
 
 
-  - include_role:
-      name: rhel7
+- name: "Open ports 8886-8890 for user remote access to their Jupyter notebooks"
+  firewalld:
+    port: 8886-8890/tcp
+    permanent: yes
+    state: enabled
+  notify: Restart firewalld
 
-  - name: Get firewalld rules
-    command: "firewall-cmd  --permanent --direct --get-all-rules"
-    register: rules
-    # Ignore the "changed" status
-    changed_when: False
+- name: Get firewalld rules
+  command: "firewall-cmd  --permanent --direct --get-all-rules"
+  register: rules
+  # Ignore the "changed" status
+  changed_when: False
 
-  - name: firewalld whitelist servtsm1 server 130.225.87.134
-    vars:
-      firewalld_needs_reload: "true"
-    command: firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT_direct 0 -s 130.225.87.134/32 -j ACCEPT
-    when: "'130.225.87.134/32' not in rules.stdout"
-    notify: Restart firewalld
+- name: firewalld whitelist servtsm1 server 130.225.87.134
+  vars:
+    firewalld_needs_reload: "true"
+  command: firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT_direct 0 -s 130.225.87.134/32 -j ACCEPT
+  when: "'130.225.87.134/32' not in rules.stdout"
+  notify: Restart firewalld
 
-  - name: firewalld whitelist servtsm4 server 130.225.86.7
-    vars:
-      firewalld_needs_reload: "true"
-    command: firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT_direct 0 -s 130.225.86.7/32 -j ACCEPT
-    when: "'130.225.86.7/32' not in rules.stdout"
-    notify: Restart firewalld
+- name: firewalld whitelist servtsm4 server 130.225.86.7
+  vars:
+    firewalld_needs_reload: "true"
+  command: firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT_direct 0 -s 130.225.86.7/32 -j ACCEPT
+  when: "'130.225.86.7/32' not in rules.stdout"
+  notify: Restart firewalld
 
-  - name: firewalld whitelist servauth2 server 130.225.86.90
-    vars:
-      firewalld_needs_reload: "true"
-    command: firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT_direct 0 -s 130.225.86.90/32 -j ACCEPT
-    when: "'130.225.86.90/32' not in rules.stdout"
-    notify: Restart firewalld
+- name: firewalld whitelist servauth2 server 130.225.86.90
+  vars:
+    firewalld_needs_reload: "true"
+  command: firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT_direct 0 -s 130.225.86.90/32 -j ACCEPT
+  when: "'130.225.86.90/32' not in rules.stdout"
+  notify: Restart firewalld
 
-  - name: firewalld whitelist servauth2 server 130.225.86.129
-    vars:
-      firewalld_needs_reload: "true"
-    command: firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT_direct 0 -s 130.225.86.129/32 -j ACCEPT
-    when: "'130.225.86.129/32' not in rules.stdout"
-    notify: Restart firewalld
+- name: firewalld whitelist servauth3 server 130.225.86.129
+  vars:
+    firewalld_needs_reload: "true"
+  command: firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT_direct 0 -s 130.225.86.129/32 -j ACCEPT
+  when: "'130.225.86.129/32' not in rules.stdout"
+  notify: Restart firewalld
 
-  - name: firewalld whitelist nigw2 server 130.225.87.140
-    vars:
-      firewalld_needs_reload: "true"
-    command: firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT_direct 0 -s 130.225.87.140/32 -j ACCEPT
-    when: "'130.225.87.140/32' not in rules.stdout"
-    notify: Restart firewalld
+- name: firewalld whitelist nigw2 server 130.225.87.140
+  vars:
+    firewalld_needs_reload: "true"
+  command: firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT_direct 0 -s 130.225.87.140/32 -j ACCEPT
+  when: "'130.225.87.140/32' not in rules.stdout"
+  notify: Restart firewalld
