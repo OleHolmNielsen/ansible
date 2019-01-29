@@ -1,0 +1,83 @@
+#!/bin/sh
+
+#
+# Check if machines are alive (by ping)
+# To be run regularly from cron.
+#
+
+# Exit the script in case of control-C etc.
+trap "exit -1" SIGTERM SIGINT SIGQUIT
+
+PING="/bin/ping -c 1 -w 3"
+HOST=/usr/bin/host
+
+if test "$USER" = "root"
+then
+	STOPFILEDIR=/var/lib/alive
+	if test ! -d $STOPFILEDIR
+	then
+		mkdir -v $STOPFILEDIR
+	fi
+else
+	STOPFILEDIR=/var/tmp
+fi
+
+# List of hosts 
+LIST="	ns.dtu.dk \
+	web4 web5 servcamd3 servcinf cinfsql servauth2 servauth3 demon demon2 \
+	intra4 intra5 serv309 servxp servtsm1 servtsm4 dhcpy6d rsnap1 rsnap2 \
+	servnedi fys-winprint01 \
+	ghost307 ghost309 \
+	surt thul sylg svol fjorm slid finbul nigw2 \
+	que niflfs1 niflfs2 niflfs3 \
+	niflnet1 niflopt1 niflopt2 niflbu1 vid hrid \
+	fedora \
+	bardeen \
+	prometheus auriga grahams \
+	panda2 pandabu hypatia \
+	b307-hp0 b307-hp1 b307-hp2 b307-hp3 b307-hp4 b307-hp5 b307-hp6 \
+	b307-hp7 b307-hp9 b307-hp14 b307-hp15 \
+	b309-hp3 b309-hp4 b309-hp7 \
+	b309-hp10 b309-hp11 b309-hp12 b309-hp13 \
+	b311-hp1 \
+	b312-hp1 b312-hp4 b312-hp5 b312-hp7 b312-hp8 b312-hp9 b312-hp10 b312-hp11 b312-hp12 b312-hp13 b312-hp15 \
+	niflheim-sw1 niflheim-sw2 \
+	sw1-closed \
+	hpz5200 hpz6200 \
+	93.160.188.230 \
+	cinf4015 b312-m553 ly307-225-co1 ly307-225-bw1 b307-m602 \
+	ly307-east-co1 case4015 \
+	b312-m725 b309-m725 b307-m830 b311-4525 \
+	b309-4525 b309-4525-2 cryoprt ogprint ws4525"
+
+
+for host in ${LIST}
+do
+	STOPFILE=$STOPFILEDIR/alive.${host}
+	# Check that the hostname exists in the name service
+	if $HOST ${host} 2>&1 > /dev/null
+	then
+		# Ping the host to see if it is alive
+		if $PING ${host} 2>&1 > /dev/null
+		then
+			if [ -f $STOPFILE ]
+			then
+				echo Host ${host} is up again
+			fi
+			rm -f $STOPFILE
+		else
+			if [ ! -f $STOPFILE ]
+			then
+				echo Cannot ping host ${host} !
+				touch $STOPFILE
+			fi
+		fi
+	else
+		if [ ! -f $STOPFILE ]
+		then
+			echo $0 ERROR: Cannot lookup host ${host} !
+			$HOST ${host}
+			touch $STOPFILE
+		fi
+	fi
+done
