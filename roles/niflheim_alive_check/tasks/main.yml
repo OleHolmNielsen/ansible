@@ -1,0 +1,32 @@
+# Set up alive (ping) check notifications
+
+- name: Copy the alive check scripts from this server
+  copy:
+    src: "{{ item }}"
+    dest: "/usr/local/bin/"
+    backup: yes
+    owner: root
+    group: root
+    mode: u=rwx,g=rx,o=rx
+  with_items:
+    - alive
+    - alive2
+    - alive_ibmc
+
+- cron:
+    name: "Check if Login nodes and switches are alive"
+    minute: "0,15,30,45"
+    hour: "*"
+    job: "/usr/local/bin/alive2"
+
+- cron:
+    name: "Check if Huawei x... node iBMCs are alive"
+    minute: "5"
+    hour: "*"
+    job: "/usr/local/bin/alive_ibmc"
+
+- cron:
+    name: "Daily cleanup of alive notifications"
+    minute: "3"
+    hour: "8"
+    job: "/bin/rm -f /var/lib/alive/alive.*"
