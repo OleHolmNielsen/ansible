@@ -1,0 +1,2 @@
+# NFS exports file from Ansible server
+/u/mek 10.4.0.0/16(rw) 10.2.0.0/16(rw) 10.3.0.0/16(rw) servauth2(rw,no_root_squash,insecure,sync) niflbu1.nifl(rw,no_root_squash,insecure,sync) que(rw,no_root_squash,insecure,sync) *.nifl.fysik.dtu.dk(rw) web4(rw) sylg(rw) fjorm(rw) surt(rw) thul(rw) svol(rw) slid(rw) demon(rw) demon2(rw) bardeen(rw) jordan(rw) localhost(rw) born(rw) boyle(rw) dirac(rw) faraday(rw) fermi(rw) gamow(rw) mott(rw) pascal(rw) tesla(rw) lorenz(rw)

@@ -1,6 +1,6 @@
 # NFS exports file from Ansible server
 # Optional software and users
-/u/opt 10.4.0.0/16(rw) 10.2.0.0/16(rw) 10.3.0.0/16(rw) servauth2(rw,no_root_squash,insecure,sync) hvergelmer2(rw,no_root_squash,insecure,sync) finbul2(rw,no_root_squash,insecure,sync) *.nifl.fysik.dtu.dk(rw) web4(rw) intra4(rw) slid(rw) fjorm(rw) surt(rw) thul(rw) muspel(rw) que(rw) sylg(rw) demon(rw) demon2(rw) cmr-server(rw) bardeen(rw) jordan(rw) localhost(rw) *.fysik.dtu.dk(ro)
+/u/opt 10.4.0.0/16(rw) 10.2.0.0/16(rw) 10.3.0.0/16(rw) servauth2(rw,no_root_squash,insecure,sync) hvergelmer2(rw,no_root_squash,insecure,sync) finbul2(rw,no_root_squash,insecure,sync) *.nifl.fysik.dtu.dk(rw) web4(rw) intra4(rw) slid(rw) fjorm(rw) surt(rw) thul(rw) svol(rw) que(rw) sylg(rw) demon(rw) demon2(rw) cmr-server(rw) bardeen(rw) jordan(rw) localhost(rw) *.fysik.dtu.dk(ro)
 #
 # Software modules
 #
@@ -9,11 +9,14 @@
 # These modules must ONLY be exported to broadwell/xeonv4 nodes
 # /u/modules/xeonv4 10.4.0.0/16(rw) 10.2.0.0/16(rw) localhost(rw) sylg(rw)
 #
+# Skylak nodes and OmniPath subnet (10.4)
+/u/modules/skylak 10.2.135.0/24(rw) 10.4.135.0/24(rw) localhost(rw) svol(rw) 
+#
 # Broadwell nodes and OmniPath subnet (10.4)
 /u/modules/broadwell 10.2.135.0/24(rw) 10.4.135.0/24(rw) localhost(rw) sylg(rw) que(rw) boyle(ro) born(ro)
 #
 # These modules must ONLY be exported to nehalem/xeon0 nodes
-/u/modules/xeon0 10.2.129.0/24(rw) 10.2.130.0/24(rw) 10.2.131.0/24(rw) 10.2.132.0/24(rw) localhost(rw) fjorm(rw) cmrdb3(rw)
+/u/modules/xeon0 10.2.129.0/24(rw) 10.2.130.0/24(rw) 10.2.131.0/24(rw) 10.2.132.0/24(rw) localhost(rw) fjorm(rw) 
 #
 # These modules must ONLY be exported to sanddybridge/ivybridge/xeonv2 nodes (including Infiniband 10.3 subnet)
 /u/modules/xeonv2 10.2.133.0/24(rw) 10.2.134.0/24(rw) 10.3.133.0/24(rw) 10.3.134.0/24(rw) thul(rw) surt(ro) localhost(rw) 
