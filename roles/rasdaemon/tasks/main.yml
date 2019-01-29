@@ -1,0 +1,17 @@
+- name: Install the rasdaemon package
+  yum:
+    name: rasdaemon
+    state: present
+
+- name: Restart and enable the rasdaemon service
+  service:
+    name=rasdaemon
+    state=restarted
+    enabled=yes
+
+- name: Create a cron job for ras-mc-ctl
+  cron:
+    name: "ras-mc-ctl"
+    minute: "0"
+    hour: "*"
+    job: "/usr/sbin/ras-mc-ctl --quiet"
