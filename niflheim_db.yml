@@ -11,6 +11,7 @@
    - authorized_keys_command
    - ipmi
    - nhc
+   - rasdaemon
    - logwatch
    - logrotate
    - proliant_centos
@@ -19,5 +20,6 @@
    - sshd_allow_users
    - bashrc
    - yum_updates
+   - sendmail_aliases
    - sendmail_client
    - firewalld_reload

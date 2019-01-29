@@ -3,6 +3,7 @@
 - hosts: Niflheim-login
   roles:
    - rhel7
+   - lvscratch
    - hostname
    - non_graphical
    - epel_repo
@@ -11,6 +12,7 @@
    - ipmi
    - niflheim_profile
    - nhc
+   - rasdaemon
    - logwatch
    - logrotate
    # Limits disabled, different on slid, sylg etc.
@@ -23,8 +25,9 @@
    - yum_updates
    - niflheim_autofs
    - niflheim_firewalld
+   - sendmail_aliases
    - sendmail_client
    - slurm_basic
    - slurm_tools
    - modules
-   - singularity
+   # - singularity

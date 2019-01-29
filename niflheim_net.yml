@@ -14,6 +14,7 @@
    # - over_quota
    - ipmi
    - nhc
+   - rasdaemon
    - logwatch
    - logrotate
    - proliant_centos
@@ -26,6 +27,7 @@
    - yum_updates
    - sysctl_bignet
    - niflheim_autofs_servers
+   - sendmail_aliases
    - sendmail_client
    - tftp_server
    - ftp_server
