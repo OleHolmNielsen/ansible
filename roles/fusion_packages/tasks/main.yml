@@ -7,3 +7,5 @@
   yum:
     name:
     - vlc
+    - exfat-utils
+    - fuse-exfat
