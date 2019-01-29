@@ -1,4 +1,0 @@
-- name: Install the EL7 RPM Fusion repository https://rpmfusion.org/
-  yum:
-    name: https://download1.rpmfusion.org/free/el/rpmfusion-free-release-7.noarch.rpm
-    state: present
