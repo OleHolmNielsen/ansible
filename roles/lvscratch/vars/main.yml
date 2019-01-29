@@ -1,0 +1,7 @@
+volgroup: VolGroup00
+lvname: lv_scratch
+lvsize: 32G
+lvdevice: "/dev/mapper/{{ volgroup }}-{{ lvname }}"
+lvpath: /scratch
+filesystem: xfs
+mountopts: "defaults,quota,noatime,nodiratime,logbufs=8,nosuid,nodev,inode64"

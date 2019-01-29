@@ -1,0 +1,28 @@
+# Create an XFS file system on a specified LVM volume
+
+# The lvg seems to require pvs (physical volumes)
+#- name: "Make sure Volume Group {{ volgroup }} exists"
+#  lvg:
+#    vg: "{{ volgroup }}"
+#    state: present
+
+- name: "Create a logical volume {{ lvdevice }} of size {{ lvsize }} in VG {{ volgroup }}"
+  lvol:
+    vg: "{{ volgroup }}"
+    lv: "{{ lvname }}"
+    size: "{{ lvsize }}"
+    shrink: no
+    state: present
+
+- name: "Create a {{ filesystem }} filesystem on {{ lvdevice }}"
+  filesystem:
+    fstype: "{{ filesystem }}"
+    dev: "{{ lvdevice }}"
+
+- name: "Mount {{ lvdevice }} on {{ lvpath}}"
+  mount:
+    path: "{{ lvpath }}"
+    src: "{{ lvdevice }}"
+    fstype: "{{ filesystem }}"
+    opts: "{{ mountopts }}"
+    state: mounted
