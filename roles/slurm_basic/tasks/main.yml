@@ -56,10 +56,16 @@
     - "{{ rpm_dir }}/slurm-devel-{{ slurm_rpm }}"
     state: present
 
+- name: Create directory {{ slurm_dir }}
+  file:
+    path: "{{ slurm_dir }}/"
+    state: directory
+    mode: 0755
+
 - name: Copy site {{ rpm_dir }}/slurm.conf to {{ slurm_dir }}
   copy:
     src: "{{ rpm_dir }}/slurm.conf"
-    dest: "{{ slurm_dir }}"
-    owner: slurm
-    group: slurm
+    dest: "{{ slurm_dir }}/"
+    owner: root
+    group: root
     mode: 0644
