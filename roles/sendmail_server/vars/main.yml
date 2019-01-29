@@ -2,3 +2,6 @@
 sendmail_mc: /etc/mail/sendmail.mc
 aliases: /etc/aliases
 smtp_relay: smtp.ait.dtu.dk
+localhostnames: /etc/mail/local-host-names
+mailertable: /etc/mail/mailertable
+virtusertable: /etc/mail/virtusertable

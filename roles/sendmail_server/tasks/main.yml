@@ -1,32 +1,64 @@
-- name: Copy the Sendmail aliases files from this server
-  copy:
-    src: "{{ item }}"
-    dest: "/etc/"
-    backup: yes
-    owner: root
-    group: root
-    mode: u=rw,g=r,o=r
-  with_items:
-    - aliases.orig
-    - aliases.fysik
+- name: "Add local host aliases to {{ localhostnames }}"
+  blockinfile:
+    path: "{{ localhostnames }}"
+    state: present
+    insertafter: EOF
+    block: |
+      mail.fysik.dtu.dk
+      mail5.fysik.dtu.dk
+      servauth2.fysik.dtu.dk
+      servauth3.fysik.dtu.dk
+      servtsm1.fysik.dtu.dk
+      servtsm4.fysik.dtu.dk
+      intra4.fysik.dtu.dk
+      intra5.fysik.dtu.dk
+      web4.fysik.dtu.dk
+      web5.fysik.dtu.dk
+      demon.fysik.dtu.dk
+      demon2.fysik.dtu.dk
+      que.fysik.dtu.dk
+      audhumbla.fysik.dtu.dk
+      niflfs1.fysik.dtu.dk
+      niflfs2.fysik.dtu.dk
+      niflfs3.fysik.dtu.dk
+      niflfs4.fysik.dtu.dk
+      niflfs5.fysik.dtu.dk
+      niflopt1.fysik.dtu.dk
+      niflopt2.fysik.dtu.dk
+      niflnet1.fysik.dtu.dk
+      niflmgt.fysik.dtu.dk
+      niflmgt2.fysik.dtu.dk
+      surt.fysik.dtu.dk
+      thul.fysik.dtu.dk
+      fjorm.fysik.dtu.dk
+      sylg.fysik.dtu.dk
+      slid.fysik.dtu.dk
+      svol.fysik.dtu.dk
+      muspel.fysik.dtu.dk
+      kepler.fysik.dtu.dk
+      nifl.fysik.dtu.dk
+      camd.dtu.dk
+  notify:
+   - Restart Sendmail
 
-- name: Copy the Sendmail aliases.sh script from this server
-  copy:
-    src: "aliases.sh"
-    dest: "/etc/"
-    backup: yes
-    owner: root
-    group: root
-    mode: u=rwx,g=rx,o=rx
-
-- name: Generate a combined /etc/aliases file
-  command: /etc/aliases.sh
-
-- name: Create a cron job for executing aliases.sh
-  cron:
-    name: "Execute /etc/aliases.sh"
-    minute: "*/10"
-    job: "/etc/aliases.sh"
+- name: "Add mail routing to {{ mailertable }}"
+  blockinfile:
+    path: "{{ mailertable }}"
+    state: present
+    insertafter: EOF
+    block: |
+      .nifl.fysik.dtu.dk	local:
+      nifl.fysik.dtu.dk		local:
+      listserv.fysik.dtu.dk	smtp:[listserv.fysik.dtu.dk] 
+      mail3.fysik.dtu.dk	smtp:[mail3.fysik.dtu.dk] 
+      dtu.dk			smtp:[smtp.ait.dtu.dk] 
+      fysik.dtu.dk		smtp:[smtp.ait.dtu.dk] 
+      mek.dtu.dk		smtp:[smtp.ait.dtu.dk] 
+      adm.dtu.dk		smtp:[smtp.ait.dtu.dk] 
+      win.dtu.dk		smtp:[smtp.ait.dtu.dk] 
+      student.dtu.dk		smtp:[smtp.ait.dtu.dk]
+  notify:
+   - Restart Sendmail
 
 - name: "Remove loopback restriction in {{ sendmail_mc }} to enable sendmail service"
   lineinfile:
