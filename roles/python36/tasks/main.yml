@@ -1,5 +1,0 @@
-  - name: Install the latest Python 3.6 package
-    yum:
-      name: 
-      - epel-release
-      - python36
