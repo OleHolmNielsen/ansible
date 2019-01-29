@@ -1,16 +1,33 @@
-  - name: Install BIND DNS packages
-    yum:
-      name: bind,bind-libs,bind-utils,net-tools,jwhois
-      state: present
+- name: Install BIND DNS packages
+  yum:
+    name: bind,bind-libs,bind-utils,net-tools,jwhois
+    state: present
 
-  - name: Open firewall port 53 UDP for DNS
-    firewalld:
-      port: 53/udp
-      permanent: true
-      state: enabled
+- name: Copy the named.conf file from this server
+  copy:
+    src: "named.conf"
+    dest: "/etc/"
+    backup: yes
+    owner: root
+    group: named
+    mode: u=rw,g=r,o=
+  notify:
+   - Restart named
 
-  - name: Open firewall port 53 TCP for DNS
-    firewalld:
-      port: 53/tcp
-      permanent: true
-      state: enabled
+- name: Start and enable the named service 
+  service:
+    name=named
+    state=started
+    enabled=yes
+
+- name: Open firewall port 53 UDP for DNS
+  firewalld:
+    port: 53/udp
+    permanent: true
+    state: enabled
+
+- name: Open firewall port 53 TCP for DNS
+  firewalld:
+    port: 53/tcp
+    permanent: true
+    state: enabled
