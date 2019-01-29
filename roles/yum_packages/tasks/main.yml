@@ -24,9 +24,6 @@
       - gnome-tweak-tool
       - screen
       - reptyr
-      - fuse-sshfs
-      - exfat-utils
-      - fuse-exfat
       state: present
   - name: Install popular packages from the EPEL repository
     yum:
@@ -55,4 +52,5 @@
       - GitPython
       - pysvn
       - graphviz
+      - fuse-sshfs
       state: present
