@@ -1,0 +1,8 @@
+# CPU architecture
+cpu_arch: sandybridge
+
+# Environment modules for this CPU architecture
+module_path: niflopt1:/u/modules/sandybridge
+
+# SNMP location
+location: "DK;Lyngby;Niflheim;B309;059;rack 16;34;2"
