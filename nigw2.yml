@@ -12,6 +12,7 @@
    - server_packages
    - authorized_keys_command
    - nhc
+   - rasdaemon
    - logwatch
    - proliant_centos
    - no_libvirt
@@ -19,6 +20,7 @@
    - sshd_allow_users
    - bashrc
    # - yum_updates
+   - sendmail_aliases
    - sendmail_client
    - firewalld_masquerade
    - DNS_slave

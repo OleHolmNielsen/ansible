@@ -11,6 +11,7 @@
    - desktops_autofs
    - authorized_keys_command
    - nhc
+   - rasdaemon
    - logwatch
    - logrotate
    - proliant_centos
