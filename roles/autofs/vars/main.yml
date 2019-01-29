@@ -1,3 +1,0 @@
-auto_master: /etc/auto.master
-auto_home: auto.home
-home_autofs: /etc/auto.master.d/home.autofs
