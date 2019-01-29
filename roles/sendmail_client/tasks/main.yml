@@ -11,18 +11,6 @@
   notify:
    - Restart Sendmail
 
-- name: Editing the {{ aliases }} file
-  blockinfile:
-    path: "{{ aliases }}"
-    state: present
-    insertafter: '^#root:          marc'
-    marker: "# {mark} ANSIBLE MANAGED BLOCK"
-    block: |
-      root: root@mail.fysik.dtu.dk
-      cmr: jensj@fysik.dtu.dk
-  notify:
-   - Rebuild aliases database
-
 - name: Restart and enable the Sendmail service 
   service:
     name=sendmail
