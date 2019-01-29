@@ -1,0 +1,29 @@
+- name: Copy the Sendmail aliases files from this server
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/"
+    backup: yes
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+  with_items:
+    - aliases.orig
+    - aliases.fysik
+
+- name: Copy the Sendmail aliases.sh script from this server
+  copy:
+    src: "aliases.sh"
+    dest: "/etc/"
+    backup: yes
+    owner: root
+    group: root
+    mode: u=rwx,g=rx,o=rx
+
+- name: Generate a combined /etc/aliases file
+  command: /etc/aliases.sh
+
+- name: Create a cron job for executing aliases.sh
+  cron:
+    name: "Execute /etc/aliases.sh"
+    minute: "*/10"
+    job: "/etc/aliases.sh"
