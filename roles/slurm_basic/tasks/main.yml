@@ -39,6 +39,7 @@
     - ncurses-devel
     - gtk2-devel
     - man2html
+    - libssh2-devel
     - libibmad
     - libibumad
     - perl-Switch
