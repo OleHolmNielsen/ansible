@@ -1,0 +1,26 @@
+#!/bin/sh
+#
+# MySQL Backup Script for All Databases
+#
+HOST=localhost
+# Backup dump file (gzipped)
+BACKUPFILE=/root/mysql_backup_file.gz
+USER=root
+PWD='Edderkop'
+# DUMP_ARGS="--all --add-drop-table --flush-logs --lock-tables --quote-names"
+DUMP_ARGS="--opt --flush-logs --quote-names --events"
+DATABASES="--all-databases"
+GZIP="/bin/gzip -9"
+
+# Make a copy of the last dump
+if test -f $BACKUPFILE
+then
+	rm -f $BACKUPFILE.OLD
+	mv $BACKUPFILE $BACKUPFILE.OLD
+fi
+
+# Make a new backup
+# /usr/bin/mysqldump --host=$HOST --user=$USER --password=$PWD $DUMP_ARGS --result-file=$BACKUPFILE $DATABASES
+/usr/bin/mysqldump --host=$HOST --user=$USER --password=$PWD $DUMP_ARGS $DATABASES | $GZIP > $BACKUPFILE
+
+chmod 444 $BACKUPFILE
