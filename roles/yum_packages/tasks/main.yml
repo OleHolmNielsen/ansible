@@ -33,6 +33,7 @@
       - bash-completion
       - meld
       - htop
+      - rclone
       # DO NOT install the libxc package, it causes problems for GPAW (use modules)
       - python34-pip
       - python2-pip
