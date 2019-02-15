@@ -19,7 +19,12 @@
    - sshd_config
    - sshd_allow_users
    - bashrc
+   - niflheim_autofs_servers
    - yum_updates
+   - slurm_basic
+   - slurm_tools
+   - slurm_db
    - sendmail_aliases
    - sendmail_client
+   - firewalld_whitelist_niflheim
    - firewalld_reload
