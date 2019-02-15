@@ -5,3 +5,4 @@ smtp_relay: smtp.ait.dtu.dk
 localhostnames: /etc/mail/local-host-names
 mailertable: /etc/mail/mailertable
 virtusertable: /etc/mail/virtusertable
+access: /etc/mail/access

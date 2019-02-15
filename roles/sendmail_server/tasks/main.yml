@@ -50,13 +50,23 @@
       .nifl.fysik.dtu.dk	local:
       nifl.fysik.dtu.dk		local:
       listserv.fysik.dtu.dk	smtp:[listserv.fysik.dtu.dk] 
-      mail3.fysik.dtu.dk	smtp:[mail3.fysik.dtu.dk] 
       dtu.dk			smtp:[smtp.ait.dtu.dk] 
       fysik.dtu.dk		smtp:[smtp.ait.dtu.dk] 
       mek.dtu.dk		smtp:[smtp.ait.dtu.dk] 
       adm.dtu.dk		smtp:[smtp.ait.dtu.dk] 
       win.dtu.dk		smtp:[smtp.ait.dtu.dk] 
       student.dtu.dk		smtp:[smtp.ait.dtu.dk]
+  notify:
+   - Restart Sendmail
+
+- name: "Add mail routing to {{ access }}"
+  blockinfile:
+    path: "{{ access }}"
+    state: present
+    insertafter: EOF
+    block: |
+      # Relay Fysik private network IP range
+      10.54			RELAY
   notify:
    - Restart Sendmail
 
