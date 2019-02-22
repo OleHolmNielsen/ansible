@@ -22,4 +22,5 @@
    - sendmail_aliases
    - sendmail_client
    - web_server
+   - davmail
    - firewalld_reload
