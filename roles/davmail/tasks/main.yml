@@ -1,0 +1,22 @@
+# Configure Davmail service, see http://davmail.sourceforge.net/index.html
+
+- name: Install Apache web server packages 
+  yum:
+    name:
+    - davmail
+    - ant
+    - java-1.8.0-openjdk-devel
+    state: present
+
+- name: Open firewall for the Davmail/Socks port 1080
+  firewalld:
+    port: 1080/tcp
+    immediate: true
+    permanent: true
+    state: enabled
+
+- name: Restart and enable the Davmail service 
+  service:
+    name=davmail
+    state=restarted
+    enabled=yes
