@@ -14,7 +14,7 @@
     minute: "0"
     hour: "12"
     weekday: "1-5"
-    job: "/usr/local/bin/printerstatus.sh |& mail -s 'Fysik printers status' sysohni@mail.fysik.dtu.dk"
+    job: "/usr/local/bin/printerstatus.sh |& mail -s 'Fysik printers status' adm-ohni@fysik.dtu.dk"
 
 - cron:
     name: "Monitor all B309 printers status using SNMP"
