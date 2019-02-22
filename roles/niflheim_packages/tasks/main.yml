@@ -1,6 +1,11 @@
   - name: Install popular packages 
     yum:
       name: 
+      - gcc-c++
+      - xterm
+      - xclip
+      - traceroute
+      - rclone
       - openssl-devel
       - libibverbs-devel
       - libX11-devel
