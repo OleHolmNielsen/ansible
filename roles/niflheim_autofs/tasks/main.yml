@@ -5,12 +5,6 @@
     name: autofs
     state: present
 
-- name: Start autofs
-  service:
-    name=autofs
-    state=started
-    enabled=yes
-
 - name: Touch the {{ etc_auto_home }} file
   file:
     path: "{{ etc_auto_home }}"
@@ -62,8 +56,9 @@
     marker: "# {mark} ANSIBLE MANAGED BLOCK2"
     block: |
       modules		-rsize=8192,wsize=8192,tcp,vers=3	{{ module_path }}
-  notify:
-   - Restart autofs
+# Done below:
+#  notify:
+#   - Restart autofs
 
 - name: Set SELinux context of file {{ etc_auto_home }} to that of {{ auto_master }}
   # Use ls -Z auto_master auto_home, check if they match
@@ -103,3 +98,9 @@
     name: use_nfs_home_dirs
     state: yes
     persistent: yes
+
+- name: Restart autofs
+  service:
+    name=autofs
+    state=restarted
+    enabled=yes
