@@ -9,10 +9,10 @@
 # Exit the script in case of control-C etc.
 trap "exit -1" SIGTERM SIGINT SIGQUIT
 
-NODES="sylg thul surt slid fjorm"
-NODES="$NODES hp5800a hp5412c hp5412d hp5412e hp5412f hp5412g"
+NODES="svol sylg thul surt slid fjorm"
+NODES="$NODES hp5800a hp5412e hp5412f hp5412g"
 NODES="$NODES mell01 mell02 mell03 mell04 volt01 volt02 volt03 volt04 opa-c1 opa-c2 opa-c3"
-NODES="$NODES hpups3 hpups6 hpups8 hpups9"
+NODES="$NODES hpups6 hpups8 hpups9"
 NODES="$NODES niflopt1 niflmgt niflfs1 niflfs2 niflfs3 niflfs4 niflfs5 vid hrid"
 
 STOPFILEDIR=/var/lib/alive
