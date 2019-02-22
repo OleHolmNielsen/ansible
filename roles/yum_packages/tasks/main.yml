@@ -32,6 +32,7 @@
       - git-all
       - bash-completion
       - meld
+      - xclip
       - htop
       - rclone
       # DO NOT install the libxc package, it causes problems for GPAW (use modules)
