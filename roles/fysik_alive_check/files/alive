@@ -28,7 +28,7 @@ LIST="	ns.dtu.dk \
 	intra4 intra5 serv309 servxp servtsm1 servtsm4 dhcpy6d rsnap1 rsnap2 \
 	servnedi fys-winprint01 \
 	ghost307 ghost309 \
-	surt thul sylg svol fjorm slid finbul nigw2 \
+	svol surt thul sylg svol fjorm slid finbul nigw2 \
 	que niflfs1 niflfs2 niflfs3 \
 	niflnet1 niflopt1 niflopt2 niflbu1 vid hrid \
 	fedora \
