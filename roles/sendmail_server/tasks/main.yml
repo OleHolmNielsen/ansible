@@ -66,7 +66,17 @@
     insertafter: EOF
     block: |
       # Relay Fysik private network IP range
-      10.54			RELAY
+      Connect:10.54                           RELAY
+      # Relay Fysik public network IP range
+      Connect:fysik.dtu.dk                    RELAY
+      Connect:win.dtu.dk                      RELAY
+      Connect:130.225.86                      RELAY
+      Connect:130.225.87                      RELAY
+      IPv6:2001:878:200:2010                  RELAY
+      IPv6:2001:878:200:2011                  RELAY
+      IPv6:2001:878:200:2012                  RELAY
+      IPv6:2001:878:200:2013                  RELAY
+      IPv6:2001:878:200:2014                  RELAY
   notify:
    - Restart Sendmail
 
