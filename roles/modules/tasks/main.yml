@@ -25,6 +25,12 @@
     name: Lmod
     state: present
 
+- name: Create directory {{ lmod_etc }}
+  file:
+    path: "{{ lmod_etc }}/"
+    state: directory
+    mode: 0755
+
 - name: Install prerequisites for EasyBuild
   yum:
     name: 
@@ -40,4 +46,3 @@
     owner: root
     group: root
     mode: 0755
-

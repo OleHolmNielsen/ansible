@@ -1,2 +1,3 @@
 modules_id: 983
 modules_home: /home/opt/modules
+lmod_etc: /usr/share/lmod/etc
