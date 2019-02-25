@@ -1,7 +1,14 @@
-  - name: Install popular packages 
+  - name: Install required and popular packages 
     yum:
       name: 
       - gcc-c++
+      - tar
+      - gzip
+      - bzip2
+      - unzip
+      - xz
+      - patch
+      - python-setuptools
       - xterm
       - xclip
       - traceroute
