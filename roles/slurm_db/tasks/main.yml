@@ -28,6 +28,7 @@
     - "{{ rpm_dir }}/slurm-{{ slurm_rpm }}"
     - "{{ rpm_dir }}/slurm-devel-{{ slurm_rpm }}"
     - "{{ rpm_dir }}/slurm-slurmdbd-{{ slurm_rpm }}"
+    - "{{ rpm_dir }}/slurm-example-configs-{{ slurm_rpm }}"
     state: present
 
 - name: "Copy slurmdbd.conf to {{ slurm_dir }}"
