@@ -1,6 +1,9 @@
   - name: Install required and popular packages 
     yum:
       name: 
+      - emacs
+      - gsl
+      - gsl-devel
       - gcc-c++
       - tar
       - gzip
