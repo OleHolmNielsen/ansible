@@ -10,7 +10,8 @@ then
 fi
 STOPFILE=$TMPDIR/rsync-centos.stop
 LOCALDIR=/u/mirrors/pub/linux/centos
-MIRROR=eu-msync.centos.org::CentOS/
+MIRROR=msync.centos.org::CentOS/
+# MIRROR=eu-msync.centos.org::CentOS/
 # MIRROR=us-msync.centos.org::CentOS/
 # EXCLUDES='--exclude /5* --exclude /4* --exclude /3* --exclude /2* --exclude RPM-GPG-KEY-CentOS-2'
 # VERBOSE="-v"
