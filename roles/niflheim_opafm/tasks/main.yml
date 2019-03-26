@@ -1,0 +1,26 @@
+---
+
+# This role installs and configures the Intel Omni-Path IFS Fabric Manager 
+# The basic OPA packages must be installed previously.
+
+- name: Install Fabric Manager prerequisite packages
+  yum:
+    name:
+    - infiniband-diags
+    - infiniband-diags-devel
+    state: present
+
+- name: Install Intel Omni-Path Fabric Manager packages
+  yum:
+    name:
+    - opa-fm
+    - opa-fastfabric
+    - opaconfig
+    state: present
+
+- name: Start and enable the OPA Fabric Manager service 
+  service:
+    name=opafm
+    state=started
+    enabled=yes
+

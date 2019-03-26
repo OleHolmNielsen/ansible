@@ -1,0 +1,115 @@
+---
+
+# This role installs and configures the basic Intel Omni-Path packages.
+# The OPA Fabric Manager (opafm) must be installed separately.
+
+- name: Install Intel Omni-Path IB/OPA Centric prerequisite packages
+  yum:
+    name:
+    - ibacm
+    - infinipath-psm
+    - libibumad
+    - libibverbs
+    - libnl3
+    - librdmacm
+    - opensm-libs
+    - perftest
+    - qperf
+    - rdma-core
+    - rdma-core-devel
+    state: present
+
+- name: Install Intel Omni-Path System Centric prerequisite packages
+  yum:
+    name:
+    - atlas
+    - bc
+    - coreutils
+    - expat
+    - expect
+    - gcc-gfortran
+    - glibc
+    - json-c
+    - libgfortran
+    - libgomp
+    - libquadmath
+    - libstdc++
+    - libstdc++-devel
+    state: present
+
+- name: Install Intel Omni-Path Other prerequisite packages
+  yum:
+    name:
+    - bash
+    - irqbalance
+    - kmod
+    - libgcc
+    - perl
+    - perl-Getopt-Long
+    - perl-PathTools
+    - perl-Socket
+    - pkgconfig
+    - python
+    - systemd
+    - systemd-libs
+    state: present
+
+- name: Install Intel Omni-Path Build Requirements prerequisite packages
+  yum:
+    name:
+    - expat-devel
+    - json-c-devel
+    - libnl3-devel
+    - libpfm
+    - libuuid-devel
+    - numactl-devel
+    - opensm-libs
+    - openssl-devel
+    - sqlite-devel
+    - valgrind-devel
+    state: present
+
+- name: "Create OPA Yum repository file {{ opa_repo }}"
+  blockinfile:
+    path: "{{ opa_repo }}"
+    create: yes
+    state: present
+    insertbefore: BOF
+    block: |
+      # Customizations at fysik.dtu.dk
+      [IntelOPA-Common]
+      name=IntelOPA Common pkgs
+      gpgcheck=0
+      baseurl="file://{{ repo_dir }}/repos/OPA_COMMON"
+      enabled=1
+
+- name: Install Intel Omni-Path opa_stack packages
+  yum:
+    name:
+    - opa-scripts
+    - kmod-ifs-kernel-updates
+    state: present
+
+- name: Install Intel Omni-Path oftools packages
+  yum:
+    name:
+    - opa-basic-tools
+    - opa-address-resolution
+    state: present
+
+- name: Install Intel Omni-Path intel_hfi packages
+  yum:
+    name:
+    - hfi1-firmware
+    - hfi1-firmware_debug
+    - libpsm2
+    - libpsm2-devel
+    - libpsm2-compat
+    - libfabric
+    - libfabric-devel
+    - libfabric-psm
+    - libfabric-psm2
+    - libfabric-verbs
+    - hfi1-diagtools-sw
+    - hfidiags
+    state: present

@@ -1,0 +1,3 @@
+opa_version: IntelOPA-IFS.RHEL76-x86_64.10.9.1.0.15
+opa_repo: "/etc/yum.repos.d/IntelOPA-IFS.repo"
+repo_dir: "/home/opt/{{ opa_version }}"
