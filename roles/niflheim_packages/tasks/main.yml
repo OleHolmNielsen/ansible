@@ -24,6 +24,8 @@
       - glibc-static
       - vim-enhanced
       - redhat-lsb-core
+      - asciidoc
+      - xmlto
       - nano
       - dos2unix
       - harfbuzz-devel
