@@ -10,6 +10,14 @@
     - aliases.orig
     - aliases.fysik
 
+- name: Create empty file /etc/aliases.dtubasen
+  file:
+    path: "/etc/aliases.dtubasen"
+    state: touch
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+
 - name: Copy the Sendmail aliases.sh script from this server
   copy:
     src: "aliases.sh"
