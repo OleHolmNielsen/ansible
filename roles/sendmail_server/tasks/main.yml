@@ -110,7 +110,7 @@
 - name: Create a cron job for daily restart of sendmail
   cron:
     name: "Sendmail_restart"
-    minute: "0"
-    hour: "8,20"
+    minute: "25"
+    hour: "7,20"
     job: "systemctl restart sendmail"
 
