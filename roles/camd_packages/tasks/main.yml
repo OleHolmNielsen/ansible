@@ -1,0 +1,34 @@
+  - name: Install popular packages for CAMD
+    yum:
+      name: 
+      - libxc-devel
+      - openblas-devel
+      - openmpi-devel
+      - fftw-devel
+      - blacs-openmpi-devel
+      - scalapack-openmpi-devel 
+      - vim-enhanced
+      - nano
+      - okular
+      - python-matplotlib
+      - ntfs-3g
+      - vim-X11
+      - emacs
+      - xemacs
+      - gnome-shell
+      - gnome-tweak-tool
+      - screen
+      - reptyr
+      state: present
+  - name: Install popular packages from the EPEL repository
+    yum:
+      name:
+      - Lmod
+      - git-all
+      - bash-completion
+      - meld
+      - xclip
+      - htop
+      - rclone
+      - GitPython
+      state: present
