@@ -12,6 +12,7 @@
       - xz
       - patch
       - python-setuptools
+      - ksh
       - xterm
       - xclip
       - traceroute
@@ -31,6 +32,17 @@
       - harfbuzz-devel
       - libfabric
       state: present
+
+  - name: Install Dell tools prerequisite packages 
+    yum:
+      name: 
+      - usbutils
+      - compat-libstdc++-33.i686
+      - libstdc++.i686
+      - libxml2.i686
+      - zlib.i686
+      state: present
+
   - name: Install popular packages from the EPEL repository
     yum:
       name:
