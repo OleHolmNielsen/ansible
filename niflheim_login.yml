@@ -1,6 +1,6 @@
 # Configure Niflheim login node server
 
-- hosts: Niflheim-login
+- hosts: Niflheim_login
   roles:
    - rhel7
    - lvscratch
@@ -22,6 +22,7 @@
    - sshd_config
    - authorized_keys_command
    - bashrc
+   - ls_speedup
    - yum_updates
    - niflheim_autofs
    - niflheim_firewalld
