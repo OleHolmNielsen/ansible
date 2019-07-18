@@ -1,7 +1,6 @@
 # Configure Niflheim NFS file server
 
-## - hosts: gunnthra vid niflbu2 niflopt2 niflfs3
-- hosts: Niflheim-NFS
+- hosts: Niflheim_NFS
   roles:
    - rhel7
    - role: linux-system-roles.network
@@ -21,6 +20,7 @@
    # - limits_conf
    - no_libvirt
    - sshd_config
+   - flexlm_user
    - sshd_allow_users
    - bashrc
    # Do not update automatically the file servers: yum_updates
