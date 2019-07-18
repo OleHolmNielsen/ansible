@@ -24,3 +24,9 @@
     state=started
     enabled=yes
 
+- name: Open port 3245/tcp for OPAFM in firewalld
+  firewalld:
+    port: 3245/tcp
+    permanent: true
+    state: enabled
+
