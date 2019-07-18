@@ -3,7 +3,7 @@
 # NOTE: We permit the CMR administrator (JJ) to make SSH logins to this server
 # by adding his SSH public key to ~/.ssh/authorized_keys
 
-# See https://docs.ansible.com/ansible/2.6/modules/user_module.html
+# See https://docs.ansible.com/ansible/latest/modules/user_module.html
 - name: Add the user 'cmr' 
   user:
     name: cmr
