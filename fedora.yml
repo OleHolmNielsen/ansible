@@ -1,4 +1,4 @@
-- hosts: Fedora-PCs
+- hosts: Fedora_PCs
   roles:
    - hostname
    - bashrc
