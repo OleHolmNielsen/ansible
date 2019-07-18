@@ -10,6 +10,7 @@
     - epel-release
     - debootstrap.noarch
     - wget
+    - golang
     state: present
 
 - name: Install Singularity version {{ singularity_version }} packages from local directory
