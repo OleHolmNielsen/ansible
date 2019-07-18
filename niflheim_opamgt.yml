@@ -1,6 +1,6 @@
 # Configure Niflheim Omni-Path (OPA) network management server
 
-- hosts: Niflheim-opanet
+- hosts: Niflheim_opanet
   roles:
    - rhel7
    - role: linux-system-roles.network
