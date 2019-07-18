@@ -54,7 +54,7 @@
   notify:
    - Restart autofs
 
-- name: Append modules mount-point to the "{{ etc_auto_home }}" file
+- name: "Append modules mount-point to the {{ etc_auto_home }} file"
   blockinfile:
     path: "{{ etc_auto_home }}"
     state: present
@@ -65,7 +65,7 @@
   notify:
    - Restart autofs
 
-- name: Set SELinux context of file {{ etc_auto_home }} to that of {{ auto_master }}
+- name: "Set SELinux context of file {{ etc_auto_home }} to that of {{ auto_master }}"
   # Use ls -Z auto_master auto_home, check if they match
   # This changes the target file auto_home:
   command: /usr/bin/chcon --reference={{ auto_master|quote }} {{ etc_auto_home|quote }}
