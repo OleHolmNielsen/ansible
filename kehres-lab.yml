@@ -1,5 +1,5 @@
 # Jan Kehres (JAKE) lab workstations
-- hosts: kehres-lab
+- hosts: kehres_lab
   roles:
    - hostname
    - bashrc
