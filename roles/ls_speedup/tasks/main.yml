@@ -1,0 +1,17 @@
+- name: Editing the /etc/profile.d/ls.sh file
+  blockinfile:
+    path: /etc/profile.d/ls.sh
+    create: yes
+    state: present
+    block: |
+      # See https://news.sherlock.stanford.edu/posts/when-setting-an-environment-variable-gives-you-a-40-x-speedup
+      export LS_COLORS='ex=00:su=00:sg=00:ca=00:'
+
+- name: Editing the /etc/profile.d/ls.csh file
+  blockinfile:
+    path: /etc/profile.d/ls.csh
+    create: yes
+    state: present
+    block: |
+      # See https://news.sherlock.stanford.edu/posts/when-setting-an-environment-variable-gives-you-a-40-x-speedup
+      setenv LS_COLORS 'ex=00:su=00:sg=00:ca=00:'

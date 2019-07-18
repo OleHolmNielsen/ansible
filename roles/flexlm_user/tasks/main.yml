@@ -1,0 +1,23 @@
+# Flexlm license server: Create a "flexlm" user and group
+
+# See https://docs.ansible.com/ansible/latest/modules/group_module.html
+- name: Add the group 'flexlm' 
+  group:
+    name: flexlm
+    gid: 1028
+
+# See https://docs.ansible.com/ansible/latest/modules/user_module.html
+- name: Add the user 'flexlm' 
+  user:
+    name: flexlm
+    comment: FlexLM license user
+    group: flexlm
+    uid: 1028
+
+- name: Open firewall port 27020/tcp for Synopsys flexlm license server
+  firewalld:
+    port: 27020/tcp
+    immediate: true
+    permanent: true
+    state: enabled
+

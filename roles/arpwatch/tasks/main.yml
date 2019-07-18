@@ -1,0 +1,12 @@
+- name: Install arpwatch package
+  yum:
+    name:
+    - arpwatch
+    state: present
+
+- name: Start and enable the arpwatch service
+  service:
+    name=arpwatch
+    state=started
+    enabled=yes
+

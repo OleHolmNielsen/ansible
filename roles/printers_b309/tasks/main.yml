@@ -1,0 +1,83 @@
+# Printers can be installed on RHEL/CentOS using lpadmin, see
+# https://access.redhat.com/solutions/21432
+# Printer options (-o) are documented in
+# https://www.cups.org/doc/options.html#OPTIONS
+# Display installed printers: lpvtat -v 
+# Display available printer drivers by: lpinfo -m | grep <your model>
+# Display available printer options by: lpoptions -p <printer> -l
+
+- name: Start and enable CUPS printing systems
+  service:
+    name: cups
+    state: started
+    enabled: yes
+
+- name: List installed printers
+  command: lpstat -v
+  register: printerlist
+  # Ignore the "changed" status
+  changed_when: False
+  # Ignore error code when "lpstat: No destinations added"
+  ignore_errors: yes
+
+# Printer ogprint.fysik.dtu.dk
+
+- name: Install {{ printer }} printer name {{ destination }}
+  command: lpadmin -p {{ destination }} -v {{ printer }} -m {{ driver }} -E
+  vars:
+    # We MUST use the IP-address here:
+    printer: socket://10.54.4.23:9100
+    destination: HP-LaserJet-p4015-b309-201A
+    driver: drv:///hp/hpijs.drv/hp-laserjet_p4015dn-hpijs.ppd
+  # Cannot use variables in when: statements
+  when: "'HP-LaserJet-p4015-b309-201A' not in printerlist.stdout_lines"
+  register: newprinter
+
+- name: Set {{ destination }} options
+  command: lpadmin -p {{ destination }} {{ options }}
+  vars:
+    destination: HP-LaserJet-p4015-b309-201A
+    options: '-o sides=two-sided-long-edge -o media=A4'
+  when: "'HP-LaserJet-p4015-b309-201A' not in printerlist.stdout_lines"
+
+# Printer b309-4525-2.fysik.dtu.dk (HP CP4525)
+
+- name: Install {{ printer }} printer name {{ destination }}
+  command: lpadmin -p {{ destination }} -v {{ printer }} -m {{ driver }} -E
+  vars:
+    # We MUST use the IP-address here:
+    printer: socket://10.54.4.27:9100
+    destination: HP-ColorLaserJet-4525-b309-201A
+    driver: drv:///hp/hpcups.drv/hp-color_laserjet_cp4520_series-pcl3.ppd
+  when: "'HP-ColorLaserJet-4525-b309-201A' not in printerlist.stdout_lines"
+  register: newprinter
+
+- name: Set {{ destination }} plus options
+  command: lpadmin -p {{ destination }} {{ options }}
+  vars:
+    destination: HP-ColorLaserJet-4525-b309-201A
+    options: '-o OptionDuplex=True -o sides=two-sided-long-edge -o media=A4'
+  when: "'HP-ColorLaserJet-4525-b309-201A' not in printerlist.stdout_lines"
+
+# Default printer
+
+- name: Get default printer
+  command: lpstat -d
+  register: newprinter
+  # Ignore the "changed" status
+  changed_when: False
+
+- name: Set {{ destination }} as default (-d) printer
+  command: "lpadmin -d {{ destination }}"
+  vars:
+    destination: HP-LaserJet-p4015-b309-201A
+  when: "'HP-LaserJet-p4015-b309-201A' not in newprinter.stdout"
+  # Ignore the "changed" status
+  changed_when: False
+
+- name: Restart printer queue
+  service:
+    name: cups
+    state: restarted
+    enabled: yes
+  when: newprinter == True
