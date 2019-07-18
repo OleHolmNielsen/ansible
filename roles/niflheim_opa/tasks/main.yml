@@ -80,7 +80,8 @@
       [IntelOPA-Common]
       name=IntelOPA Common pkgs
       gpgcheck=0
-      baseurl="file://{{ repo_dir }}/repos/OPA_COMMON"
+      # baseurl="file://{{ repo_dir }}/repos/OPA_COMMON"
+      baseurl="file://{{ repo_dir }}/repos/OPA_PKGS"
       enabled=1
 
 - name: Install Intel Omni-Path opa_stack packages
@@ -113,3 +114,10 @@
     - hfi1-diagtools-sw
     - hfidiags
     state: present
+
+- name: Install Intel Omni-Path firmware tools packages
+  yum:
+    name:
+    - "{{ repo_dir }}/hfi1-firmware-tools-10.9.2.0-3.x86_64.rpm"
+    - "{{ repo_dir }}/hfi1-tmm-10.9.0.0-208.noarch.rpm"
+    - "{{ repo_dir }}/hfi1-uefi-1.9.2.0-0.x86_64.rpm"
