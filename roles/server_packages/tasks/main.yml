@@ -5,6 +5,7 @@
       - bind-utils
       - net-tools
       - telnet
+      - traceroute
       - jwhois
       - expect
       - ipmiutil
@@ -17,6 +18,7 @@
       - git-all
       - python34-pip
       - python2-pip
+      - PackageKit-gtk3-module
       - GitPython
       - grace
       - screen
