@@ -15,10 +15,12 @@
       - vim-X11
       - emacs
       - xemacs
+      - PackageKit-gtk3-module
       - gnome-shell
       - gnome-tweak-tool
       - screen
       - reptyr
+      - keepassx2
       state: present
   - name: Install popular packages from the EPEL repository
     yum:
