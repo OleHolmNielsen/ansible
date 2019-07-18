@@ -33,6 +33,7 @@
     insertafter: EOF
     marker: "# {mark} ANSIBLE MANAGED BLOCK"
     block: |
+      SSLProtocol all -SSLv2 -SSLv3 -TLSv1
       SSLCipherSuite "ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA"
       SSLCertificateFile /etc/pki/tls/certs/fysik.dtu.dk.crt
       SSLCertificateKeyFile /etc/pki/tls/private/fysik.dtu.dk.key
@@ -40,6 +41,34 @@
       SSLHonorCipherOrder On
       # HSTS (mod_headers is required) (15768000 seconds = 6 months)
       Header always add Strict-Transport-Security "max-age=15768000"
+      # Prevent HTTP TRACE, see http://www.kb.cert.org/vuls/id/867593
+      RewriteEngine On
+      RewriteCond %{REQUEST_METHOD} ^TRACE
+      RewriteRule .* - [F]
+
+- name: Copy Apache .conf files
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/httpd/conf.d/"
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+  with_items:
+    - c2db.conf
+    - cmr.conf
+    - cmrdb.conf
+    - databases.conf
+    - dccamd.conf
+    - dccamp.conf
+    - dcwww_fys_dtu_dk.conf
+    - ftp_server.conf
+    - wiki.conf
+
+- name: Patch Apache userdir.conf
+  patch:
+    src: userdir.diff
+    dest: "/etc/httpd/conf.d/userdir.conf"
+    backup: yes
 
 - name: Set SELinux httpd_use_nfs
   seboolean:
@@ -50,6 +79,13 @@
 - name: Set SELinux httpd_enable_homedirs
   seboolean:
     name: httpd_enable_homedirs
+    state: yes
+    persistent: yes
+
+# See http://sysadminsjourney.com/content/2010/02/01/apache-modproxy-error-13permission-denied-error-rhel/
+- name: Set SELinux httpd_can_network_connect required for Apache HTTP proxy
+  seboolean:
+    name: httpd_can_network_connect
     state: yes
     persistent: yes
 
