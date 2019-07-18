@@ -15,7 +15,7 @@ NODES="$NODES mell01 mell02 mell03 mell04 volt01 volt02 volt03 volt04 opa-c1 opa
 NODES="$NODES sw08d sw09d sw10d sw11d sw12d sw13d"
 NODES="$NODES sw08m sw09m sw10m sw11m sw12m sw13m"
 NODES="$NODES hpups6 hpups8 hpups9"
-NODES="$NODES niflopt1 niflmgt niflfs1 niflfs2 niflfs3 niflfs4 niflfs5 vid hrid"
+NODES="$NODES niflopt1 niflopa1 niflmgt2 niflfs1 niflfs2 niflfs3 niflfs4 niflfs5 vid hrid"
 
 STOPFILEDIR=/var/lib/alive
 if test ! -d $STOPFILEDIR
