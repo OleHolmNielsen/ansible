@@ -1,4 +1,4 @@
-- hosts: camd-desktops
+- hosts: camd_desktops
   roles:
    - hostname
    - bashrc
@@ -12,5 +12,5 @@
    - sendmail_aliases
    - sendmail_client
    - desktops_autofs
-   - printers_b307
+   - printers_b309
    - firewalld_reload
