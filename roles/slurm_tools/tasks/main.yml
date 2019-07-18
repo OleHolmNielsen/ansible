@@ -13,5 +13,7 @@
   with_items:
     - https://raw.githubusercontent.com/OleHolmNielsen/Slurm_tools/master/pestat/pestat
     - https://raw.githubusercontent.com/OleHolmNielsen/Slurm_tools/master/showuserjobs/showuserjobs
+    - https://raw.githubusercontent.com/OleHolmNielsen/Slurm_tools/master/slurmaccounts/showuserlimits
     - https://raw.githubusercontent.com/OleHolmNielsen/Slurm_tools/master/jobs/showjob
     - https://raw.githubusercontent.com/OleHolmNielsen/Slurm_tools/master/jobs/jobnice
+    - https://raw.githubusercontent.com/OleHolmNielsen/Slurm_tools/master/partitions/showpartitions
