@@ -11,6 +11,7 @@
    - authorized_keys_command
    - niflheim_autofs_servers
    - niflheim_opa
+   - niflheim_opasnmp
    - niflheim_opafm
    - ipmi
    - nhc

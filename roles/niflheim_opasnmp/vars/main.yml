@@ -1,0 +1,2 @@
+snmp_dir: /root/.snmp
+opa_mibs: IntelOPA-STL1_MIBs-10.8.0.0.186.zip

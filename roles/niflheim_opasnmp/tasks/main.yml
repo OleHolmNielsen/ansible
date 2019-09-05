@@ -1,0 +1,38 @@
+# This role installs and configures the Intel Omni-Path SNMP files
+
+- name: Install prerequisite packages
+  yum:
+    name:
+    - net-snmp-utils
+    - unzip
+    state: present
+
+- name: Create directory for MIB files
+  file:
+    path: "{{ snmp_dir }}/mibs"
+    state: directory
+    mode: 0750
+    owner: root
+    group: root
+
+- name: Create snmp.conf file
+  blockinfile:
+    path: "{{ snmp_dir }}/snmp.conf"
+    create: yes
+    state: present
+    mode: 0640
+    owner: root
+    group: root
+    insertafter: EOF
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    block: |
+      mibs +ICS-CHASSIS-MIB
+      mibs +ICS-CHASSIS-NOTIFICATION-MIB
+      mibs +ICS-MASTER-MIB
+      mibs +OPA-STAT-MIB
+
+- name: Unpack the IntelOPA-STL1_MIBs file
+  unarchive:
+    src: "{{ opa_mibs }}"
+    dest: "{{ snmp_dir }}/mibs"
+    mode: 0640
