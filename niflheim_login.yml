@@ -31,4 +31,3 @@
    - slurm_basic
    - slurm_tools
    - modules
-   - singularity
