@@ -39,9 +39,9 @@
     - ssaducli
     state: latest
 
-- name: Copy ssacli-3.30-14.0.x86_64.rpm
+- name: Copy ssacli-3.40-3.0.x86_64.rpm
   copy:
-    src: ssacli-3.30-14.0.x86_64.rpm
+    src: ssacli-3.40-3.0.x86_64.rpm
     dest: /root
     owner: root
     group: root
