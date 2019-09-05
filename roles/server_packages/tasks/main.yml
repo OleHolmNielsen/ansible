@@ -31,6 +31,7 @@
       - libsemanage-python
       - policycoreutils-python
       - selinux-policy-doc
+      - unzip
       state: present
 
   - name: Remove unwanted packages
