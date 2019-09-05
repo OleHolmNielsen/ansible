@@ -20,6 +20,7 @@
       - gnome-tweak-tool
       - screen
       - reptyr
+      - filezilla
       - keepassx2
       state: present
   - name: Install popular packages from the EPEL repository
