@@ -66,4 +66,5 @@
       - GitPython
       - pysvn
       - graphviz
+      - singularity
       state: present
