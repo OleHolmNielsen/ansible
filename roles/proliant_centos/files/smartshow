@@ -1,13 +1,30 @@
-#!/bin/sh
+#!/bin/bash
 
 # Show HP Smart Array controller hardware inventory.
 # Requirement: HP Proliant server with HP hpacucli/hpssacli RPM package.
 
-# Command usage:
-USAGE="Usage: $0 with flags one of -c -C -d -e -1 -a -l -D"
-if test $# -eq 0
+# Command usage Help:
+function usage()
+{
+cat <<EOF
+Show HP Smart Array controller hardware inventory.
+Usage: $0 with one of the flags:
+ -c	Display controller detailed info
+ -C	Display all controllers present
+ -e	Display disk enclosure info
+ -s	Display controller and disk status
+ -1	Display 1-line disk info
+ -d	Display detailed disk info
+ -a	Display array info
+ -l	Display logical drive info
+ -D	Display controller Diagnostics info
+ -h	Print Help info
+EOF
+}
+
+if test $# -ne 1
 then
-	echo $USAGE
+	usage
 	exit 1
 fi
 
@@ -26,19 +43,25 @@ fi
 
 if test ! -x $HPACUCLI
 then
-	echo "ERROR: The $HPACUCLI tool for Proliant server is not installed (HP hpacucli/hpssacli RPM package)"
+	cat <<EOF
+ERROR: The $HPACUCLI tool for HPE Proliant servers is not installed.
+Please install the HP hpacucli or hpssacli RPM package.
+Yum repository: http://downloads.linux.hpe.com/repo/mcp/centos/7/x86_64/current/
+
+EOF
+	usage
 	exit 1
 fi
 
 # Get list of controllers in the system
-# CONTROLLERS=`$HPACUCLI controller all show | grep Smart | awk '{print $6}'`
 CONTROLLERS=`$HPACUCLI controller all show | grep Smart | awk '{for (i=0; i<NF; i++) if ($i == "Slot") print $(i+1)}'`
 
 if test -z "$CONTROLLERS"
 then
-	echo Error: No HPE Smart Array RAID controllers found
+	echo "ERROR: No HPE Smart Array RAID controllers found"
 	echo PCI RAID device list:
 	lspci | grep RAID
+	usage
 	exit -1
 fi
 
@@ -48,17 +71,23 @@ DIAGFILE=smartdiags.txt
 TMPDIR=/var/lib/smartshow
 if test ! -d $TMPDIR
 then
+	echo Creating work directory $TMPDIR
 	mkdir -v $TMPDIR
 fi
 DISKTEMP=$TMPDIR/smartshow.$$
 
 # Process command arguments
-while getopts "acCdelD1" options
+while getopts "acsCdelD1h" options
 do
 	case $options in
 		# Display controller detailed info
 		c ) for ctrl in $CONTROLLERS; do
 			$HPACUCLI controller slot=$ctrl show detail
+		    done;;
+		# Display controller and disk status
+		s ) for ctrl in $CONTROLLERS; do
+			$HPACUCLI controller slot=$ctrl show status
+			$HPACUCLI controller slot=$ctrl enclosure all show detail | grep physicaldrive
 		    done;;
 		# Display all controllers present
 		C ) $HPACUCLI controller all show;;
@@ -104,6 +133,6 @@ do
 		D ) $HPACUCLI controller all diag file=$DIAGFILE
 		    echo Diagnostics written to file $DIAGFILE ;;
 		# Defaults
-		* ) echo $USAGE ;;
+		h|* ) usage ;;
 	esac
 done
