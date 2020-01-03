@@ -25,23 +25,23 @@ fi
 # List of hosts 
 LIST="	ns.dtu.dk \
 	web4 web5 servcamd3 servcinf cinfsql servauth2 servauth3 demon demon2 \
-	intra5 serv309 servxp servtsm1 servtsm4 dhcpy6d rsnap1 rsnap2 \
-	servnedi ghost307 ghost309 \
+	intra5 serv309 servxp2 servtsm1 servtsm4 dhcpy6d rsnap1 rsnap2 \
+	servnedi \
 	svol surt thul sylg svol fjorm slid finbul nigw2 \
 	que slurmdb niflfs1 niflfs2 niflfs3 niflfs4 niflfs5 \
-	niflopa1 niflmgt2 niflnet1 niflopt1 niflopt2 niflbu1 \
+	niflopa1 niflmgt2 niflnet1 niflopt1 niflopt2 niflbu1 niflbu2 \
 	fedora \
 	bardeen \
 	prometheus auriga grahams \
 	panda2 pandabu hypatia \
 	b307-hp0 b307-hp1 b307-hp2 b307-hp3 b307-hp4 b307-hp5 b307-hp6 \
-	b307-hp7 b307-hp9 b307-hp14 b307-hp15 \
+	b307-hp7 b307-hp9 b307-hp14 b307-hp15 b307-hp11 \
 	b309-hp3 b309-hp4 b309-hp7 \
 	b309-hp10 b309-hp11 b309-hp12 b309-hp13 \
 	b311-hp1 \
 	b312-hp1 b312-hp4 b312-hp5 b312-hp7 b312-hp8 b312-hp9 b312-hp10 b312-hp11 b312-hp12 b312-hp13 b312-hp15 \
 	niflheim-sw1 sw1-closed \
-	hpz5200 hpz6200 \
+	hpz6200 \
 	93.160.188.230 \
 	cinf4015 b312-m553 ly307-225-co1 ly307-225-bw1 b307-m602 \
 	ly307-east-co1 case4015 \
