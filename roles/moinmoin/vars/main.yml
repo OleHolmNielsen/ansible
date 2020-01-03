@@ -1,1 +1,2 @@
 moin_tarball: moin-1.9.10.tar.gz
+moin_cgi: /var/www/wiki/cgi-bin/moin.cgi

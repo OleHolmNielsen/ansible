@@ -29,14 +29,14 @@
     state: yes
     persistent: yes
 
-- name: SELinux context moin.cgi
+- name: "SELinux context {{ moin_cgi }}"
   sefcontext:
-    target: /var/www/wiki/cgi-bin/moin.cgi
+    target: "{{ moin_cgi }}"
     setype: httpd_unconfined_script_exec_t
     state: present
 
-- name: Apply new SELinux file context to /var/www/wiki/cgi-bin/moin.cgi
-  command: restorecon -iv /var/www/wiki/cgi-bin/moin.cgi
+- name: "Apply new SELinux file context to {{ moin_cgi }}"
+  command: "restorecon -iv {{ moin_cgi }}"
 
 - name: SELinux context /var/moin
   command:
