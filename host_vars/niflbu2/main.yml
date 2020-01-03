@@ -1,8 +1,8 @@
 # CPU architecture
-cpu_arch: sandybridge
+cpu_arch: skylake
 
 # Environment modules for this CPU architecture
-module_path: niflopt1:/u/modules/sandybridge
+module_path: niflopt1:/u/modules/skylake
 
 # SNMP location
 location: "DK;Lyngby;Niflheim;B312;978;rack 2;6;2"
@@ -10,11 +10,10 @@ location: "DK;Lyngby;Niflheim;B312;978;rack 2;6;2"
 # Roles downloaded from https://galaxy.ansible.com/linux-system-roles/network/
 # See https://access.redhat.com/articles/3050101 (Red Hat Enterprise Linux (RHEL) System Roles)
 network_connections:
-  # Subnet 130.225.86.0/23 on adapter enp3s0f0 (MAC b4:99:ba:b7:56:48)
-  - name: "enp3s0f0"
+  # Subnet 130.225.86.0/23 on adapter em1
+  - name: "em1"
     type: "ethernet"
     autoconnect: yes
-    mac: b4:99:ba:b7:56:48
     ip:
       dhcp4: no
       route_metric4: 1
@@ -29,11 +28,10 @@ network_connections:
       dns_search:
         - nifl.fysik.dtu.dk
         - fysik.dtu.dk
-  # Subnet 10.2.0.0/16 on PCIe dual-port Ethernet adapter ens3f0 (MAC 78:e3:b5:f4:8f:d8)
-  - name: "ens3f0"
+  # Subnet 10.2.0.0/16 on PCIe dual-port Ethernet adapter p1p1
+  - name: "p1p1"
     type: "ethernet"
     autoconnect: yes
-    mac: 78:e3:b5:f4:8f:d8
     ip:
       dhcp4: no
       route_metric4: 500
