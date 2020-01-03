@@ -47,10 +47,9 @@
       - tkinter
       - lapack-devel
       - openblas-devel
-      - python34-devel
-      - python34-tkinter 
-      - python36-devel
-      - python36-tools 
+      - python3-idle 
+      - python3-tkinter 
+      - python3-devel
       - GitPython
       - pysvn
       - graphviz
