@@ -11,6 +11,7 @@
     vg: "{{ volgroup }}"
     lv: "{{ lvname }}"
     size: "{{ lvsize }}"
+    resizefs: yes
     shrink: no
     state: present
 
