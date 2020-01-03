@@ -24,8 +24,6 @@
    - sendmail_aliases
    - sendmail_client
    # Now set up MoinMoin wiki web service
-   - ssl_certificate
    - apache_server
    - intrawiki
-   - moinmoin
    - firewalld_reload

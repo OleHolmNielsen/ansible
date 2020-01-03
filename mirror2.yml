@@ -22,6 +22,5 @@
    - sendmail_aliases
    - sendmail_client
    - mirror
-   - ssl_certificate
    - apache_server
    - firewalld_reload

@@ -29,9 +29,7 @@
    - samba_nmbd
    - pxeconfigd
    - nfs_server
-   - ssl_certificate
    - apache_server
    # Not tested on intra5:
    # - intrawiki
-   # - moinmoin
    - firewalld_reload
