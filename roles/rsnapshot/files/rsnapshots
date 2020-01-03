@@ -4,9 +4,9 @@
 # Usage: rsnapshots [daily|weekly|monthly|hourly] (default: daily)
 
 # First the root file systems
-FILESYSTEMS="localhost root-servauth2 root-servauth3 root-intra4 root-mail3 root-servnedi root-servcamd3 root-serv309 root-que root-audhumbla root-niflbu1 root-niflbu2 root-niflnet1 root-niflfs1 root-niflfs2 root-niflopt1 root-niflmgt root-listserv3 root-cinfsql root-servcinf root-servxp root-web4"
+FILESYSTEMS="localhost root-servauth2 root-servauth3 root-intra5 root-servnedi root-servcamd3 root-serv309 root-que root-slurmdb root-niflbu1 root-niflnet1 root-niflfs1 root-niflfs2 root-niflfs3 root-niflfs4 root-niflfs5 root-niflopt1 root-listserv3 root-cinfsql root-servcinf root-web4 root-web5 root-mirror2"
 # Add the data file systems
-FILESYSTEMS="$FILESYSTEMS cmr camp niflopt1 modules servcinf cinfsql fys nexmap ppfe tap staff fysadm fluids qpit TMF tekhist"
+FILESYSTEMS="$FILESYSTEMS cmr camp niflopt1 modules servcinf cinfsql fys nexmap tap staff fluids qpit TMF tekhist"
 
 # Commands
 RSNAPSHOT=/usr/bin/rsnapshot
