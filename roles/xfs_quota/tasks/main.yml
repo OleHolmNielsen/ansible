@@ -1,0 +1,10 @@
+# XFS default quotas
+
+- name: "Create XFS default quotas on {{ xfs_filesystem }} file system"
+  xfs_quota:
+    type: user
+    mountpoint: "{{ xfs_filesystem }}"
+    bsoft: "{{ xfs_bsoft }}"
+    bhard: "{{ xfs_bhard }}"
+    isoft: "{{ xfs_isoft }}"
+    ihard: "{{ xfs_ihard }}"
