@@ -10,6 +10,19 @@
     - selinux-policy-doc
     state: present
 
+- name: Copy MoinMoin source tar-ball
+  copy:
+    src: "{{ moin_tarball }}"
+    dest: /root/
+    owner: root
+    group: root
+    mode: 0644
+
+# Pip module: https://docs.ansible.com/ansible/latest/modules/pip_module.html
+- name: Pip install MoinMoin source tar-ball
+  pip:
+    name: "/root/{{ moin_tarball }}"
+
 - name: Set SELinux httpd_enable_cgi
   seboolean:
     name: httpd_enable_cgi
@@ -39,10 +52,14 @@
 
 - name: Create Apache 01wiki.conf symlink
   file:
-    # src: /etc/httpd/conf.d/wiki.conf
     src: wiki.conf
     dest: /etc/httpd/conf.d/01wiki.conf
     owner: root
     group: root
     state: link
 
+- name: Restart and enable the Apache service 
+  service:
+    name=httpd
+    state=restarted
+    enabled=yes
