@@ -1,0 +1,12 @@
+[Unit]
+Description=Synopsys Common Licensing Server
+
+[Service]
+ExecStart=/opt/flexlm/synopsys/scl/2018.06/linux64/bin/lmgrd -c /opt/flexlm/synopsys/scl/2018.06/admin/license/SynopsysKey.txt -l /opt/flexlm/synopsys/scl/2018.06/admin/logs/debug.log
+ExecStop=/opt/flexlm/synopsys/scl/2018.06/linux64/bin/lmdown -c /opt/flexlm/synopsys/scl/2018.06/admin/license/SynopsysKey.txt
+Restart=always
+Type=forking
+User=root
+
+[Install]
+WantedBy=multi-user.target
