@@ -24,8 +24,6 @@
     - rsnapshot-localhost.conf
     - rsnapshot-root-servauth2.conf
     - rsnapshot-root-servauth3.conf
-    - rsnapshot-root-intra4.conf
-    - rsnapshot-root-mail3.conf
     - rsnapshot-root-web4.conf
     - rsnapshot-root-servnedi.conf
     - rsnapshot-root-servcamd3.conf
@@ -41,7 +39,6 @@
     - rsnapshot-root-niflfs5.conf
     - rsnapshot-root-niflopt1.conf
     - rsnapshot-root-niflmgt.conf
-    - rsnapshot-root-audhumbla.conf
     - rsnapshot-root-listserv3.conf
     - rsnapshot-root-cinfsql.conf
     - rsnapshot-root-servcinf.conf
@@ -74,12 +71,9 @@
     - localhost
     - root-servauth2
     - root-servauth3
-    - root-intra4
-    - root-mail3
     - root-servnedi
     - root-servcamd3
     - root-serv309
-    - root-audhumbla
     - root-que
     - root-niflbu1
     - root-niflbu2
