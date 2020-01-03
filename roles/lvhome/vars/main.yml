@@ -1,0 +1,7 @@
+volgroup: VolGroup00
+lvname: lv_home
+lvsize: 50G
+lvdevice: "/dev/mapper/{{ volgroup }}-{{ lvname }}"
+lvpath: /home
+filesystem: xfs
+mountopts: "defaults,quota,noatime,nodiratime,logbufs=8,nosuid,nodev,inode64"
