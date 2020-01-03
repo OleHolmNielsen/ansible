@@ -3,10 +3,10 @@
 - hosts: ssl_certificate
   vars:
     # Path to our SSL files
-    local_path: "/root/SSL"
-    local_key: "star_fysik_dtu_dk.key"
-    local_crt: "star_fysik_dtu_dk.crt"
-    local_intermediate: "DigiCertCA.crt"
+    # local_path: "/root/SSL"
+    # local_key: "star_fysik_dtu_dk.key"
+    # local_crt: "star_fysik_dtu_dk.crt"
+    # local_intermediate: "DigiCertCA.crt"
   roles:
    - ssl_certificate
 

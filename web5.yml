@@ -21,6 +21,8 @@
    - yum_updates
    - sendmail_aliases
    - sendmail_client
+   - ssl_certificate
+   - apache_server
    - web_server
    - davmail
    - firewalld_reload
