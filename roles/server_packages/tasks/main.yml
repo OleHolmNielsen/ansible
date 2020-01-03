@@ -6,6 +6,10 @@
       - net-tools
       - telnet
       - traceroute
+      - patch
+      - rsnapshot
+      - iftop
+      - rdma-core
       - jwhois
       - expect
       - ipmiutil
@@ -38,6 +42,7 @@
     yum:
       name:
       - qemu-*
+      - postfix
       - blas*
       - openblas*
       - libreoffice*
