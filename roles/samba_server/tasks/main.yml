@@ -1,6 +1,12 @@
 - name: Install CentOS server packages for Samba
   yum:
     name:
+    - samba
+    - samba-common-tools
+    - samba-common
+    - samba-libs
+    - samba-client-libs
+    - samba-common-libs
     - libselinux-python
     - libsemanage-python
     - policycoreutils-python
