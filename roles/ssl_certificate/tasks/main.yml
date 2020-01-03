@@ -1,6 +1,8 @@
-- name: Install the ca-certificates package
+- name: Install required RPM packages
   yum:
-    name: ca-certificates
+    name:
+      - ca-certificates
+      - openssl-libs
     state: present
 
 - name: "Copy the {{ local_key }} file from this server"
