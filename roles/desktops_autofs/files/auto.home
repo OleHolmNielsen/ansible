@@ -9,6 +9,7 @@ compute		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/compute
 topsoe		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/topsoe
 fotonik		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/fotonik
 cat		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/cat
+ppfe		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/ppfe
 nexmap		-rsize=8192,wsize=8192,tcp,vers=3	servcamd:/u/nexmap
 panda2		-rsize=8192,wsize=8192,tcp,vers=3	panda2:/u/nexmap
 panda2data	-rsize=8192,wsize=8192,tcp,vers=3	panda2:/u/data
@@ -25,7 +26,6 @@ optik		-rsize=8192,wsize=8192,tcp,vers=3	serv309:/u/qpit
 tap		-rsize=8192,wsize=8192,tcp,vers=3	serv309:/u/tap
 staff		-rsize=8192,wsize=8192,tcp,vers=3	serv309:/u/staff
 fysadm		-rsize=8192,wsize=8192,tcp,vers=3	serv309:/u/fysadm
-ppfe		-rsize=8192,wsize=8192,tcp,vers=3	serv309:/u/ppfe
 fluids		-rsize=8192,wsize=8192,tcp,vers=3	serv309:/u/fluids
 biocomplex	-rsize=8192,wsize=8192,tcp,vers=3	serv309:/u/fluids
 chaos		-rsize=8192,wsize=8192,tcp,vers=3	serv309:/u/fluids
