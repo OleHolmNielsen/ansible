@@ -1,0 +1,25 @@
+# Configure servxp2 Samba gateway server
+
+- hosts: servxp
+  roles:
+   - rhel7
+   - role: linux-system-roles.network
+   - bashrc
+   - hostname
+   - non_graphical
+   - epel_repo
+   - server_packages
+   - samba_server
+   - lvhome
+   - xfs_quota
+   - nhc
+   - rasdaemon
+   - logwatch
+   - logrotate
+   - proliant_centos
+   - no_libvirt
+   - sshd_config
+   - sshd_allow_users
+   - yum_updates
+   - sendmail_aliases
+   - sendmail_client
