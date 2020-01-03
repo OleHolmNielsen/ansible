@@ -1,0 +1,27 @@
+--- /tmp/userdir.conf	2019-07-04 10:32:33.468844028 +0200
++++ userdir.conf	2019-07-04 10:32:59.465523797 +0200
+@@ -14,21 +14,21 @@
+     # of a username on the system (depending on home directory
+     # permissions).
+     #
+-    UserDir disabled
++    UserDir disabled root apache
+ 
+     #
+     # To enable requests to /~user/ to serve the user's public_html
+     # directory, remove the "UserDir disabled" line above, and uncomment
+     # the following line instead:
+     # 
+-    #UserDir public_html
++    UserDir /home/camd/*/WWW
+ </IfModule>
+ 
+ #
+ # Control access to UserDir directories.  The following is an example
+ # for a site where these directories are restricted to read-only.
+ #
+-<Directory "/home/*/public_html">
++<Directory "/home/camd/*/WWW">
+     AllowOverride FileInfo AuthConfig Limit Indexes
+     Options MultiViews Indexes SymLinksIfOwnerMatch IncludesNoExec
+     Require method GET POST OPTIONS
