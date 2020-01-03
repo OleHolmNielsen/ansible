@@ -1,3 +1,7 @@
+# First install our SSL certificate
+- include_role:
+    name: ssl_certificate
+
 - name: Install Apache web server packages 
   yum:
     name:
