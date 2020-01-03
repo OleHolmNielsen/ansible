@@ -6,12 +6,12 @@
     marker: "# {mark} ANSIBLE MANAGED BLOCK"
     block: |
       # Don't allow the arp table to become bigger than this
-      net.ipv4.neigh.default.gc_thresh3 = 4096
+      net.ipv4.neigh.default.gc_thresh3 = 8192
       # Tell the gc when to become aggressive with arp table cleaning.
       # Adjust this based on size of the LAN.
-      net.ipv4.neigh.default.gc_thresh2 = 2048
+      net.ipv4.neigh.default.gc_thresh2 = 4096
       # Adjust where the gc will leave arp table alone
-      net.ipv4.neigh.default.gc_thresh1 = 1024
+      net.ipv4.neigh.default.gc_thresh1 = 2048
       # Adjust to arp table gc to clean-up more often
       net.ipv4.neigh.default.gc_interval = 3600
       # ARP cache entry timeout
