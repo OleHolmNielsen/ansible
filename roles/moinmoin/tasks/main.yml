@@ -4,6 +4,7 @@
     - httpd
     - mod_ssl
     - python-docutils
+    - python-pip
     - libselinux-python
     - libsemanage-python
     - policycoreutils-python
