@@ -26,7 +26,7 @@ fi
 LIST="	ns.dtu.dk \
 	web4 web5 servcamd3 servcinf cinfsql servauth2 servauth3 demon demon2 \
 	intra5 serv309 servxp2 servtsm1 servtsm4 dhcpy6d rsnap1 rsnap2 \
-	servnedi \
+	mirror2 servnedi \
 	svol surt thul sylg svol fjorm slid finbul nigw2 \
 	que slurmdb niflfs1 niflfs2 niflfs3 niflfs4 niflfs5 \
 	niflopa1 niflmgt2 niflnet1 niflopt1 niflopt2 niflbu1 niflbu2 \
