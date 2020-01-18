@@ -1,0 +1,59 @@
+# Create users
+
+- name: Copy the password and group files
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/"
+    backup: yes
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+  with_items:
+    - /etc/passwd.fys
+    - /etc/group.fys
+
+- name: Copy the /etc/shadow.fys password file
+  copy:
+    src: /etc/shadow.fys
+    dest: /etc/shadow.fys
+    backup: yes
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=
+
+- name: Copy the /root/userupdate script
+  copy:
+    src: /root/userupdate
+    dest: /root/userupdate
+    backup: yes
+    owner: root
+    group: root
+    mode: u=rwx,g=,o=
+
+- name: Execute the /root/userupdate script creating groups and users
+  command:
+    /root/userupdate
+
+- name: Copy the realusers.sh and makescratchdirs scripts
+  copy:
+    src: "{{ item }}"
+    dest: "/root/"
+    backup: yes
+    owner: root
+    group: root
+    mode: u=rwx,g=,o=
+  with_items:
+    - realusers.sh
+    - makescratchdirs
+    - remove_old
+
+#- name: Execute the /root/makescratchdirs script creating scratch directories
+#  command:
+#    /root/makescratchdirs
+#
+#- name: Create a cron job for daily cleanup of /scratch
+#  cron:
+#    name: "Cleanup /scratch"
+#    hour: "7"
+#    minute: "30"
+#    job: "/root/remove_old"

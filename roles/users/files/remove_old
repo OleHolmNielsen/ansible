@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# Find and remove old scratch files
+SCRATCH=/scratch
+
+# Uncomment this to list the files as they are removed
+# LIST=-ls
+
+# Remove old files under /scratch/XXX (mindepth=2)
+find $SCRATCH -depth -mindepth 2 -mtime +7 ${LIST} -exec rm -rf {} \;

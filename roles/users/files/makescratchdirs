@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# Make user scratch directories in /scratch
+
+SCRATCHDIR=/scratch
+for u in `/root/realusers.sh`
+do
+	mkdir ${SCRATCHDIR}/$u
+	chown $u: ${SCRATCHDIR}/$u
+done
