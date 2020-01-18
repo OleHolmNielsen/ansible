@@ -46,9 +46,11 @@ do
 		${MAIL} -s "WARNING: Your disk quota is exceeded" ${i}
 
 	# Send a log to myself:
-	NAME=`grep "^$i:" /etc/passwd | awk -F: '{print $5}'`
+	# NAME=`grep "^$i:" /etc/passwd | awk -F: '{print $5}'`
+	NAME=`getent passwd $i | awk -F: '{print $5}'`
 	echo
 	echo Sent quota warning for host ${HOST} to user $i, ${NAME}
+	echo Password entry: `getent passwd $i`
 	echo
 	${QUOTA} -s -v $i
 done
