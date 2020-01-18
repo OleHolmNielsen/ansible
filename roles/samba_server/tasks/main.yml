@@ -13,6 +13,15 @@
     - selinux-policy-doc
     state: present
 
+- name: Copy the smb.conf script
+  copy:
+    src: "{{ inventory_hostname }}/smb.conf"
+    dest: /etc/samba/smb.conf
+    backup: yes
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+
 - name: Set SELinux samba_enable_home_dirs
   seboolean:
     name: samba_enable_home_dirs
