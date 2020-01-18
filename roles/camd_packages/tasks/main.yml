@@ -1,6 +1,7 @@
   - name: Install popular packages for CAMD
     yum:
       name: 
+      - thunderbird
       - libxc-devel
       - openblas-devel
       - openmpi-devel
