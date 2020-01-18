@@ -1,0 +1,55 @@
+# SNMP location
+location: "DK;Lyngby;B307;2 sal;227;rack 1;25"
+
+# Variables for the "datadisk" role creating a data disk:
+pvdisk: /dev/sda
+partition: 3
+volgroup: VolGroup00
+lvname: lv_home
+lvsize: 50G
+lvdevice: "/dev/mapper/{{ volgroup }}-{{ lvname }}"
+mountpoint: /home
+filesystem: xfs
+mountopts: "defaults,quota,noatime,nodiratime,logbufs=8,nosuid,nodev,inode64"
+
+# XFS filesystem default quotas
+xfs_filesystem: "{{ mountpoint }}"
+xfs_bsoft: 20g
+xfs_bhard: 30g
+xfs_isoft: 20000
+xfs_ihard: 30000
+
+# Roles downloaded from https://galaxy.ansible.com/linux-system-roles/network/
+# See https://access.redhat.com/articles/3050101 (Red Hat Enterprise Linux (RHEL) System Roles)
+network_connections:
+  # Subnet 130.225.86.0/23 on adapter eno1 
+  - name: "enp5s0f0"
+    type: "ethernet"
+    autoconnect: yes
+    # mac: 00:24:81:fd:02:b6
+    ip:
+      dhcp4: no
+      route_metric4: 1
+      gateway4: 130.225.86.1
+      auto6: no
+      address:
+        - 130.225.86.9/23
+      dns:
+        - 130.225.88.2
+        - 130.225.89.122
+        - 130.225.86.11
+      dns_search:
+        - fysik.dtu.dk
+        - win.dtu.dk
+  # Subnet 10.54.8.0/23
+  - name: "enp5s0f1"
+    type: "ethernet"
+    autoconnect: yes
+    # mac: 00:24:81:fd:02:b7
+    ip:
+      dhcp4: no
+      route_metric4: 500
+      auto6: no
+      address:
+        - 10.54.8.9/23
+
