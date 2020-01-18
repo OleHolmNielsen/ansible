@@ -5,6 +5,7 @@
       - bind-utils
       - net-tools
       - telnet
+      - ftp
       - traceroute
       - patch
       - rsnapshot
