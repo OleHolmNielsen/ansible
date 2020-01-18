@@ -13,9 +13,9 @@
     changed_when: False
 
 # The IPsets support was changed completely in firewalld version 0.4 (CentOS/RHEL 7.3)
-  - name: Check for firewalld version at least 0.4
-    fail: msg="The firewalld version must be at least 0.4"
-    when: firewalld_version.stdout | version_compare('0.4', '<')
+#  - name: Check for firewalld version at least 0.4
+#    fail: msg="The firewalld version must be at least 0.4"
+#    when: firewalld_version.stdout | version_compare('0.4', '<')
 
   - name: Copy the {{ ipset7 }} file from this server
     copy:
