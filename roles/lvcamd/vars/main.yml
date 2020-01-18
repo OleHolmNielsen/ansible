@@ -1,0 +1,9 @@
+volgroup: vgraid
+pvdisk: /dev/sdb
+partition: 1
+lvname: lvcamd
+lvsize: 1000G
+lvdevice: "/dev/mapper/{{ volgroup }}-{{ lvname }}"
+lvpath: /u/camd
+filesystem: xfs
+mountopts: "defaults,quota,noatime,nodiratime,logbufs=8,nosuid,nodev,inode64"
