@@ -1,0 +1,58 @@
+- name: Install CentOS 8 workstation package groups
+  dnf:
+    name:
+    - '@Anaconda tools'
+    - '@Core'
+    - '@Debugging Tools'
+    - '@Desktop Debugging and Performance Tools'
+    - '@Fonts'
+    - '@GNOME Applications'
+    - '@GNOME'
+    - '@Graphical Administration Tools'
+    - '@Graphics Creation Tools'
+    - '@Input Methods'
+    - '@Internet Applications'
+    - '@Internet Browser'
+    - '@Java Platform'
+    - '@Multimedia'
+    - '@Network File System Client'
+    - '@Office Suite and Productivity'
+    - '@Performance Tools'
+    - '@Printing Client'
+    - '@Remote Desktop Clients'
+    - '@Development Tools'
+    - '@Hardware Monitoring Utilities'
+    - '@Scientific Support'
+
+    # Explicit packages:
+    - bind-utils
+    - tree
+    - wget
+    - gnuplot
+    - mlocate
+    - man-pages
+    - java-1.8.0-openjdk
+    - tcsh
+    - net-tools
+    - chrony
+    - pciutils
+    - sendmail
+    - sendmail-cf
+    - ipmitool
+    - nm-connection-editor
+    - mcelog
+    - hplip
+    - bash-completion
+
+- name: get default runlevel
+  command: systemctl get-default
+  register: runlevel
+- name: Set graphical runlevel
+  command: systemctl set-default graphical.target
+  when: runlevel.stdout != "graphical.target"
+
+#- name: Set graphic boot as default boot target
+#  file:
+#    path=/etc/systemd/system/default.target 
+#    src=/lib/systemd/system/graphical.target 
+#    state=link
