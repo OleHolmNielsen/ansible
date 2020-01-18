@@ -7,4 +7,5 @@
       block: |
         alias L='ls -la'
         alias m=less
+        alias tailf='tail -f'
         alias h=history
