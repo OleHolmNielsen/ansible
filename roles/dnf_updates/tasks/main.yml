@@ -1,14 +1,14 @@
 # Must configure file /etc/dnf/automatic.conf, see https://fedoraproject.org/wiki/AutoUpdates
-   - name: Install dnf-automatic
-     dnf:
-       name: dnf-automatic
-       state: present
-   - name: Start dnf-automatic
-     service:
-       name=dnf-automatic
-       state=started
-       enabled=yes
-   - name: dnf updates
-     dnf:
-       name: '*'
-       state: latest
+- name: Install dnf-automatic
+  dnf:
+    name: dnf-automatic
+    state: present
+- name: Start dnf-automatic
+  service:
+    name=dnf-automatic
+    state=started
+    enabled=yes
+- name: dnf updates
+  dnf:
+    name: '*'
+    state: latest

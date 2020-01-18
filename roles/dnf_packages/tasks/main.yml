@@ -1,45 +1,55 @@
-  - name: Install system packages 
-    dnf:
-      name: 
-      - libsemanage-python
-      - libselinux-python
-      - python2-libselinux
-      - autofs
-      - cups
-      - foomatic
-      - hplip
-      - sendmail-cf
-      - openssl-devel
-      - libibverbs-devel
-      - libX11-devel
-      - dos2unix
-      - ntfs-3g
-      - reptyr
-      - fuse-sshfs
-      state: present
-  - name: Install popular packages 
-    dnf:
-      name:
-      - Lmod
-      - git-all
-      - bash-completion
-#      - texlive-*
-      - vim-X11
-      - screen
-      - vim-enhanced
-      - nano
-      - okular
-      - python-matplotlib
-      - sqlitebrowser
-      - htop
-      - grace
-      - python-pip
-      # Niflheim: Use modules in stead of these:
-      - vtk-python
-      - tkinter
-      - lapack-devel
-      - openblas-devel
-      - GitPython
-      - pysvn
-      - graphviz
-      state: present
+- name: Install system packages 
+  dnf:
+    name: 
+    - policycoreutils-python-utils
+    # - libsemanage-python
+    # - libselinux-python
+    # - python2-libselinux
+    - autofs
+    - cups
+    - foomatic
+    - hplip
+    - sendmail-cf
+    - openssl-devel
+    - libibverbs-devel
+    - libX11-devel
+    - dos2unix
+    - ntfs-3g
+    - reptyr
+    # - fuse-sshfs
+    state: present
+
+# The Lmod package from EPEL requires (on CentOS 8) an additional PowerTools repository, see:
+# https://bugzilla.redhat.com/show_bug.cgi?id=1777262
+# However, Ansible doesn't have a module to run "dnf config-manager --set-enabled PowerTools"
+# https://github.com/ansible/ansible/issues/46963
+
+- name: Enable the EPEL PowerTools repository
+  shell: "dnf config-manager --set-enabled PowerTools"
+
+- name: Install popular packages 
+  dnf:
+    name:
+    - Lmod
+    - git-all
+    - bash-completion
+   #      - texlive-*
+    - vim-X11
+    - screen
+    - vim-enhanced
+    - nano
+    # - okular
+    # - python-matplotlib
+    # - sqlitebrowser
+    - htop
+    # - grace
+    # - python-pip
+    # Niflheim: Use modules in stead of these:
+    # - vtk-python
+    # - tkinter
+    # - lapack-devel
+    # - openblas-devel
+    # - GitPython
+    # - pysvn
+    # - graphviz
+    state: present
