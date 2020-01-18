@@ -8,8 +8,6 @@
    - non_graphical
    - epel_repo
    - server_packages
-   # - desktops_autofs
-   # - authorized_keys_command
    - nhc
    - rasdaemon
    - logwatch
