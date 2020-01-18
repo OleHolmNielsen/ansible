@@ -1,0 +1,39 @@
+# Create data disk XFS file system on a specified LVM volume
+# Variables must be defind in the host_vars/ hostname file
+
+- name: Create a new primary partition for LVM
+  parted:
+    device: "{{ pvdisk }}"
+    number: "{{ partition }}"
+    flags: [ lvm ]
+    state: present
+
+# The lvg seems to require pvs (physical volumes)
+# See https://docs.ansible.com/ansible/latest/modules/lvg_module.html
+- name: "Create Volume Group {{ volgroup }} on disk {{ pvdisk }}{{ partition }}"
+  lvg:
+    vg: "{{ volgroup }}"
+    pvs: "{{ pvdisk }}{{ partition }}"
+    state: present
+
+- name: "Create a logical volume {{ lvdevice }} of size {{ lvsize }} in VG {{ volgroup }}"
+  lvol:
+    vg: "{{ volgroup }}"
+    lv: "{{ lvname }}"
+    size: "{{ lvsize }}"
+    resizefs: yes
+    shrink: no
+    state: present
+
+- name: "Create a {{ filesystem }} filesystem on {{ lvdevice }}"
+  filesystem:
+    fstype: "{{ filesystem }}"
+    dev: "{{ lvdevice }}"
+
+- name: "Mount {{ lvdevice }} on {{ mountpoint }}"
+  mount:
+    path: "{{ mountpoint  }}"
+    src: "{{ lvdevice }}"
+    fstype: "{{ filesystem }}"
+    opts: "{{ mountopts }}"
+    state: mounted
