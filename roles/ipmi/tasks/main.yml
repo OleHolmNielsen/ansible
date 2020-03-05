@@ -1,6 +1,3 @@
-  - include_role:
-      name: rhel7
-
   - name: Install the IPMI packages
     yum:
       name:
