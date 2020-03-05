@@ -1,0 +1,33 @@
+# Configure CAMD NFS file server
+
+- hosts: camd_nfs
+  roles:
+   - rhel8
+   # - role: linux-system-roles.network
+   - hostname
+   - non_graphical
+   - datadisk
+   - xfs_quota
+   - epel_repo
+   - server_packages8
+   - authorized_keys_command
+   - over_quota
+   - ipmi
+   - nhc
+   - rasdaemon
+   - logwatch
+   - logrotate
+   - proliant_centos8
+   # - limits_conf
+   - no_libvirt
+   - sshd_config
+   - sshd_allow_users
+   - bashrc
+   # - sysctl_bignet
+   - sendmail_aliases
+   - sendmail_client
+   - desktops_autofs
+   - nfs_server8
+   # - samba_server
+   # - users
+   - firewalld_reload

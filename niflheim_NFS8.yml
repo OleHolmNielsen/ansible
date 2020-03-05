@@ -1,0 +1,35 @@
+# Configure CAMD NFS file server
+
+- hosts: Niflheim_NFS8
+  roles:
+   - rhel8
+   - role: linux-system-roles.network
+   - hostname
+   - non_graphical
+   - datadisk
+   - xfs_quota
+   - epel_repo
+   - server_packages8
+   - authorized_keys_command
+   - over_quota
+   - ipmi
+   - nhc
+   - rasdaemon
+   - logwatch
+   - logrotate
+   - proliant_centos8
+   # - limits_conf
+   - no_libvirt
+   - flexlm_user
+   - sshd_config
+   - sshd_allow_users
+   - bashrc
+   - sysctl_bignet
+   - sendmail_aliases
+   - sendmail_client
+   # - niflheim_autofs_servers
+   - nfs_server8
+   # - samba_server
+   # - users
+   - firewalld_whitelist_niflheim
+   - firewalld_reload

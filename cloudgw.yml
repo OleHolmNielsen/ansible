@@ -1,0 +1,27 @@
+# Configure Niflheim Cloud gateway server
+
+- hosts: cloudgw
+  roles:
+   - role: linux-system-roles.network
+   - rhel8
+   - hostname
+   - non_graphical
+   - epel_repo
+   - server_packages8
+   - dnf_updates
+   - dnf_packages
+   - openvpn
+   - ssl_certificate
+   - authorized_keys_command
+   - nhc
+   - rasdaemon
+   - logwatch
+   # - proliant_centos8
+   - no_libvirt
+   - sshd_config
+   - sshd_allow_users
+   - bashrc
+   - sendmail_aliases
+   - sendmail_client
+   # - DNS_slave
+   # - firewalld_reload
