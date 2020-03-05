@@ -1,10 +1,12 @@
 # Create data disk XFS file system on a specified LVM volume
 # Variables must be defind in the host_vars/ hostname file
 
-- name: Create a new primary partition for LVM
+- name: Create a new GPT primary partition for LVM
   parted:
     device: "{{ pvdisk }}"
     number: "{{ partition }}"
+    # REQUIRED: GPT partition (Ansible default=msdos)
+    label: gpt
     flags: [ lvm ]
     state: present
 
