@@ -6,6 +6,8 @@
     # - libselinux-python
     # - python2-libselinux
     - autofs
+    - tar
+    - smartmontools
     - cups
     - foomatic
     - hplip
@@ -26,6 +28,8 @@
 
 - name: Enable the EPEL PowerTools repository
   shell: "dnf config-manager --set-enabled PowerTools"
+  args:
+    warn: no
 
 - name: Install popular packages 
   dnf:
