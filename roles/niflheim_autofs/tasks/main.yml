@@ -25,10 +25,8 @@
       # Niflheim login node /etc/auto.home
       niflheim2		-rsize=8192,wsize=8192,tcp,vers=3	niflfs3:/u/niflheim2
       que		-rsize=8192,wsize=8192,tcp,vers=3	que:/scratch
-      camd2		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/camd
       camp		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/camd
       niflheim		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/camd
-      niflheim1		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/camd
       nexmap		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/nexmap
       compute		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/compute
       topsoe		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/topsoe
@@ -37,7 +35,7 @@
       ppfe		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/ppfe
       cat		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/cat
       mek		-rsize=8192,wsize=8192,tcp,vers=3	niflfs4:/u/mek
-      mek2		-rsize=8192,wsize=8192,tcp,vers=3	niflfs4:/u/mek
+      nanomade		-rsize=8192,wsize=8192,tcp,vers=3	niflfs2:/u/nanomade
       ntch		-rsize=8192,wsize=8192,tcp,vers=3	niflfs2:/u/ntch
       mic		-rsize=8192,wsize=8192,tcp,vers=3	niflfs2:/u/ntch
       energy		-rsize=8192,wsize=8192,tcp,vers=3	niflfs2:/u/energy
