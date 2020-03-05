@@ -4,6 +4,8 @@
       - libsemanage-python
       - libselinux-python
       - autofs
+      - smartmontools
+      - gnome-tweak-tool
       - cups
       - foomatic
       - hplip
