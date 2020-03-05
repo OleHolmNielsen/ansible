@@ -1,12 +1,20 @@
+- name: Limit kernel versions with yum.conf installonly_limit=3
+  replace:
+    path: /etc/yum.conf
+    regexp: 'installonly_limit=5'
+    replace: 'installonly_limit=3'
+
 - name: Install yum-cron
   yum:
     name: yum-cron
     state: present
+
 - name: Start yum-cron
   service:
     name=yum-cron
     state=started
     enabled=yes
+
 - name: Yum updates
   yum:
     name: '*'
