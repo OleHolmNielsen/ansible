@@ -2,12 +2,15 @@
 
 - name: Copy the alive check scripts from this server
   copy:
-    src: "printerstatus.sh"
+    src: "{{ item }}"
     dest: "/usr/local/bin/"
     backup: yes
     owner: root
     group: root
     mode: u=rwx,g=rx,o=rx
+  with_items:
+    - printerstatus.sh
+    - printerreport.sh
 
 - cron:
     name: "Monitor all printers status using SNMP"
@@ -17,22 +20,8 @@
     job: "/usr/local/bin/printerstatus.sh |& mail -s 'Fysik printers status' adm-ohni@fysik.dtu.dk"
 
 - cron:
-    name: "Monitor all B309 printers status using SNMP"
+    name: "Send printer reports to responsible people"
     minute: "0"
     hour: "11"
     weekday: "1-5"
-    job: "/usr/local/bin/printerstatus.sh 'b309-m725 cryoprt b309-4525 b309-4525-2 ogprint ws4525 hpz5200 b309-m577 ppfe-5550dn ipf8300' |& mail -s 'Fysik B309 printers status' snim@fysik.dtu.dk"
-
-- cron:
-    name: "Monitor all B312 printers status using SNMP"
-    minute: "0"
-    hour: "11"
-    weekday: "1-5"
-    job: "/usr/local/bin/printerstatus.sh 'b312-m725 cinf4015 b312-m553' |& mail -s 'Fysik B312 SurfCat printers status' tomyou@fysik.dtu.dk"
-
-- cron:
-    name: "Monitor all B307 SurfCat printers status using SNMP"
-    minute: "0"
-    hour: "11"
-    weekday: "1-5"
-    job: "/usr/local/bin/printerstatus.sh 'ly307-east-co1 case4015' |& mail -s 'Fysik B307 SurfCat printers status' bpkn@fysik.dtu.dk"
+    job: "/usr/local/bin/printerreport.sh"
