@@ -16,7 +16,7 @@ panda2data	-rsize=8192,wsize=8192,tcp,vers=3	panda2:/u/data
 opt		-rsize=8192,wsize=8192,tcp,vers=3	niflopt1:/u/opt
 niflopt1	-rsize=8192,wsize=8192,tcp,vers=3	niflopt1:/u/opt
 modules		-rsize=8192,wsize=8192,tcp,vers=3	niflopt1:/u/modules
-ntch		-rsize=8192,wsize=8192,tcp,vers=3	niflfs2:/u/ntch
+nanomade	-rsize=8192,wsize=8192,tcp,vers=3	niflfs2:/u/nanomade
 mek		-rsize=8192,wsize=8192,tcp,vers=3	niflfs2:/u/mek
 mek2		-rsize=8192,wsize=8192,tcp,vers=3	niflfs2:/u/mek
 energy		-rsize=8192,wsize=8192,tcp,vers=3	niflfs2:/u/energy
