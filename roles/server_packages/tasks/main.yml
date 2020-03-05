@@ -7,6 +7,8 @@
       - telnet
       - ftp
       - traceroute
+      - smartmontools
+      - mlocate
       - patch
       - rsnapshot
       - iftop
