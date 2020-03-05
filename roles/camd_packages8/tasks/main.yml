@@ -1,0 +1,37 @@
+- name: Install popular packages for CAMD
+  yum:
+    name: 
+    - gnome-tweaks
+    - thunderbird
+    - openblas-devel
+    - openmpi-devel
+    - fftw-devel
+    - blacs-openmpi-devel
+    - scalapack-openmpi-devel 
+    - vim-enhanced
+    - nano
+    - ntfs-3g
+    - vim-X11
+    - emacs
+    - PackageKit-gtk3-module
+    - gnome-shell
+    - gnome-tweak-tool
+    - screen
+    - reptyr
+    state: present
+
+- name: Install popular packages from the EPEL repository
+  yum:
+    name:
+    - Lmod
+    - git-all
+    - bash-completion
+    - htop
+    - rclone
+    state: present
+
+- name: Uninstall environment-modules since we use Lmod
+  yum:
+    name:
+    - environment-modules
+    state: absent

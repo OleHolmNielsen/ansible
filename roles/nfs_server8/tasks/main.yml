@@ -1,0 +1,108 @@
+# See https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/deploying_different_types_of_servers/exporting-nfs-shares_deploying-different-types-of-servers
+# quota-rpc: https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html-single/considerations_in_adopting_rhel_8/index
+
+- name: Install the nfs-utils,quota,quota-rpc packages
+  yum:
+    name: nfs-utils,quota,quota-rpc
+    state: present
+
+- name: Editing mountd port in /etc/nfs.conf
+  ini_file:
+    path: "/etc/nfs.conf"
+    section: mountd
+    option: port
+    value: "892"
+    # no_extra_spaces: yes
+    backup: yes
+
+- name: Editing lockd port in /etc/nfs.conf
+  ini_file:
+    path: "/etc/nfs.conf"
+    section: lockd
+    option: port
+    value: "32803"
+
+- name: Editing lockd port in /etc/nfs.conf
+  ini_file:
+    path: "/etc/nfs.conf"
+    section: lockd
+    option: udp-port
+    value: "32769"
+
+- name: Editing nfsd port in /etc/nfs.conf
+  ini_file:
+    path: "/etc/nfs.conf"
+    section: nfsd
+    option: threads
+    value: "32"
+
+# Copy NFS exports file from files/<hostname>/ directory
+- name: Copy the NFS /etc/exports file 
+  copy:
+    src: "{{ inventory_hostname }}/exports"
+    dest: "/etc/exports"
+    # register: exports
+    backup: yes
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+
+- name: Start and enable the rpcbind service
+  service:
+    name=rpcbind
+    state=started
+    enabled=yes
+
+- name: Start and enable the nfs-server service
+  service:
+    name=nfs-server
+    state=restarted
+    enabled=yes
+
+# Requites new quota-rpc package
+- name: Start and enable the rpc-rquotad service
+  service:
+    name=rpc-rquotad
+    state=started
+    enabled=yes
+
+- name: Run exportfs -a
+  command: exportfs -a
+
+- name: Open firewalld services
+  firewalld:
+    service: "{{ item }}"
+    permanent: true
+    state: enabled
+  with_items:
+    - mountd
+    - rpc-bind
+    - nfs
+    - nfs3
+
+- name: Open port 875/tcp rquotad in firewalld
+  firewalld:
+    port: 875/tcp
+    permanent: true
+    state: enabled
+
+- name: Open port 875/udp rquotad in firewalld
+  firewalld:
+    port: 875/udp
+    permanent: true
+    state: enabled
+
+# - name: Open port 892/tcp mountd in firewalld
+# - name: Open port 892/udp mountd in firewalld
+
+- name: Get firewalld rules
+  command: "firewall-cmd  --permanent --direct --get-all-rules"
+  register: rules
+  # Ignore the "changed" status
+  changed_when: False
+
+- name: firewalld whitelist local net 10.2.0.0/16
+  vars:
+    firewalld_needs_reload: "true"
+  command: firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT_direct 0 -s 10.2.0.0/16 -j ACCEPT
+  when: "'INPUT_direct 0' not in rules.stdout"
