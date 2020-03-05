@@ -13,8 +13,6 @@
     owner: root
     group: root
     mode: u=r,g=,o=
-#  notify:
-#   - Restart httpd
 
 - name: "Make a soft link {{ key_file }}"
   file:
