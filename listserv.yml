@@ -1,0 +1,23 @@
+# Configure mailing list Mailman server
+
+- hosts: listserv
+  roles:
+   - rhel8
+   - rsyslog
+   - bashrc
+   - hostname
+   - non_graphical
+   - dnf_updates
+   - dnf_packages_minimal
+   - epel_repo
+   - server_packages8
+   - snmp
+   # - rasdaemon
+   - logwatch
+   - logrotate
+   - no_libvirt
+   - sshd_config
+   - sshd_allow_users
+   - firewalld_whitelist
+   - sendmail_server
+   - firewalld_reload
