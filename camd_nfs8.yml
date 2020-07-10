@@ -3,7 +3,7 @@
 - hosts: camd_nfs
   roles:
    - rhel8
-   # - role: linux-system-roles.network
+   - role: linux-system-roles.network
    - hostname
    - non_graphical
    - datadisk
