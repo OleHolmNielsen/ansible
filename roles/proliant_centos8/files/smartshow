@@ -1,0 +1,138 @@
+#!/bin/bash
+
+# Show HP Smart Array controller hardware inventory.
+# Requirement: HP Proliant server with HP hpacucli/hpssacli RPM package.
+
+# Command usage Help:
+function usage()
+{
+cat <<EOF
+Show HP Smart Array controller hardware inventory.
+Usage: $0 with one of the flags:
+ -c	Display controller detailed info
+ -C	Display all controllers present
+ -e	Display disk enclosure info
+ -s	Display controller and disk status
+ -1	Display 1-line disk info
+ -d	Display detailed disk info
+ -a	Display array info
+ -l	Display logical drive info
+ -D	Display controller Diagnostics info
+ -h	Print Help info
+EOF
+}
+
+if test $# -ne 1
+then
+	usage
+	exit 1
+fi
+
+# Make sure the sg (SCSI Generic) driver is loaded.
+# In RHEL 7.1 sg is no longer loaded by default (see RHEL 7.1 Release Notes).
+/sbin/modprobe sg
+
+# Tool from the HP hpacucli RPM package (Proliant Support Pack)
+# HPACUCLI=/usr/sbin/hpacucli
+HPACUCLI=/usr/sbin/ssacli
+if test ! -x $HPACUCLI
+then
+	# Tool from the HP hpssacli RPM package (Gen8 servers and newer)
+	HPACUCLI=/usr/sbin/hpssacli
+fi
+
+if test ! -x $HPACUCLI
+then
+	cat <<EOF
+ERROR: The $HPACUCLI tool for HPE Proliant servers is not installed.
+Please install the HP hpacucli or hpssacli RPM package.
+Yum repository: http://downloads.linux.hpe.com/repo/mcp/centos/7/x86_64/current/
+
+EOF
+	usage
+	exit 1
+fi
+
+# Get list of controllers in the system
+CONTROLLERS=`$HPACUCLI controller all show | grep Smart | awk '{for (i=0; i<NF; i++) if ($i == "Slot") print $(i+1)}'`
+
+if test -z "$CONTROLLERS"
+then
+	echo "ERROR: No HPE Smart Array RAID controllers found"
+	echo PCI RAID device list:
+	lspci | grep RAID
+	usage
+	exit -1
+fi
+
+DIAGFILE=smartdiags.txt
+
+# Temporary storage of alert data
+TMPDIR=/var/lib/smartshow
+if test ! -d $TMPDIR
+then
+	echo Creating work directory $TMPDIR
+	mkdir -v $TMPDIR
+fi
+DISKTEMP=$TMPDIR/smartshow.$$
+
+# Process command arguments
+while getopts "acsCdelD1h" options
+do
+	case $options in
+		# Display controller detailed info
+		c ) for ctrl in $CONTROLLERS; do
+			$HPACUCLI controller slot=$ctrl show detail
+		    done;;
+		# Display controller and disk status
+		s ) for ctrl in $CONTROLLERS; do
+			$HPACUCLI controller slot=$ctrl show status
+			$HPACUCLI controller slot=$ctrl enclosure all show detail | grep physicaldrive
+		    done;;
+		# Display all controllers present
+		C ) $HPACUCLI controller all show;;
+		# Display disk enclosure info
+		e ) for ctrl in $CONTROLLERS; do
+			$HPACUCLI controller slot=$ctrl enclosure all show detail
+		    done;;
+		# Display disk info
+		d ) for ctrl in $CONTROLLERS; do
+			for disk in `$HPACUCLI controller slot=$ctrl physicaldrive all show | grep physicaldrive | awk '{print $2}'`
+			do
+				$HPACUCLI controller slot=$ctrl physicaldrive $disk show detail
+			done
+		    done;;
+		# Display 1-line disk info
+		1 ) for ctrl in $CONTROLLERS; do
+			for disk in `$HPACUCLI controller slot=$ctrl physicaldrive all show | grep physicaldrive | awk '{print $2}'`
+			do
+				$HPACUCLI controller slot=$ctrl physicaldrive $disk show detail > $DISKTEMP
+				PHYS=`grep physicaldrive	$DISKTEMP | awk '{print $2}'`
+				STAT=`grep "  Status:"		$DISKTEMP | awk -F: '{print $2}'`
+				SIZE=`grep "  Size:"		$DISKTEMP | awk -F: '{print $2}'`
+				MODL=`grep "  Model:"		$DISKTEMP | awk -F: '{print $2}'`
+				FWRE=`grep "Firmware Revision:"	$DISKTEMP | awk -F: '{print $2}'`
+				if [ "$SIZE" = ' ??? GB' ]
+				then
+					SIZE="Unknown size"
+					MODL="Unknown model"
+				fi
+				echo "$PHYS:$STAT:$SIZE:$MODL:$FWRE"
+		    		rm -f $DISKTEMP
+			done
+		    done;;
+		# Display array info
+		a ) for ctrl in $CONTROLLERS; do
+			$HPACUCLI controller slot=$ctrl array all show detail
+		    done;;
+		# Display logical drive info
+		l ) for ctrl in $CONTROLLERS; do
+			$HPACUCLI controller slot=$ctrl logicaldrive all show detail
+		    done;;
+		# Display controller Diagnostics info
+		D ) $HPACUCLI controller all diag file=$DIAGFILE
+		    echo Diagnostics written to file $DIAGFILE ;;
+		# Defaults
+		h|* ) usage ;;
+	esac
+done
