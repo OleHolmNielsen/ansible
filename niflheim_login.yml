@@ -18,6 +18,7 @@
    # Limits disabled, different on slid, sylg etc.
    # - limits_conf
    - proliant_centos
+   - snmp
    - no_libvirt
    - sshd_config
    - authorized_keys_command
