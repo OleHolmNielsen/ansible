@@ -1,6 +1,8 @@
 - name: Install the logrotate package
   yum:
-    name: logrotate
+    name:
+    - logrotate
+    - rsyslog
     state: present
 
 - name: Editing the {{ syslog_conf }} file
