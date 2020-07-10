@@ -8,6 +8,7 @@
    - non_graphical
    - epel_repo
    - server_packages
+   - snmp
    - postgresql
    - cmr_user
    - nhc
