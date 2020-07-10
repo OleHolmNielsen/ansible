@@ -35,5 +35,6 @@
    # - slurm_basic
    # - modules
    - nfs_server
+   - niflheim_alive_check
    - firewalld_whitelist_niflheim
    - firewalld_reload
