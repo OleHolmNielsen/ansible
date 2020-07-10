@@ -1,0 +1,42 @@
+- name: Install libreswan packages
+  dnf:
+    name:
+    - libreswan
+
+- name: Copy azure connection files
+  copy:
+    src: "{{ inventory_hostname }}/{{ item }}"
+    dest: "/etc/ipsec.d/"
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
+  with_items:
+    - azure.conf
+    - azure.secrets
+  notify: restart ipsec
+
+- name: Set IP forwarding on in /proc and in the sysctl file and reload if necessary
+  sysctl:
+    name: net.ipv4.ip_forward
+    value: '1'
+    sysctl_set: yes
+    state: present
+    reload: yes
+  # notify: restart network
+
+# See https://gist.github.com/mozart27/c00a4bb48d251c1f92de107a004a45e8
+- name: Configure firewalld for ipsec service
+  firewalld:
+    service: ipsec
+    permanent: yes
+    immediate: yes
+    state: enabled
+
+- name: Add the IPsec interface vti01 to the trusted zone
+  firewalld:
+    interface: vti01
+    zone: trusted
+    permanent: yes
+    immediate: yes
+    state: enabled

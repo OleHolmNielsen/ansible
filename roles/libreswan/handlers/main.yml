@@ -1,0 +1,8 @@
+- name: restart network
+  service: name=network state=restarted
+
+- name: restart ipsec
+  service: name=ipsec state=restarted
+
+- name: restart firewalld
+  service: name=firewalld state=restarted
