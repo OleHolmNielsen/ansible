@@ -1,3 +1,6 @@
+# Enable the SNMP service
+- include_role:
+    name: snmp
 
 - name: Get system product name
   command: "dmidecode -s system-product-name"
