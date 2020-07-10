@@ -3,11 +3,15 @@
   dnf:
     name: dnf-automatic
     state: present
+
 - name: Start dnf-automatic
   service:
     name=dnf-automatic
     state=started
     enabled=yes
+  # Ignore the "changed" status
+  changed_when: False
+
 - name: dnf updates
   dnf:
     name: '*'
