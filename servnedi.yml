@@ -3,6 +3,7 @@
 - hosts: NeDi
   roles:
    - rhel7
+   - role: linux-system-roles.network
    - bashrc
    - hostname
    - non_graphical
