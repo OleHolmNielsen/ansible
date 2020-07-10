@@ -24,7 +24,7 @@ fi
 
 # List of hosts 
 LIST="	ns.dtu.dk \
-	web4 web5 servcamd3 servcinf cinfsql servauth2 servauth3 demon demon2 \
+	web5 servcamd3 servcamd4 servcinf cinfsql servauth2 servauth3 demon demon2 demon3 \
 	intra5 serv309 servxp2 servtsm1 servtsm4 dhcpy6d rsnap1 rsnap2 \
 	mirror2 servnedi \
 	svol surt thul sylg svol fjorm slid finbul nigw2 \
@@ -36,8 +36,7 @@ LIST="	ns.dtu.dk \
 	panda2 pandabu hypatia \
 	b307-hp0 b307-hp1 b307-hp2 b307-hp3 b307-hp4 b307-hp5 b307-hp6 \
 	b307-hp7 b307-hp9 b307-hp14 b307-hp15 b307-hp12 \
-	b309-hp3 b309-hp4 b309-hp7 \
-	b309-hp10 b309-hp11 b309-hp12 b309-hp13 \
+	b309-hp7 b309-hp10 b309-hp12 b309-hp13 \
 	b311-hp1 \
 	b312-hp1 b312-hp4 b312-hp5 b312-hp7 b312-hp8 b312-hp9 b312-hp10 b312-hp11 b312-hp12 b312-hp13 b312-hp15 \
 	niflheim-sw1 sw1-closed \
