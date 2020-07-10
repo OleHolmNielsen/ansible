@@ -1,0 +1,2 @@
+# See https://github.com/ansible/ansible/issues/23801
+sendmail_mc: /etc/mail/sendmail.mc
