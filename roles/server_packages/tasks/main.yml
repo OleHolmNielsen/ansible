@@ -1,56 +1,60 @@
-  - name: Install CentOS server packages
-    yum:
-      name:
-      - man-pages
-      - bind-utils
-      - net-tools
-      - telnet
-      - ftp
-      - traceroute
-      - smartmontools
-      - mlocate
-      - patch
-      - rsnapshot
-      - iftop
-      - rdma-core
-      - jwhois
-      - expect
-      - ipmiutil
-      - OpenIPMI
-      - net-snmp-utils
-      - htop
-      - nmap
-      - python34
-      - Lmod
-      - git-all
-      - python34-pip
-      - python2-pip
-      - PackageKit-gtk3-module
-      - GitPython
-      - grace
-      - screen
-      - tree
-      - glibc
-      - libgcc
-      - libstdc++
-      - nss-softokn-freebl
-      - libselinux-python
-      - libsemanage-python
-      - policycoreutils-python
-      - selinux-policy-doc
-      - unzip
-      state: present
+- name: Install CentOS server packages
+  yum:
+    name:
+    - man-pages
+    - bind-utils
+    - net-tools
+    - tcpdump
+    - ntpdate
+    - telnet
+    - ftp
+    - traceroute
+    - smartmontools
+    - mlocate
+    - tar
+    - patch
+    - rsnapshot
+    - iftop
+    - rdma-core
+    - jwhois
+    - expect
+    - ipmiutil
+    - OpenIPMI
+    - net-snmp
+    - net-snmp-utils
+    - htop
+    - nmap
+    - python34
+    - Lmod
+    - git-all
+    - python34-pip
+    - python2-pip
+    - PackageKit-gtk3-module
+    - GitPython
+    - grace
+    - screen
+    - tree
+    - glibc
+    - libgcc
+    - libstdc++
+    - nss-softokn-freebl
+    - libselinux-python
+    - libsemanage-python
+    - policycoreutils-python
+    - selinux-policy-doc
+    - unzip
+    state: present
 
-  - name: Remove unwanted packages
-    yum:
-      name:
-      - qemu-*
-      - postfix
-      - blas*
-      - openblas*
-      - libreoffice*
-      - R-core
-      - libRmath
-      - vtk
-      - vtk-qt
-      state: absent
+- name: Remove unwanted packages
+  yum:
+    name:
+    - qemu-*
+    - postfix
+    - blas*
+    - openblas*
+    - libreoffice*
+    - R-core
+    - libRmath
+    - vtk
+    - vtk-qt
+    state: absent
