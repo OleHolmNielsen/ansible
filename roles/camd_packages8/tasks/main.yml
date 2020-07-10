@@ -3,6 +3,7 @@
     name: 
     - gnome-tweaks
     - thunderbird
+    - python3-tkinter
     - openblas-devel
     - openmpi-devel
     - fftw-devel
