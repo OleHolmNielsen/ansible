@@ -1,0 +1,7 @@
+# Log rotation configuration for SSH blacklisting
+
+/var/log/sshblacklisting {
+	missingok
+	notifempty
+	weekly
+}

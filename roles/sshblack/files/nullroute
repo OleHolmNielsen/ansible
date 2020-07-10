@@ -1,0 +1,41 @@
+#!/bin/sh
+
+# Route a Class C network to 127.0.0.1 (null route)
+
+if test $# -ne 1
+then
+	echo Usage: $0 ip-address
+	exit 1
+fi
+
+# Extract the IP address bytes
+NET1=`echo $1 | awk -F. '{print int($1)}'`
+NET2=`echo $1 | awk -F. '{print int($2)}'`
+NET3=`echo $1 | awk -F. '{print int($3)}'`
+# Sanity checks
+if test ${NET1} -lt 1 -o ${NET1} -gt 254
+then
+	echo Invalid IP address range $1
+	exit 1
+fi
+if test ${NET2} -lt 0 -o ${NET2} -gt 255
+then
+	echo Invalid IP address range $1
+	exit 1
+fi
+if test ${NET3} -lt 0 -o ${NET3} -gt 255
+then
+	echo Invalid IP address range $1
+	exit 1
+fi
+
+NET="${NET1}.${NET2}.${NET3}.0"
+NETMASK=255.255.255.0
+
+# Check if we already nullroute this net (route via device "lo")
+if test -z "`/sbin/ip route get $NET | grep 'dev lo'`"
+then
+	echo Null routing network ${NET}
+	echo /sbin/route add -net $NET netmask $NETMASK gw 127.0.0.1
+	/sbin/route add -net $NET netmask $NETMASK gw 127.0.0.1
+fi
