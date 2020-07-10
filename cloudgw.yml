@@ -10,13 +10,11 @@
    - server_packages8
    - dnf_updates
    - dnf_packages
-   - openvpn
-   - ssl_certificate
-   - authorized_keys_command
+   - libreswan
    - nhc
    - rasdaemon
    - logwatch
-   # - proliant_centos8
+   - proliant_centos8
    - no_libvirt
    - sshd_config
    - sshd_allow_users
