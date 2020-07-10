@@ -22,6 +22,8 @@
 - name: Install Intel Omni-Path System Centric prerequisite packages
   yum:
     name:
+    - kernel-devel
+    - rpm-build
     - atlas
     - bc
     - coreutils
