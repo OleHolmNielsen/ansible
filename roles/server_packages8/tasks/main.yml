@@ -1,0 +1,56 @@
+- name: Install CentOS 8 server packages
+  dnf:
+    name:
+    - autofs
+    - policycoreutils-python-utils
+    - chrony
+    - sendmail
+    - sendmail-cf
+    - man-pages
+    - bind-utils
+    - net-snmp
+    - net-tools
+    - tcpdump
+    - ipmitool
+    - telnet
+    - ftp
+    - traceroute
+    - smartmontools
+    - mlocate
+    - logrotate
+    - rsyslog
+    - tar
+    - patch
+    - rsnapshot
+    - iftop
+    - rdma-core
+    # - jwhois
+    - expect
+    # - ipmiutil
+    - OpenIPMI
+    - net-snmp-utils
+    - htop
+    - nmap
+    - git-all
+    - screen
+    - tree
+    - glibc
+    - libgcc
+    - libstdc++
+    - nss-softokn-freebl
+    - unzip
+    state: present
+
+- name: Remove unwanted packages
+  dnf:
+    name:
+    - qemu-*
+    - postfix
+    - blas*
+    - openblas*
+    - libreoffice*
+    - R-core
+    - libRmath
+    - vtk
+    - vtk-qt
+    state: absent
