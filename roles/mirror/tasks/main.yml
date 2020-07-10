@@ -43,6 +43,6 @@
   cron:
     name: "CentOS mirror"
     minute: "15"
-    hour: "3,8,12,20"
+    hour: "0-23/2"
     job: "/root/rsync-centos"
 
