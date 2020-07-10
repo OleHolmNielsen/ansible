@@ -8,6 +8,9 @@
     - autofs
     - tar
     - smartmontools
+    - net-tools
+    - nfs-utils
+    - bind-utils
     - cups
     - foomatic
     - hplip
