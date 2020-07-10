@@ -1,0 +1,41 @@
+- name: Install minimal system packages on CentOS8
+  dnf:
+    name: 
+    - policycoreutils-python-utils
+    - rsync
+    - autofs
+    - tar
+    - ipmitool
+    - smartmontools
+    - net-tools
+    - net-snmp
+    - nfs-utils
+    - bind-utils
+    - sendmail-cf
+    - openssl-devel
+    - dos2unix
+    - glibc
+    - libgcc
+    - libstdc++
+    state: present
+
+# The Lmod package from EPEL requires (on CentOS 8) an additional PowerTools repository, see:
+# https://bugzilla.redhat.com/show_bug.cgi?id=1777262
+# However, Ansible doesn't have a module to run "dnf config-manager --set-enabled PowerTools"
+# https://github.com/ansible/ansible/issues/46963
+
+#- name: Enable the EPEL PowerTools repository
+#  shell: "dnf config-manager --set-enabled PowerTools"
+#  args:
+#    warn: no
+
+- name: Install popular packages 
+  dnf:
+    name:
+    - git-all
+    - bash-completion
+    - vim-X11
+    - screen
+    - vim-enhanced
+    - nano
+    state: present
