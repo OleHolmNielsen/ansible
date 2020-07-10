@@ -9,6 +9,7 @@
    - epel_repo
    - server_packages
    - niflheim_packages
+   - niflheim_autofs_servers
    - authorized_keys_command
    - over_quota
    - ipmi

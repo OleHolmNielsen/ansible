@@ -1,4 +1,4 @@
-# Configure CAMD NFS file server
+# Configure Niflheim NFS file server
 
 - hosts: Niflheim_NFS8
   roles:
@@ -6,10 +6,11 @@
    - role: linux-system-roles.network
    - hostname
    - non_graphical
-   - datadisk
-   - xfs_quota
+   # - datadisk
+   # - xfs_quota
    - epel_repo
    - server_packages8
+   - niflheim_autofs_servers
    - authorized_keys_command
    - over_quota
    - ipmi
