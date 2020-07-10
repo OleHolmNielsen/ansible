@@ -1,0 +1,11 @@
+- name: Install CentOS server packages for Samba
+  dnf:
+    name:
+    - samba
+    # - samba-common-tools
+    # - samba-common
+    - samba-client
+    # - samba-libs
+    # - samba-client-libs
+    # - samba-common-libs
+    state: present
