@@ -54,9 +54,15 @@
     marker: "# {mark} ANSIBLE MANAGED BLOCK2"
     block: |
       modules		-rsize=8192,wsize=8192,tcp,vers=3	{{ module_path }}
-# Done below:
-#  notify:
-#   - Restart autofs
+
+- name: Copy file {{ etc_auto_dtu }} 
+  copy:
+    src: "{{ etc_auto_dtu }}"
+    dest: "/etc/{{ etc_auto_dtu }}"
+    force: no
+    owner: root
+    group: root
+    mode: "u=rw,g=r,o=r"
 
 - name: Set SELinux context of file {{ etc_auto_home }} to that of {{ auto_master }}
   # Use ls -Z auto_master auto_home, check if they match
@@ -76,7 +82,7 @@
     mode: "u=rw,g=r,o=r"
 
 - name: Set SELinux context of file {{ home_autofs }} to that of {{ auto_master }}
-  command: /usr/bin/chcon --reference={{ auto_master|quote }} {{ home_autofs|quote }}
+  command: /usr/bin/chcon --reference={{ auto_master|quote }} {{ home_autofs|quote }} 
   # Ignore the "changed" status
   changed_when: False
 
@@ -88,6 +94,7 @@
     marker: "# {mark} ANSIBLE MANAGED BLOCK"
     block: |
       /home {{ etc_auto_home }} --timeout=60
+      /dtu {{ etc_auto_dtu }} --timeout=60
   notify:
    - Restart autofs
 
