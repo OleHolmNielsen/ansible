@@ -12,6 +12,7 @@
     name: flexlm
     comment: FlexLM license user
     group: flexlm
+    home: /opt/flexlm
     uid: 1028
 
 - name: Open firewall port 27020/tcp for Synopsys flexlm license server
@@ -21,3 +22,8 @@
     permanent: true
     state: enabled
 
+- name: Install prerequisite RPMs
+  yum:
+    name:
+    - redhat-lsb-core
+    state: present
