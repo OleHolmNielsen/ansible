@@ -3,19 +3,20 @@
 
 - name: Create a new GPT primary partition for LVM
   parted:
-    device: "{{ pvdisk }}"
+    device: "{{ item }}"
     number: "{{ partition }}"
     # REQUIRED: GPT partition (Ansible default=msdos)
     label: gpt
     flags: [ lvm ]
     state: present
+  loop: "{{ disks }}"
 
 # The lvg seems to require pvs (physical volumes)
 # See https://docs.ansible.com/ansible/latest/modules/lvg_module.html
-- name: "Create Volume Group {{ volgroup }} on disk {{ pvdisk }}{{ partition }}"
+- name: "Create Volume Group {{ volgroup }} on disk {{ pvdisks }}"
   lvg:
     vg: "{{ volgroup }}"
-    pvs: "{{ pvdisk }}{{ partition }}"
+    pvs: "{{ pvdisks }}"
     state: present
 
 - name: "Create a logical volume {{ lvdevice }} of size {{ lvsize }} in VG {{ volgroup }}"
