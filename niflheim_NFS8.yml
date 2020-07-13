@@ -6,8 +6,8 @@
    - role: linux-system-roles.network
    - hostname
    - non_graphical
-   # - datadisk
-   # - xfs_quota
+   - datadisk
+   - xfs_quota
    - epel_repo
    - server_packages8
    - niflheim_autofs_servers
