@@ -1,0 +1,29 @@
+- hosts: servauth
+  vars:
+    firewalld_needs_reload: "false"
+  roles:
+   - rhel8
+   - role: linux-system-roles.network
+   - hostname
+   - non_graphical
+   - authorized_keys_command
+   - nhc
+   - rasdaemon
+   - logwatch
+   - logrotate
+   - no_libvirt
+   - sshd_config
+   - bashrc
+   - epel_repo
+   - dnf_updates
+   - dnf_packages_minimal
+   - samba_client
+   - proliant_centos8
+   - sendmail_client
+   - desktops_autofs
+   - ansible
+   # - sshblack
+   # - firewalld_whitelist
+   # - firewalld_brute_force
+   # - firewalld_ipset
+   # - firewalld_reload
