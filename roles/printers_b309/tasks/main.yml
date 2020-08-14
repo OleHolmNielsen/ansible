@@ -59,6 +59,32 @@
     options: '-o OptionDuplex=True -o sides=two-sided-long-edge -o media=A4'
   when: "'HP-ColorLaserJet-4525-b309-201A' not in printerlist.stdout_lines"
 
+- name: Set {{ destination }} plus options
+  command: lpadmin -p {{ destination }} {{ options }}
+  vars:
+    destination: HP-ColorLaserJet-4525-b309-201A
+    options: '-o OptionDuplex=True -o sides=two-sided-long-edge -o media=A4'
+  when: "'HP-ColorLaserJet-4525-b309-201A' not in printerlist.stdout_lines"
+
+# Printer LY309-219-CO1 (KONICA MINOLTA bizhub C450i)
+
+- name: Install {{ printer }} printer name {{ destination }}
+  command: lpadmin -p {{ destination }} -v {{ printer }} -m {{ driver }} -E
+  vars:
+    # We MUST use the IP-address here:
+    printer: lpd://10.54.4.51/Print
+    destination: KONICA_MINOLTA_C450i
+    driver: foomatic-db-ppds/KONICA_MINOLTA/KOC450UX.ppd.gz
+  when: "'KONICA_MINOLTA_C450i' not in printerlist.stdout_lines"
+  register: newprinter
+
+- name: Set {{ destination }} plus options
+  command: lpadmin -p {{ destination }} {{ options }}
+  vars:
+    destination: KONICA_MINOLTA_C450i
+    options: '-o OptionDuplex=True -o sides=two-sided-long-edge -o media=A4,A3'
+  when: "'KONICA_MINOLTA_C450i' not in printerlist.stdout_lines"
+
 # Default printer
 
 - name: Get default printer
