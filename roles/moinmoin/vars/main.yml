@@ -1,3 +1,3 @@
-# moin_tarball: moin-1.9.10.tar.gz
-moin_tarball: http://static.moinmo.in/files/moin-1.9.10.tar.gz
+moin_tarball: moin-1.9.10.tar.gz
+moin_url: "http://static.moinmo.in/files/{{ moin_tarball }}"
 moin_cgi: /var/www/wiki/cgi-bin/moin.cgi
