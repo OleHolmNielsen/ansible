@@ -47,6 +47,9 @@
 - name: get default runlevel
   command: systemctl get-default
   register: runlevel
+  # Ignore the "changed" status
+  changed_when: False
+
 - name: Set graphical runlevel
   command: systemctl set-default graphical.target
   when: runlevel.stdout != "graphical.target"
