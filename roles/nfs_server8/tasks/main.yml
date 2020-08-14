@@ -92,8 +92,17 @@
     permanent: true
     state: enabled
 
-# - name: Open port 892/tcp mountd in firewalld
-# - name: Open port 892/udp mountd in firewalld
+- name: Open port 892/tcp mountd in firewalld
+  firewalld:
+    port: 892/tcp
+    permanent: true
+    state: enabled
+
+- name: Open port 892/udp mountd in firewalld
+  firewalld:
+    port: 892/udp
+    permanent: true
+    state: enabled
 
 - name: Get firewalld rules
   command: "firewall-cmd  --permanent --direct --get-all-rules"
