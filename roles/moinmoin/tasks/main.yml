@@ -11,10 +11,18 @@
     - selinux-policy-doc
     state: present
 
-- name: Copy MoinMoin source tar-ball
-  copy:
-    src: "{{ moin_tarball }}"
-    dest: /root/
+#- name: Copy MoinMoin source tar-ball
+#  copy:
+#    src: "{{ local_moin_tarball }}"
+#    dest: /root/
+#    owner: root
+#    group: root
+#    mode: 0644
+
+- name: Download MoinMoin source tar-ball
+  get_url:
+    url: "{{ moin_url }}"
+    dest: "/root/{{ moin_tarball }}"
     owner: root
     group: root
     mode: 0644
