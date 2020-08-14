@@ -7,6 +7,7 @@
     with_items:
       - /root/.ssh/id_ecdsa.pub
       - /root/.ssh/id_ecdsa_servauth2.pub
+      - /root/.ssh/id_ecdsa_servauth4.pub
       - /root/.ssh/id_ecdsa_ohni.pub
       - /root/.ssh/id_ecdsa_rsnap1.pub
       - /root/.ssh/id_ecdsa_rsnap2.pub
