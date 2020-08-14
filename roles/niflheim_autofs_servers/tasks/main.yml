@@ -31,6 +31,7 @@
       # Niflheim NFS server 10.2 subnet /etc/auto.home
       # niflheim3		-rsize=8192,wsize=8192,tcp,vers=3	ylgr2:/u/raid
       que		-rsize=8192,wsize=8192,tcp,vers=3	que:/scratch
+      hrid		-rsize=8192,wsize=8192,tcp,vers=3	hrid.fysik.dtu.dk:/u/raid
       camd2		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1.nifl:/u/camd
       camp		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1.nifl:/u/camd
       niflheim		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1.nifl:/u/camd
