@@ -24,7 +24,7 @@
     - rsnapshot-localhost.conf
     - rsnapshot-root-servauth2.conf
     - rsnapshot-root-servauth3.conf
-    - rsnapshot-root-web4.conf
+    - rsnapshot-root-web5.conf
     - rsnapshot-root-servnedi.conf
     - rsnapshot-root-servcamd3.conf
     - rsnapshot-root-serv309.conf
@@ -59,6 +59,7 @@
     - rsnapshot-niflopt1.conf
     - rsnapshot-modules.conf
     - rsnapshot-cinfsql.conf
+    - rsnapshot-hrid.conf
 
 - name: Create the rsnapshot top-level directories in /u/snapshots/
   file:
@@ -97,7 +98,7 @@
     group: root
     mode: u=rwx,g=,o=
   with_items:
-    - root-web4
+    - root-web5
     - root-servcinf
     - cmr
     - nexmap
@@ -115,6 +116,7 @@
     - niflopt1
     - modules
     - cinfsql
+    - hrid
 
 - name: Copy the rsnapshots script from this server
   copy:
