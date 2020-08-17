@@ -1,0 +1,21 @@
+# Configure a SurfCat section server
+
+- hosts: surfcat
+  roles:
+   - rhel8
+   - role: linux-system-roles.network
+   - hostname
+   - vmware
+   - non_graphical
+   - epel_repo
+   - server_packages8
+   - logwatch
+   - logrotate
+   - no_libvirt
+   - sshd_config
+   - sshd_allow_users
+   - bashrc
+   - sendmail_aliases
+   - sendmail_client
+   # - users
+   - firewalld_reload
