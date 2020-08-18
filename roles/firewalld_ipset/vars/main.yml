@@ -2,3 +2,5 @@
 ipsetname: geoblock
 # File containing the ipsetname subnet list
 ipset7: /etc/sysconfig/ipset7
+# Hash table size: A large size may be required
+HASHSIZE: "--option=hashsize=131072 --option=maxelem=1048576"

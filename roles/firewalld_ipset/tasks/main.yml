@@ -40,7 +40,7 @@
   changed_when: False
 
 - name: Create {{ ipsetname }} ipset
-  command: firewall-cmd --permanent --new-ipset={{ ipsetname }} --type=hash:net
+  command: firewall-cmd --permanent --new-ipset={{ ipsetname }} --type=hash:net {{ HASHSIZE }}
 
 - name: Get drop zone sources
   command: firewall-cmd --zone=drop --list-sources
