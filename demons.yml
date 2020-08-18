@@ -5,6 +5,7 @@
    - rhel7
    - hostname
    - non_graphical
+   - lvscratch
    - authorized_keys_command
    - nhc
    - rasdaemon
