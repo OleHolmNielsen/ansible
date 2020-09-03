@@ -12,6 +12,7 @@
    - epel_repo
    - server_packages8
    - snmp
+   - nhc
    # - rasdaemon
    - logwatch
    - logrotate
@@ -19,5 +20,7 @@
    - sshd_config
    - sshd_allow_users
    - firewalld_whitelist
-   - sendmail_server
+   - sendmail_listserver
+   - listserver
+   - apache_server
    - firewalld_reload
