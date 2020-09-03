@@ -11,6 +11,17 @@
   notify:
    - Restart Sendmail
 
+- name: "Editing the {{ access }} file turning off TLS for SMTP relay {{ smtp_relay }}"
+  blockinfile:
+    path: "{{ access }}"
+    state: present
+    insertafter: EOF
+    marker: "dnl # {mark} ANSIBLE MANAGED BLOCK"
+    block: |
+      Try_TLS:{{ smtp_relay}}		NO
+  notify:
+   - Restart Sendmail
+
 - name: Editing the {{ aliases }} file
   blockinfile:
     path: "{{ aliases }}"
