@@ -1,43 +1,11 @@
-- name: "Add local host aliases to {{ localhostnames }}"
-  blockinfile:
-    path: "{{ localhostnames }}"
-    state: present
-    insertafter: EOF
-    block: |
-      mail.fysik.dtu.dk
-      mail5.fysik.dtu.dk
-      servauth2.fysik.dtu.dk
-      servauth3.fysik.dtu.dk
-      servtsm1.fysik.dtu.dk
-      servtsm4.fysik.dtu.dk
-      intra4.fysik.dtu.dk
-      intra5.fysik.dtu.dk
-      web4.fysik.dtu.dk
-      web5.fysik.dtu.dk
-      demon.fysik.dtu.dk
-      demon2.fysik.dtu.dk
-      que.fysik.dtu.dk
-      audhumbla.fysik.dtu.dk
-      niflfs1.fysik.dtu.dk
-      niflfs2.fysik.dtu.dk
-      niflfs3.fysik.dtu.dk
-      niflfs4.fysik.dtu.dk
-      niflfs5.fysik.dtu.dk
-      niflopt1.fysik.dtu.dk
-      niflopt2.fysik.dtu.dk
-      niflnet1.fysik.dtu.dk
-      niflmgt.fysik.dtu.dk
-      niflmgt2.fysik.dtu.dk
-      surt.fysik.dtu.dk
-      thul.fysik.dtu.dk
-      fjorm.fysik.dtu.dk
-      sylg.fysik.dtu.dk
-      slid.fysik.dtu.dk
-      svol.fysik.dtu.dk
-      muspel.fysik.dtu.dk
-      kepler.fysik.dtu.dk
-      nifl.fysik.dtu.dk
-      camd.dtu.dk
+- name: Copy the Sendmail file /etc/mail/local-host-names from this server
+  copy:
+    src: "{{ inventory_hostname }}/local-host-names"
+    dest: "/etc/mail/"
+    backup: yes
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
   notify:
    - Restart Sendmail
 
@@ -50,12 +18,12 @@
       .nifl.fysik.dtu.dk	local:
       nifl.fysik.dtu.dk		local:
       listserv.fysik.dtu.dk	smtp:[listserv.fysik.dtu.dk] 
-      dtu.dk			smtp:[smtp.ait.dtu.dk] 
-      fysik.dtu.dk		smtp:[smtp.ait.dtu.dk] 
-      mek.dtu.dk		smtp:[smtp.ait.dtu.dk] 
-      adm.dtu.dk		smtp:[smtp.ait.dtu.dk] 
-      win.dtu.dk		smtp:[smtp.ait.dtu.dk] 
-      student.dtu.dk		smtp:[smtp.ait.dtu.dk]
+      dtu.dk			"smtp:[{{ smtp_relay }}]"
+      fysik.dtu.dk		"smtp:[{{ smtp_relay }}]"
+      mek.dtu.dk		"smtp:[{{ smtp_relay }}]"
+      adm.dtu.dk		"smtp:[{{ smtp_relay }}]"
+      win.dtu.dk		"smtp:[{{ smtp_relay }}]"
+      student.dtu.dk		"smtp:[{{ smtp_relay }}]"
   notify:
    - Restart Sendmail
 
@@ -77,6 +45,17 @@
       IPv6:2001:878:200:2012                  RELAY
       IPv6:2001:878:200:2013                  RELAY
       IPv6:2001:878:200:2014                  RELAY
+  notify:
+   - Restart Sendmail
+
+- name: "Editing the {{ access }} file turning off TLS for SMTP relay {{ smtp_relay }}"
+  blockinfile:
+    path: "{{ access }}"
+    state: present
+    insertafter: EOF
+    block: |
+      # Turn off TLS for SMTP relay {{ smtp_relay }}
+      Try_TLS:{{ smtp_relay}}           NO
   notify:
    - Restart Sendmail
 
