@@ -4,9 +4,16 @@
     - policycoreutils-python-utils
     - rsync
     - autofs
+    - mailx
+    - sendmail-doc
     - tar
+    - mlocate
     - ipmitool
     - smartmontools
+    - nmap
+    - traceroute
+    - ftp
+    - telnet
     - net-tools
     - net-snmp
     - nfs-utils
