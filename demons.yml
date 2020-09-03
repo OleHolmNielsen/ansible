@@ -4,6 +4,7 @@
   roles:
    - rhel7
    - hostname
+   - motd
    - non_graphical
    - lvscratch
    - authorized_keys_command
