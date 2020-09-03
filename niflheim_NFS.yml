@@ -26,7 +26,6 @@
    - bashrc
    # Do not update automatically the file servers: yum_updates
    - sysctl_bignet
-   - niflheim_autofs_servers
    - sendmail_aliases
    - sendmail_client
    # - slurm_basic
