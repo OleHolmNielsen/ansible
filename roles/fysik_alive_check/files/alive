@@ -25,7 +25,7 @@ fi
 # List of hosts 
 LIST="	ns.dtu.dk \
 	web5 servcamd3 servcamd4 servcinf cinfsql servauth2 servauth3 demon demon2 demon3 \
-	intra5 serv309 servxp2 servtsm1 servtsm4 dhcpy6d rsnap1 rsnap2 \
+	intra5 serv309 servxp2 servtsm1 servtsm4 rsnap1 rsnap2 \
 	mirror2 servnedi \
 	svol surt thul sylg svol fjorm slid finbul nigw2 \
 	que slurmdb niflfs1 niflfs2 niflfs3 niflfs4 niflfs5 \
@@ -34,7 +34,7 @@ LIST="	ns.dtu.dk \
 	bardeen \
 	prometheus auriga grahams \
 	panda2 pandabu hypatia \
-	b307-hp0 b307-hp1 b307-hp2 b307-hp3 b307-hp4 b307-hp5 b307-hp6 \
+	b307-hp0 b307-hp1 b307-hp2 b307-hp3 b307-hp4 b307-hp5 b307-hp11 \
 	b307-hp7 b307-hp9 b307-hp14 b307-hp15 b307-hp12 \
 	b309-hp7 b309-hp10 b309-hp12 b309-hp13 \
 	b311-hp1 \
