@@ -1,0 +1,45 @@
+- name: Install GCC compiler and kernel packages
+  dnf:
+    name:
+    - gcc
+    - kernel-devel
+    - kernel-headers
+    state: present
+
+- include_role:
+    name: epel_repo
+
+- name: Install DKMS packages
+  dnf:
+    name: dkms
+    state: present
+
+- name: Add Nvidia CUDA repository
+  shell: 
+    cmd: dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/rhel8/x86_64/cuda-rhel8.repo
+    warn: no
+  changed_when: False
+
+- name: dnf module install nvidia-driver:latest-dkms
+  shell: 
+    cmd: dnf module install nvidia-driver:latest-dkms
+    warn: no
+  changed_when: False
+
+- name: Install CUDA packages
+  dnf:
+    name: cuda
+    state: present
+
+- name: Start and enable the nvidia-persistenced service 
+  service:
+    name=nvidia-persistenced
+    state=started
+    enabled=yes
+
+# This is required due to a bug in the Nvidia driver on CentOS 8
+# See https://bugzilla.redhat.com/show_bug.cgi?id=1851448
+- name: Put SELinux in permissive mode, logging actions that would be blocked.
+  selinux:
+    policy: targeted
+    state: permissive
