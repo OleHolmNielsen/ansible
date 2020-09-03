@@ -1,0 +1,5 @@
+- name: Install the mailman version 2 listserver package
+  yum:
+    name: mailman
+    state: present
+
