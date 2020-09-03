@@ -7,9 +7,6 @@
     name:
     - httpd
     - mod_ssl
-    - libselinux-python
-    - libsemanage-python
-    - policycoreutils-python
     - selinux-policy-doc
     state: present
 
