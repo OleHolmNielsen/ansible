@@ -1,0 +1,9 @@
+- name: Copy the server-specific /etc/motd file from this server
+  copy:
+    src: "{{ inventory_hostname }}/motd"
+    dest: "/etc/motd"
+    backup: yes
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+
