@@ -17,10 +17,10 @@ panda2data	-rsize=8192,wsize=8192,tcp,vers=3	panda2:/u/data
 opt		-rsize=8192,wsize=8192,tcp,vers=3	niflopt1:/u/opt
 modules		-rsize=8192,wsize=8192,tcp,vers=3	niflopt1:/u/modules/broadwell
 nanomade	-rsize=8192,wsize=8192,tcp,vers=3	niflfs2:/u/nanomade
-mek		-rsize=8192,wsize=8192,tcp,vers=3	niflfs2:/u/mek
-mek2		-rsize=8192,wsize=8192,tcp,vers=3	niflfs2:/u/mek
 energy		-rsize=8192,wsize=8192,tcp,vers=3	niflfs2:/u/energy
 byg		-rsize=8192,wsize=8192,tcp,vers=3	niflfs2:/u/byg
+mek		-rsize=8192,wsize=8192,tcp,vers=3	niflfs4:/u/mek
+mek2		-rsize=8192,wsize=8192,tcp,vers=3	niflfs4:/u/mek
 que		-rsize=8192,wsize=8192,tcp,vers=3	que:/scratch
 qpit		-rsize=8192,wsize=8192,tcp,vers=3	serv309:/u/qpit
 optik		-rsize=8192,wsize=8192,tcp,vers=3	serv309:/u/qpit
