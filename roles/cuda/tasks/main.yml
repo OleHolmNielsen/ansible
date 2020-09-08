@@ -39,6 +39,7 @@
 
 # This is required due to a bug in the Nvidia driver on CentOS 8
 # See https://bugzilla.redhat.com/show_bug.cgi?id=1851448
+# Maybe this is also a fix: setsebool -P domain_can_mmap_files 1
 - name: Put SELinux in permissive mode, logging actions that would be blocked.
   selinux:
     policy: targeted
