@@ -1,5 +1,6 @@
 # See https://github.com/ansible/ansible/issues/23801
 sendmail_mc: /etc/mail/sendmail.mc
+mailertable: /etc/mail/mailertable
 access: /etc/mail/access
 aliases: /etc/aliases
 smtp_relay: smtp.ait.dtu.dk
