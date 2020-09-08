@@ -21,6 +21,6 @@
    - sshd_allow_users
    - firewalld_whitelist
    - sendmail_listserver
-   - listserver
    - apache_server
+   - listserver
    - firewalld_reload
