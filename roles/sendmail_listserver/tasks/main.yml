@@ -1,0 +1,111 @@
+- name: Copy the Sendmail file /etc/mail/local-host-names from this server
+  copy:
+    src: "{{ inventory_hostname }}/local-host-names"
+    dest: "/etc/mail/"
+    backup: yes
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+  notify:
+   - Restart Sendmail
+
+- name: "Add mail routing to {{ mailertable }}"
+  blockinfile:
+    path: "{{ mailertable }}"
+    backup: yes
+    state: present
+    insertafter: EOF
+    block: |
+      .nifl.fysik.dtu.dk	smtp:[mail.fysik.dtu.dk]
+      nifl.fysik.dtu.dk		smtp:[mail.fysik.dtu.dk]
+      mail.fysik.dtu.dk		smtp:[mail.fysik.dtu.dk]
+      listserv.fysik.dtu.dk	smtp:[listserv.fysik.dtu.dk] 
+      listserv01.fysik.dtu.dk	smtp:[listserv01.fysik.dtu.dk] 
+      dtu.dk			smtp:[{{ smtp_relay }}]
+      fysik.dtu.dk		smtp:[{{ smtp_relay }}]
+      mek.dtu.dk		smtp:[{{ smtp_relay }}]
+      adm.dtu.dk		smtp:[{{ smtp_relay }}]
+      win.dtu.dk		smtp:[{{ smtp_relay }}]
+      student.dtu.dk		smtp:[{{ smtp_relay }}]
+  notify:
+   - Restart Sendmail
+
+- name: "Add mail routing to {{ access }}"
+  blockinfile:
+    path: "{{ access }}"
+    backup: yes
+    state: present
+    insertafter: EOF
+    block: |
+      # Relay Fysik private network IP range
+      Connect:10.54                           RELAY
+      # Relay Fysik public network IP range
+      Connect:fysik.dtu.dk                    RELAY
+      Connect:win.dtu.dk                      RELAY
+      Connect:130.225.86                      RELAY
+      Connect:130.225.87                      RELAY
+      IPv6:2001:878:200:2010                  RELAY
+      IPv6:2001:878:200:2011                  RELAY
+      IPv6:2001:878:200:2012                  RELAY
+      IPv6:2001:878:200:2013                  RELAY
+      IPv6:2001:878:200:2014                  RELAY
+  notify:
+   - Restart Sendmail
+
+- name: "Editing the {{ access }} file turning off TLS for SMTP relay {{ smtp_relay }}"
+  blockinfile:
+    path: "{{ access }}"
+    backup: yes
+    state: present
+    insertafter: EOF
+    block: |
+      # Turn off TLS for SMTP relay {{ smtp_relay }}
+      Try_TLS:{{ smtp_relay}}           NO
+  notify:
+   - Restart Sendmail
+
+- name: "Remove loopback restriction in {{ sendmail_mc }} to enable sendmail service"
+  lineinfile:
+    path: "{{ sendmail_mc }}"
+    backup: yes
+    regexp: 'Addr=127\.0\.0\.1'
+    line: 'dnl # DAEMON_OPTIONS(`Port=smtp,Addr=127.0.0.1, Name=MTA'')dnl'
+    # line: 'dnl #'
+
+- name: "Define confDOMAIN_NAME as listserv.fysik.dtu.dk"
+  blockinfile:
+    path: "{{ sendmail_mc }}"
+    backup: yes
+    state: present
+    insertafter: '^dnl define\(`SMART_HOST'', `smtp.your.provider''\)dnl'
+    marker: "dnl # {mark} ANSIBLE MANAGED BLOCK"
+    block: |
+      define(`SMART_HOST', `{{ smtp_relay }}')dnl
+      dnl # Relay also unqualified addresses
+      define(`LOCAL_RELAY', `{{ smtp_relay }}')dnl
+      define(`confDOMAIN_NAME', `listserv.fysik.dtu.dk')dnl
+      dnl # Relay mails from our domain
+      FEATURE(relay_entire_domain)dnl
+  notify:
+   - Restart Sendmail
+
+- name: Open firewall for the SMTP service
+  firewalld:
+    service: smtp
+    immediate: true
+    permanent: true
+    state: enabled
+
+- name: Restart and enable the Sendmail service
+  service:
+    name=sendmail
+    state=restarted
+    enabled=yes
+
+- name: Create a cron job for daily restart of sendmail
+  cron:
+    name: "Sendmail_restart"
+    minute: "25"
+    hour: "7,20"
+    job: "systemctl restart sendmail"
+
