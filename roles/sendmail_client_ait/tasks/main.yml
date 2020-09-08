@@ -22,6 +22,22 @@
   notify:
    - Restart Sendmail
 
+- name: "Add mail routing to {{ mailertable }}"
+  blockinfile:
+    path: "{{ mailertable }}"
+    backup: yes
+    state: present
+    insertafter: EOF
+    block: |
+      .nifl.fysik.dtu.dk        smtp:[mail.fysik.dtu.dk]
+      nifl.fysik.dtu.dk         smtp:[mail.fysik.dtu.dk]
+      mail.fysik.dtu.dk         smtp:[mail.fysik.dtu.dk]
+      listserv.fysik.dtu.dk     smtp:[listserv.fysik.dtu.dk]
+      listserv01.fysik.dtu.dk   smtp:[listserv01.fysik.dtu.dk]
+  notify:
+   - Restart Sendmail
+
+
 - name: Editing the {{ aliases }} file
   blockinfile:
     path: "{{ aliases }}"
