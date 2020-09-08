@@ -1,5 +1,90 @@
-- name: Install the mailman version 2 listserver package
+- name: Create empty file /etc/httpd/conf.d/00name-virtual-host.conf
+  file:
+    path: "/etc/httpd/conf.d/00name-virtual-host.conf"
+    state: touch
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+  changed_when: False
+
+- name: Configure Apache virtual hosts
+  blockinfile:
+    path: /etc/httpd/conf.d/00name-virtual-host.conf
+    backup: yes
+    state: present
+    insertafter: BOF
+    block: |
+      <VirtualHost *:80>
+        AddDefaultCharset Off
+        ServerAdmin {{ server_admin }}
+        ServerName {{ url_host }}
+        Redirect / https://{{ url_host }}
+      </VirtualHost>
+      <VirtualHost *:443>
+        AddDefaultCharset Off
+        ServerAdmin {{ server_admin }}
+        ServerName {{ url_host }}
+      </VirtualHost>
+  notify:
+   - Restart httpd
+
+- name: Install the GNU Mailman version 2 listserver RPM package
   yum:
     name: mailman
     state: present
+
+- name: Configure /etc/httpd/conf.d/mailman.conf
+  blockinfile:
+    path: /etc/httpd/conf.d/mailman.conf
+    backup: yes
+    state: present
+    insertafter: EOF
+    block: |
+      RedirectMatch ^/mailman[/]*$ http://{{ url_host }}/mailman/listinfo
+      # Redirect main page to Mailman page
+      RedirectMatch ^[/]*$ http://{{ url_host }}/mailman/listinfo
+  notify:
+   - Restart httpd
+
+- name: "Configure Mailman DEFAULT_URL_HOST as {{ url_host }}"
+  replace:
+    path: "{{ mm_cfg }}"
+    regexp: 'DEFAULT_URL_HOST   = fqdn'
+    replace: 'DEFAULT_URL_HOST = ''{{ url_host }}'''
+    backup: yes
+
+- name: "Configure Mailman DEFAULT_EMAIL_HOST {{ email_host }}"
+  replace:
+    path: "{{ mm_cfg }}"
+    regexp: 'DEFAULT_EMAIL_HOST = fqdn'
+    replace: 'DEFAULT_EMAIL_HOST = ''{{ email_host }}'''
+    backup: yes
+
+- name: Configure HTTPS default page for Mailman
+  blockinfile:
+    path: "{{ mm_cfg }}"
+    state: present
+    backup: yes
+    insertafter: EOF
+    block: |
+      # See http://wiki.list.org/display/DOC/4.27+Securing+Mailman%27s+web+GUI+by+using+Secure+HTTP-SSL
+      DEFAULT_URL_PATTERN = 'https://%s/mailman/'
+
+# NOTICE: At this point it is required to create the site-wide list "mailman",
+# see https://www.gnu.org/software/mailman/mailman-install/site-list.html
+# This is a manual process selecting an E-mail address and a password,
+# plus adding entries for this list to /etc/aliases
+# Furthermore, it is recommended to set a Site password with ~mailman/bin/mmsitepass
+# See https://www.gnu.org/software/mailman/mailman-install/node44.html
+- name: "Enable and restart the mailman service (prerequisite: mailman site-wide list)"
+  service:
+    name=mailman
+    state=restarted
+    enabled=yes
+
+#- name: Restart httpd
+#  service:
+#    name=httpd
+#    state=restarted
+#    enabled=yes
 
