@@ -47,6 +47,7 @@
     - screen
     - vim-enhanced
     - nano
+    - ack
     # - okular
     # - python-matplotlib
     # - sqlitebrowser
