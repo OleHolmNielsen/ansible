@@ -11,6 +11,7 @@
     - traceroute
     - smartmontools
     - mlocate
+    - ack
     - tar
     - patch
     - rsnapshot
