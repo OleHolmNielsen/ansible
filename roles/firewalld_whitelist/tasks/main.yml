@@ -3,20 +3,50 @@
 #  - include_role:
 #      name: rhel7
 
-  - name: Get firewalld rules
-    command: "firewall-cmd  --permanent --direct --get-all-rules"
-    register: rules
-    # Ignore the "changed" status
-    changed_when: False
+- name: Get firewalld rules
+  command: "firewall-cmd  --permanent --direct --get-all-rules"
+  register: rules
+  # Ignore the "changed" status
+  changed_when: False
 
-  - name: firewalld whitelist local net 130.225.86.0/23
-    vars:
-      firewalld_needs_reload: "true"
-    command: firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT_direct 0 -s 130.225.86.0/23 -j ACCEPT
-    when: "'INPUT_direct 0' not in rules.stdout"
+- name: firewalld whitelist local net 130.225.86.0/23
+  vars:
+    firewalld_needs_reload: "true"
+  command: firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT_direct 0 -s 130.225.86.0/23 -j ACCEPT
+  when: "'INPUT_direct 0' not in rules.stdout"
 
-  - name: firewalld whitelist local net 10.54.0.0/16
-    vars:
-      firewalld_needs_reload: "true"
-    command: firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT_direct 1 -s 10.54.0.0/16 -j ACCEPT
-    when: "'INPUT_direct 1' not in rules.stdout"
+- name: firewalld whitelist local net 10.54.0.0/16
+  vars:
+    firewalld_needs_reload: "true"
+  command: firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT_direct 1 -s 10.54.0.0/16 -j ACCEPT
+  when: "'INPUT_direct 1' not in rules.stdout"
+
+- name: firewalld whitelist AIT net 130.225.72.0/23
+  vars:
+    firewalld_needs_reload: "true"
+  command: firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT_direct 2 -s 130.225.72.0/23 -j ACCEPT
+  when: "'INPUT_direct 2' not in rules.stdout"
+
+- name: firewalld whitelist AIT net 192.38.80.0/24
+  vars:
+    firewalld_needs_reload: "true"
+  command: firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT_direct 3 -s 192.38.80.0/24 -j ACCEPT
+  when: "'INPUT_direct 3' not in rules.stdout"
+
+- name: firewalld whitelist AIT net 192.38.82.0/24
+  vars:
+    firewalld_needs_reload: "true"
+  command: firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT_direct 4 -s 192.38.82.0/24 -j ACCEPT
+  when: "'INPUT_direct 4' not in rules.stdout"
+
+- name: firewalld whitelist AIT net 192.38.87.0/24
+  vars:
+    firewalld_needs_reload: "true"
+  command: firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT_direct 5 -s 192.38.87.0/24 -j ACCEPT
+  when: "'INPUT_direct 5' not in rules.stdout"
+
+- name: firewalld whitelist AIT net 192.38.91.0/24
+  vars:
+    firewalld_needs_reload: "true"
+  command: firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT_direct 6 -s 192.38.91.0/24 -j ACCEPT
+  when: "'INPUT_direct 6' not in rules.stdout"
