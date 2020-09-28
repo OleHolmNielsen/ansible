@@ -20,9 +20,17 @@
     warn: no
   changed_when: False
 
+# This is required due to a bug in the Nvidia driver on CentOS 8
+# See https://bugzilla.redhat.com/show_bug.cgi?id=1851448
+# Maybe this is also a fix: setsebool -P domain_can_mmap_files 1
+- name: Put SELinux in permissive mode, logging actions that would be blocked.
+  selinux:
+    policy: targeted
+    state: permissive
+
 - name: dnf module install nvidia-driver:latest-dkms
   shell: 
-    cmd: dnf module install nvidia-driver:latest-dkms
+    cmd: dnf -y --nogpgcheck module install nvidia-driver:latest-dkms
     warn: no
   changed_when: False
 
@@ -36,11 +44,3 @@
     name=nvidia-persistenced
     state=started
     enabled=yes
-
-# This is required due to a bug in the Nvidia driver on CentOS 8
-# See https://bugzilla.redhat.com/show_bug.cgi?id=1851448
-# Maybe this is also a fix: setsebool -P domain_can_mmap_files 1
-- name: Put SELinux in permissive mode, logging actions that would be blocked.
-  selinux:
-    policy: targeted
-    state: permissive
