@@ -15,6 +15,7 @@
       - libX11-devel
       - vim-enhanced
       - nano
+      - ack
       - okular
       - python-matplotlib
       - dos2unix
