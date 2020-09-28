@@ -1,0 +1,84 @@
+- name: Install CentOS server packages for MoinMoin
+  yum:
+    name:
+    - httpd
+    - mod_ssl
+    - python2
+    - python2-docutils
+    - python2-pip
+    # - libselinux-python
+    # - libsemanage-python
+    # - policycoreutils-python
+    # - selinux-policy-doc
+    state: present
+
+#- name: Copy MoinMoin source tar-ball
+#  copy:
+#    src: "{{ local_moin_tarball }}"
+#    dest: /root/
+#    owner: root
+#    group: root
+#    mode: 0644
+
+- name: Download MoinMoin source tar-ball
+  get_url:
+    url: "{{ moin_url }}"
+    dest: "/root/{{ moin_tarball }}"
+    owner: root
+    group: root
+    mode: 0644
+
+# Pip module: https://docs.ansible.com/ansible/latest/modules/pip_module.html
+- name: "Pip2 (Python2) install MoinMoin source tar-ball"
+  pip:
+    executable: /usr/bin/pip2
+    name: "/root/{{ moin_tarball }}"
+
+- name: Create directory /var/moin
+  file:
+    path: /var/moin
+    state: directory
+    owner: apache
+    group: apache
+    mode: 0755
+
+- name: Set SELinux httpd_enable_cgi
+  seboolean:
+    name: httpd_enable_cgi
+    state: yes
+    persistent: yes
+
+- name: "SELinux context {{ moin_cgi }}"
+  sefcontext:
+    target: "{{ moin_cgi }}"
+    setype: httpd_unconfined_script_exec_t
+    state: present
+
+- name: "Apply new SELinux file context to {{ moin_cgi }}"
+  command: "restorecon -iv {{ moin_cgi }}"
+
+- name: SELinux context /var/moin
+  command:
+    chcon -R -t httpd_sys_content_t /var/moin
+
+- name: Copy Apache config file wiki.conf
+  copy:
+    src: "{{ inventory_hostname }}/wiki.conf"
+    dest: /etc/httpd/conf.d/
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Create Apache 01wiki.conf symlink
+  file:
+    src: wiki.conf
+    dest: /etc/httpd/conf.d/01wiki.conf
+    owner: root
+    group: root
+    state: link
+
+- name: Restart and enable the Apache service 
+  service:
+    name=httpd
+    state=restarted
+    enabled=yes
