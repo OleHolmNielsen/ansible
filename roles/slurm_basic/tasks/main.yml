@@ -69,4 +69,11 @@
     dest: "{{ slurm_dir }}/"
     owner: root
     group: root
+
+- name: Copy logrotate file /etc/logrotate.d/slurm
+  copy:
+    src: logrotate.slurm
+    dest: /etc/logrotate.d/slurm
+    owner: root
+    group: root
     mode: 0644
