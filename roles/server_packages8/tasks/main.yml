@@ -17,6 +17,7 @@
     - traceroute
     - smartmontools
     - mlocate
+    - ack
     - logrotate
     - rsyslog
     - tar
