@@ -1,0 +1,42 @@
+- name: Create /var/www/wiki/
+  file:
+    path: /var/www/wiki
+    state: directory
+    owner: apache
+    group: apache
+    mode: u=rwx,g=rwx,o=rx
+
+- name: Copy the MoinMoin configuration files from this server
+  copy:
+    src: "{{ item }}"
+    dest: "/var/www/wiki/"
+    backup: yes
+    owner: apache
+    group: apache
+    mode: u=rw,g=r,o=r
+  with_items:
+    - index.html
+    - farmconfig.py
+    - it.py
+    - fyswiki.py
+    - HEFatS.py
+
+- name: Create /var/www/wiki/cgi-bin
+  file:
+    path: /var/www/wiki/cgi-bin
+    state: directory
+    owner: apache
+    group: apache
+    mode: u=rwx,g=rx,o=rx
+
+- name: Copy /var/www/wiki/cgi-bin/moin.cgi
+  copy:
+    src: moin.cgi
+    dest: /var/www/wiki/cgi-bin/
+    backup: yes
+    owner: apache
+    group: apache
+    mode: u=rwx,g=rx,o=rx
+
+- include_role:
+    name: moinmoin8
