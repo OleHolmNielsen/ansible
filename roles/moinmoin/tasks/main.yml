@@ -32,6 +32,14 @@
   pip:
     name: "/root/{{ moin_tarball }}"
 
+- name: Create directory /var/moin
+  file:
+    path: /var/moin
+    state: directory
+    owner: apache
+    group: apache
+    mode: 0755
+
 - name: Set SELinux httpd_enable_cgi
   seboolean:
     name: httpd_enable_cgi
