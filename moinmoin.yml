@@ -1,0 +1,7 @@
+# Set up MoinMoin wiki web service
+
+- hosts: pascal
+  roles:
+   - apache_server
+   - intrawiki8
+   - firewalld_reload
