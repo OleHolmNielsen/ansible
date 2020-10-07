@@ -16,10 +16,9 @@
       *               hard    data            50000000
       *               soft    stack           40000000
       *               hard    stack           50000000
-      *               hard    nproc           150
+      *               hard    nproc           250
       modules               soft    stack           unlimited
       modules               hard    stack           unlimited
       modules               hard    cpu             1000
       modules               hard    nproc           1000
       schiotz               hard    nproc           1000
-      mikst                 hard    nproc           1000
