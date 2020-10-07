@@ -19,24 +19,5 @@
     pvs: "{{ pvdisks }}"
     state: present
 
-- name: "Create a logical volume {{ lvdevice }} of size {{ lvsize }} in VG {{ volgroup }}"
-  lvol:
-    vg: "{{ volgroup }}"
-    lv: "{{ lvname }}"
-    size: "{{ lvsize }}"
-    resizefs: yes
-    shrink: no
-    state: present
-
-- name: "Create a {{ filesystem }} filesystem on {{ lvdevice }}"
-  filesystem:
-    fstype: "{{ filesystem }}"
-    dev: "{{ lvdevice }}"
-
-- name: "Mount {{ lvdevice }} on {{ mountpoint }}"
-  mount:
-    path: "{{ mountpoint  }}"
-    src: "{{ lvdevice }}"
-    fstype: "{{ filesystem }}"
-    opts: "{{ mountopts }}"
-    state: mounted
+- include_role:
+    name: logicalvolume
