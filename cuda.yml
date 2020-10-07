@@ -1,0 +1,5 @@
+# Playbook for workstation with NVIDIA graphics card and a second data disk
+
+- hosts: chandra pascal 
+  roles:
+   - cuda

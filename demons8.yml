@@ -1,0 +1,27 @@
+- hosts: demons8
+  vars:
+    firewalld_needs_reload: "false"
+  roles:
+   - rhel8
+   - role: linux-system-roles.network
+   - hostname
+   - non_graphical
+   - authorized_keys_command
+   - nhc
+   - rasdaemon
+   - logwatch
+   - logrotate
+   - no_libvirt
+   - sshd_config
+   - bashrc
+   - epel_repo
+   - dnf_updates
+   - dnf_packages
+   - proliant_centos8
+   - sendmail_client
+   - desktops_autofs
+   - sshblack
+   - firewalld_whitelist
+   - firewalld_brute_force
+   - firewalld_ipset
+   - firewalld_reload
