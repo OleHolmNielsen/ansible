@@ -1,0 +1,67 @@
+# This role configures already existing "mdadm" RAID disks
+
+- name: Install CentOS 8 server packages
+  dnf:
+    name:
+    - mdadm
+
+- name: "Create /etc/mdadm.conf (will not overwrite) for existing MD disks"
+  shell: "mdadm --verbose --detail -scan > /etc/mdadm.conf"
+  args:
+    creates: /etc/mdadm.conf
+
+- name: Set MAILADDR in /etc/mdadm.conf
+  blockinfile:
+    path: /etc/mdadm.conf
+    state: present
+    insertbefore: BOF
+    block: |
+      MAILADDR {{ mailaddr }}
+
+- name: RAID parameters in /etc/sysctl.conf
+  blockinfile:
+    path: /etc/sysctl.conf
+    state: present
+    insertafter: EOF
+    block: |
+      # Software RAID parameters
+      dev.raid.speed_limit_min = 100000
+      # Good for large 6-12 disks based array
+      dev.raid.speed_limit_max = 5000000
+
+- name: Make /etc/rc.local executable
+  file:
+    path: /etc/rc.local
+    mode: ugo+x
+
+- name: Set RAID parameters in /etc/rc.local
+  blockinfile:
+    path: /etc/rc.local
+    state: present
+    insertafter: EOF
+    block: |
+      # Optimize Software RAID performance
+      echo 16384 > /sys/block/md0/md/stripe_cache_size
+      echo 16384 > /sys/block/md1/md/stripe_cache_size
+      echo 16384 > /sys/block/md2/md/stripe_cache_size
+      blockdev --setra 65536 /dev/md0
+      blockdev --setra 65536 /dev/md1
+      blockdev --setra 65536 /dev/md2
+
+- name: Set RAID check parameters in /etc/sysconfig/raid-check
+  blockinfile:
+    path: /etc/sysconfig/raid-check
+    state: present
+    insertafter: EOF
+    block: |
+      MAXCONCURRENT=1
+      ENABLED=yes
+      NICE=normal
+
+- name: Install custom /etc/cron.d/raid-check crontab file
+  copy:
+    src: raid-check
+    dest: /etc/cron.d/raid-check
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
