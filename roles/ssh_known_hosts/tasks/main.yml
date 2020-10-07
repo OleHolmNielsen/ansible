@@ -13,8 +13,7 @@
   command: "add_known_hosts -K {{ ssh_known_hosts_file }} {{ item }}"
   # ignore_errors: yes
   with_items:
-    - servauth2
-    - servauth3
+    - servauth4
     - intra5
     - mail5
     - web5
