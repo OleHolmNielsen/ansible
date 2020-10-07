@@ -6,7 +6,7 @@
 # First the root file systems
 FILESYSTEMS="localhost root-servauth4 root-intra5 root-servnedi root-servcamd3 root-serv309 root-que root-slurmdb root-niflbu1 root-niflnet1 root-niflfs1 root-niflfs2 root-niflfs3 root-niflfs4 root-niflfs5 root-niflopt1 root-listserv3 root-cinfsql root-servcinf root-web5 root-mirror2"
 # Add the data file systems
-FILESYSTEMS="$FILESYSTEMS cmr camp niflopt1 modules hrid servcinf cinfsql fys nexmap tap staff fluids qpit TMF tekhist"
+FILESYSTEMS="$FILESYSTEMS cmr camp niflopt1 modules servcinf cinfsql fys fluids TMF tekhist grahams2"
 
 # Commands
 RSNAPSHOT=/usr/bin/rsnapshot
@@ -18,6 +18,14 @@ NHC=/usr/sbin/nhc
 
 # First a health check
 $NHC
+
+# Check if rsnapshot is already running
+if test -f /var/run/rsnapshot.pid
+then
+	echo ERROR: Another rsnapshot is already running:
+	ls -l /var/run/rsnapshot.pid
+	exit 1
+fi
 
 if test $# -gt 0
 then

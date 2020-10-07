@@ -1,11 +1,5 @@
 # Set up autofs
 
-- name: Start and enable the autofs service
-  service:
-    name=autofs
-    state=started
-    enabled=yes
-
 - name: Copy the {{ auto_home }} file from this server
   copy:
     src: "{{ auto_home }}"

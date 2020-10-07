@@ -7,7 +7,7 @@ camd		-rsize=8192,wsize=8192,tcp,vers=3	servcamd4:/u/camd
 # camd2		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/camd
 surfcat		-rsize=8192,wsize=8192,tcp,vers=3	servcamd3:/u/surfcat
 compute		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/compute
-topsoe		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/topsoe
+radphys		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/radphys
 fotonik		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/fotonik
 cat		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/cat
 nexmap		-rsize=8192,wsize=8192,tcp,vers=3	servcamd3:/u/nexmap
@@ -24,16 +24,7 @@ byg		-rsize=8192,wsize=8192,tcp,vers=3	niflfs2:/u/byg
 que		-rsize=8192,wsize=8192,tcp,vers=3	que:/scratch
 hrid		-rsize=8192,wsize=8192,tcp,vers=3	hrid:/u/raid
 qpit		-rsize=8192,wsize=8192,tcp,vers=3	serv309:/u/qpit
-optik		-rsize=8192,wsize=8192,tcp,vers=3	serv309:/u/qpit
-tap		-rsize=8192,wsize=8192,tcp,vers=3	serv309:/u/tap
-staff		-rsize=8192,wsize=8192,tcp,vers=3	serv309:/u/staff
-fysadm		-rsize=8192,wsize=8192,tcp,vers=3	serv309:/u/fysadm
-ppfe		-rsize=8192,wsize=8192,tcp,vers=3	serv309:/u/ppfe
 fluids		-rsize=8192,wsize=8192,tcp,vers=3	serv309:/u/fluids
-biocomplex	-rsize=8192,wsize=8192,tcp,vers=3	serv309:/u/fluids
-chaos		-rsize=8192,wsize=8192,tcp,vers=3	serv309:/u/fluids
-nano		-rsize=8192,wsize=8192,tcp,vers=3	serv309:/u/fluids
-qup		-rsize=8192,wsize=8192,tcp,vers=3	serv309:/u/fluids
 TMF		-rsize=8192,wsize=8192,tcp,vers=3	serv309:/u/TMF
 tekhist		-rsize=8192,wsize=8192,tcp,vers=3	serv309:/u/tekhist
 mossbaur	-rsize=8192,wsize=8192,tcp,vers=3	servcamd3:/u/fys/mossbaur
@@ -45,3 +36,4 @@ servcinf-data1  -rsize=8192,wsize=8192,ro,tcp,vers=3    servcinf:/u/data1
 servcinf-www    -rsize=8192,wsize=8192,ro,tcp,vers=3    servcinf:/var/www
 servcinf-moin   -rsize=8192,wsize=8192,ro,tcp,vers=3    servcinf:/var/moin
 cinfsqlbackup   -rsize=8192,wsize=8192,ro,tcp,vers=3    cinfsql:/var/lib/mysqlbackup
+grahams2	-rsize=8192,wsize=8192,ro,tcp,vers=3,timeo=8000	grahams:/volume1/Raw\ Data

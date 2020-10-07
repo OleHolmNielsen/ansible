@@ -22,13 +22,15 @@
     - rsnapshot.exclude
     - rsnapshot-master.conf
     - rsnapshot-localhost.conf
-    - rsnapshot-root-servauth2.conf
-    - rsnapshot-root-servauth3.conf
+    - rsnapshot-root-servauth4.conf
+    - rsnapshot-root-mirror2.conf
     - rsnapshot-root-web5.conf
+    - rsnapshot-root-intra5.conf
     - rsnapshot-root-servnedi.conf
     - rsnapshot-root-servcamd3.conf
     - rsnapshot-root-serv309.conf
     - rsnapshot-root-que.conf
+    - rsnapshot-root-slurmdb.conf
     - rsnapshot-root-niflbu1.conf
     - rsnapshot-root-niflbu2.conf
     - rsnapshot-root-niflnet1.conf
@@ -43,9 +45,7 @@
     - rsnapshot-root-cinfsql.conf
     - rsnapshot-root-servcinf.conf
     - rsnapshot-root-servxp.conf
-    - rsnapshot-cmr.conf
     - rsnapshot-nexmap.conf
-    - rsnapshot-ppfe.conf
     - rsnapshot-tap.conf
     - rsnapshot-staff.conf
     - rsnapshot-fysadm.conf
@@ -55,7 +55,6 @@
     - rsnapshot-tekhist.conf
     - rsnapshot-fys.conf
     - rsnapshot-camp.conf
-    - rsnapshot-servcinf.conf
     - rsnapshot-niflopt1.conf
     - rsnapshot-modules.conf
     - rsnapshot-cinfsql.conf
@@ -70,12 +69,12 @@
     mode: u=rwx,g=,o=
   with_items:
     - localhost
-    - root-servauth2
-    - root-servauth3
+    - root-servauth4
     - root-servnedi
     - root-servcamd3
     - root-serv309
     - root-que
+    - root-slurmdb
     - root-niflbu1
     - root-niflbu2
     - root-niflnet1
@@ -98,11 +97,11 @@
     group: root
     mode: u=rwx,g=,o=
   with_items:
+    - root-mirror2
     - root-web5
+    - root-intra5
     - root-servcinf
-    - cmr
     - nexmap
-    - ppfe
     - tap
     - staff
     - fysadm
