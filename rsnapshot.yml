@@ -8,8 +8,9 @@
    - authorized_keys_command
    - non_graphical
    - epel_repo
-   - rsnapshot_autofs
    - server_packages
+   - snmp
+   - rsnapshot_autofs
    - rsnapshot
    - ssh_known_hosts
    - ipmi
@@ -24,6 +25,6 @@
    - sendmail_aliases
    - sendmail_client
    # Now set up MoinMoin wiki web service
-   - apache_server
-   - intrawiki
+   # - apache_server
+   # - intrawiki
    - firewalld_reload
