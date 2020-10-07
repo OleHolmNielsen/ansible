@@ -2,6 +2,9 @@
   dnf:
     name:
     - autofs
+    - nfs-utils
+    - sysstat
+    - mdadm
     - policycoreutils-python-utils
     - chrony
     - sendmail
