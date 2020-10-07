@@ -12,6 +12,7 @@
    - server_packages8
    - niflheim_autofs_servers
    - authorized_keys_command
+   - snmp
    - over_quota
    - ipmi
    - nhc
