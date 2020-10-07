@@ -7,7 +7,7 @@ camd		-rsize=8192,wsize=8192,tcp,vers=3	servcamd4:/u/camd
 # camd2		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/camd
 surfcat		-rsize=8192,wsize=8192,tcp,vers=3	servcamd3:/u/surfcat
 compute		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/compute
-topsoe		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/topsoe
+radphys		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/radphys
 fotonik		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/fotonik
 cat		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/cat
 ppfe		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/ppfe
