@@ -1,9 +1,10 @@
-- name: Install GCC compiler and kernel packages
+- name: Install GCC compiler, kernel packages, and Python packages
   dnf:
     name:
     - gcc
     - kernel-devel
     - kernel-headers
+    - python3-devel
     state: present
 
 - include_role:
