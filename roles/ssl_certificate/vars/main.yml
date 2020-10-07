@@ -1,5 +1,20 @@
+#
 # Path to our SSL files
+#
 local_path: "/root/SSL"
 local_key: "star_fysik_dtu_dk.key"
 local_crt: "star_fysik_dtu_dk.crt"
 local_intermediate: "DigiCertCA.crt"
+
+#
+# SSL certificate files in fysik.dtu.dk web servers
+#
+# Our certificate
+crt_path: "/etc/pki/tls/certs"
+crt_file: "{{ crt_path }}/fysik.dtu.dk.crt"
+# Intermediate CA certificate
+intermediate_file: "{{ crt_path }}/intermediate.crt"
+# Secret key file
+key_path: "/etc/pki/tls/private"
+key_file: "{{ key_path }}/fysik.dtu.dk.key"
+
