@@ -3,6 +3,7 @@
     name: 
     - gnome-tweaks
     - thunderbird
+    - python3-devel
     - python3-tkinter
     - openblas-devel
     - openmpi-devel
@@ -15,6 +16,7 @@
     - vim-X11
     - emacs
     - PackageKit-gtk3-module
+    - mesa-libGLU
     - gnome-shell
     - gnome-tweak-tool
     - screen

@@ -17,6 +17,7 @@
     - emacs
     - xemacs
     - PackageKit-gtk3-module
+    - mesa-libGLU
     - gnome-shell
     - gnome-tweak-tool
     - screen
