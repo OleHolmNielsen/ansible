@@ -80,7 +80,8 @@
     insertafter: '^dnl define\(`SMART_HOST'', `smtp.your.provider''\)dnl'
     marker: "dnl # {mark} ANSIBLE MANAGED BLOCK"
     block: |
-      define(`SMART_HOST', `{{ smtp_relay }}')dnl
+      dnl # Direct SMTP without relaying
+      dnl define(`SMART_HOST', `{{ smtp_relay }}')dnl
       dnl # Relay also unqualified addresses
       define(`LOCAL_RELAY', `{{ smtp_relay }}')dnl
       define(`confDOMAIN_NAME', `listserv.fysik.dtu.dk')dnl
