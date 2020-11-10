@@ -8,6 +8,7 @@
    - non_graphical
    - lvscratch
    - authorized_keys_command
+   - proliant_centos
    - nhc
    - rasdaemon
    - logwatch

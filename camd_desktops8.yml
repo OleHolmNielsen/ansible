@@ -2,7 +2,7 @@
   roles:
    - hostname
    - bashrc
-   - epel_repo
+   - epel_repo8
    - workstation
    - dnf_updates
    - dnf_packages
