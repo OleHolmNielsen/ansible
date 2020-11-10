@@ -55,6 +55,7 @@
     - rsnapshot-tekhist.conf
     - rsnapshot-fys.conf
     - rsnapshot-camp.conf
+    - rsnapshot-camd.conf
     - rsnapshot-niflopt1.conf
     - rsnapshot-modules.conf
     - rsnapshot-cinfsql.conf
@@ -111,6 +112,7 @@
     - tekhist
     - fys
     - camp
+    - camd
     - servcinf
     - niflopt1
     - modules
