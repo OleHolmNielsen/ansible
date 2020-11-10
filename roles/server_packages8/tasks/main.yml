@@ -10,6 +10,7 @@
     - sendmail
     - sendmail-cf
     - man-pages
+    - man-db
     - bind-utils
     - net-snmp
     - net-tools
