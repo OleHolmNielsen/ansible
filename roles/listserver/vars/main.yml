@@ -1,4 +1,6 @@
-url_host: listserv01.fysik.dtu.dk
-email_host: listserv01.fysik.dtu.dk
+# url_host: listserv01.fysik.dtu.dk
+# email_host: listserv01.fysik.dtu.dk
+url_host: "{{ inventory_hostname }}"
+email_host: "{{ inventory_hostname }}"
 server_admin: root@mail.fysik.dtu.dk
 mm_cfg: /etc/mailman/mm_cfg.py
