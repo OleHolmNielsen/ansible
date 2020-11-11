@@ -30,11 +30,10 @@
 # https://bugzilla.redhat.com/show_bug.cgi?id=1777262
 # However, Ansible doesn't have a module to run "dnf config-manager --set-enabled PowerTools"
 # https://github.com/ansible/ansible/issues/46963
-
-- name: Enable the EPEL PowerTools repository
-  shell: "dnf config-manager --set-enabled PowerTools"
-  args:
-    warn: no
+#- name: Enable the EPEL PowerTools repository
+#  shell: "dnf config-manager --set-enabled PowerTools"
+#  args:
+#    warn: no
 
 - name: Install popular packages 
   dnf:

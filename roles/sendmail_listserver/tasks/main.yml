@@ -110,3 +110,14 @@
     hour: "7,20"
     job: "systemctl restart sendmail"
 
+- name: Editing the {{ aliases }} file
+  blockinfile:
+    path: "{{ aliases }}"
+    state: present
+    insertafter: '^#root:          marc'
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    block: |
+      root: root@mail.fysik.dtu.dk
+  notify:
+   - Rebuild aliases database
+
