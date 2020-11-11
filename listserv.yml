@@ -8,9 +8,10 @@
    - hostname
    - non_graphical
    - dnf_updates
+   - epel_repo8
    - dnf_packages_minimal
-   - epel_repo
    - server_packages8
+   - proliant_centos8
    - snmp
    - nhc
    # - rasdaemon

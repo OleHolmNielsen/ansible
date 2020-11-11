@@ -8,6 +8,8 @@
   vars:
     key: http://downloads.linux.hpe.com/SDR/hpePublicKey2048_key1.pub
   changed_when: false
+  args:
+    warn: no
   # Does not seem to work:
   #rpm_key:
   #  state: present
