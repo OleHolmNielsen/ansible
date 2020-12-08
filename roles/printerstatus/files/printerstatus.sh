@@ -97,7 +97,7 @@ EOF
 done
 
 # Print the messages
-if test -n "$TMPFILE"
+if test -s "$TMPFILE"
 then
 	if test -z "$mailuser"
 	then
