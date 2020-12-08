@@ -28,6 +28,8 @@
     - patch
     - rsnapshot
     - iftop
+    - pv
+    - lbzip2
     - rdma-core
     # - jwhois
     - expect
@@ -52,7 +54,7 @@
     - qemu-*
     - postfix
     - blas*
-    - openblas*
+    # - openblas*
     - libreoffice*
     - R-core
     - libRmath
