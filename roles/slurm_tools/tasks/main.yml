@@ -2,18 +2,18 @@
 
 # This role installs some extra Slurm tools
 
-- name: Install Slurm tools from GitHub
+- name: Install Slurm user tools from GitHub
   get_url:
-    url: "{{ item }}"
-    # url: https://raw.githubusercontent.com/OleHolmNielsen/Slurm_tools/master/
+    url: "https://raw.githubusercontent.com/OleHolmNielsen/Slurm_tools/master/{{ item }}"
     dest: /usr/local/bin
     owner: root
     group: root
     mode: 0755
   with_items:
-    - https://raw.githubusercontent.com/OleHolmNielsen/Slurm_tools/master/pestat/pestat
-    - https://raw.githubusercontent.com/OleHolmNielsen/Slurm_tools/master/showuserjobs/showuserjobs
-    - https://raw.githubusercontent.com/OleHolmNielsen/Slurm_tools/master/slurmaccounts/showuserlimits
-    - https://raw.githubusercontent.com/OleHolmNielsen/Slurm_tools/master/jobs/showjob
-    - https://raw.githubusercontent.com/OleHolmNielsen/Slurm_tools/master/jobs/jobnice
-    - https://raw.githubusercontent.com/OleHolmNielsen/Slurm_tools/master/partitions/showpartitions
+    - pestat/pestat
+    - showuserjobs/showuserjobs
+    - showuserlimits/showuserlimits
+    - partitions/showpartitions
+    - jobs/showjob
+    - jobs/showjob
+    - jobs/warn_maxjobs

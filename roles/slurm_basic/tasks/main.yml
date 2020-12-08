@@ -23,57 +23,62 @@
 - name: Install Slurm prerequisite packages
   yum:
     name:
-    - gcc
-    - rpm-build
     - openssl
-    - openssl-devel
-    - pam-devel
+    #- openssl-devel
+    #- pam-devel
     - numactl
-    - numactl-devel
+    #- numactl-devel
     - hwloc
-    - hwloc-devel
+    #- hwloc-devel
     - lua
-    - lua-devel
-    - readline-devel
-    - rrdtool-devel
-    - ncurses-devel
-    - gtk2-devel
-    - man2html
-    - libssh2-devel
-    - libibmad
-    - libibumad
-    - perl-Switch
-    - perl-ExtUtils-MakeMaker
+    #- lua-devel
+    #- readline-devel
+    #- rrdtool-devel
+    #- ncurses-devel
+    #- gtk2-devel
+    #- libssh2-devel
+    #- libibmad
+    #- libibumad
+    #- perl-Switch
+    #- perl-ExtUtils-MakeMaker
     state: present
 
 - name: Install basic Slurm version {{ slurm_version }} packages from local directory
   yum:
     name: 
     - "{{ rpm_dir }}/slurm-{{ slurm_rpm }}"
-    - "{{ rpm_dir }}/slurm-torque-{{ slurm_rpm }}"
-    - "{{ rpm_dir }}/slurm-libpmi-{{ slurm_rpm }}"
     - "{{ rpm_dir }}/slurm-perlapi-{{ slurm_rpm }}"
     - "{{ rpm_dir }}/slurm-contribs-{{ slurm_rpm }}"
     - "{{ rpm_dir }}/slurm-devel-{{ slurm_rpm }}"
+    disable_gpg_check: yes
     state: present
 
 - name: Create directory {{ slurm_dir }}
   file:
     path: "{{ slurm_dir }}/"
     state: directory
+    owner: root
+    group: root
     mode: 0755
 
-- name: Copy site {{ rpm_dir }}/slurm.conf to {{ slurm_dir }}
-  copy:
-    src: "{{ rpm_dir }}/slurm.conf"
-    dest: "{{ slurm_dir }}/"
-    owner: root
-    group: root
+# Obsolete (we use configless Slurm)
+#- name: Copy Slurm .conf files to {{ slurm_dir }}
+#  copy:
+#    src: "{{ item }}"
+#    dest: "{{ slurm_dir }}/"
+#    owner: root
+#    group: root
+#    mode: 0644
+#  with_items:
+#    - "{{ rpm_dir }}/slurm.conf"
+#    - "{{ rpm_dir }}/cgroup.conf"
+#    - "{{ rpm_dir }}/gres.conf"
+#    - "{{ rpm_dir }}/topology.conf"
 
-- name: Copy logrotate file /etc/logrotate.d/slurm
-  copy:
-    src: logrotate.slurm
-    dest: /etc/logrotate.d/slurm
-    owner: root
-    group: root
-    mode: 0644
+- name: Create log directory {{ slurm_logdir }}
+  file:
+    path: "{{ slurm_logdir }}/"
+    state: directory
+    owner: slurm
+    group: slurm
+    mode: 0755
