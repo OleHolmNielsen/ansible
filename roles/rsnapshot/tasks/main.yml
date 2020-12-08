@@ -21,6 +21,7 @@
   with_items:
     - rsnapshot.exclude
     - rsnapshot-master.conf
+    - rsnapshot-master-weekly.conf
     - rsnapshot-localhost.conf
     - rsnapshot-root-servauth4.conf
     - rsnapshot-root-mirror2.conf
