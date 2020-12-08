@@ -22,6 +22,7 @@
     - gnome-tweak-tool
     - screen
     - reptyr
+    - rclone
     - filezilla
     - keepassx2
     state: present
