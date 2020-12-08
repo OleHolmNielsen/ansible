@@ -7,6 +7,8 @@
   command: "rpm --import {{ key }}"
   vars:
     key: http://downloads.linux.hpe.com/SDR/hpePublicKey2048_key1.pub
+  args:
+    warn: no
   changed_when: false
   # Does not seem to work:
   #rpm_key:
