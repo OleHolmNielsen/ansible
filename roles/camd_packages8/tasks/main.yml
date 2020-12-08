@@ -21,6 +21,7 @@
     - gnome-tweak-tool
     - screen
     - reptyr
+    - rclone
     state: present
 
 - name: Install popular packages from the EPEL repository
