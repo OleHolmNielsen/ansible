@@ -16,9 +16,6 @@
     home: /var/lib/munge
     shell: /sbin/nologin
 
-- include_role:
-    name: epel_repo
-
 - name: Install Munge packages from the EPEL repository
   yum:
     name: munge,munge-libs,munge-devel
@@ -46,8 +43,8 @@
     group: munge
     mode: 0400
 
-- name: Start the munge service
+- name: Restart the munge service
   service:
     name: munge
     enabled: yes
-    state: started
+    state: restarted

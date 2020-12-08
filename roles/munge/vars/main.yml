@@ -1,4 +1,5 @@
-munge_id: 981
+# munge_id: 981
+munge_id: 1001
 key_dir: /etc/munge
 log_dir: /var/log/munge
 munge_key: /etc/munge/munge.key
