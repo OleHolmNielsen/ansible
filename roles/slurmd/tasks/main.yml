@@ -1,0 +1,102 @@
+# This role installs and configures the slurmd compute node packages
+
+# Install Slurm basics first
+- include_role:
+    name: slurm_basic
+
+- name: Copy the Slurm RPM packages
+  copy:
+    src: "{{ item }}"
+    dest: /root/
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - "{{ rpm_dir }}/slurm-slurmd-{{ slurm_rpm }}"
+    - "{{ rpm_dir }}/slurm-pam_slurm-{{ slurm_rpm }}"
+
+- name: Install slurmd version {{ slurm_version }} packages from local directory
+  yum:
+    name: 
+    - "/root/slurm-slurmd-{{ slurm_rpm }}"
+    - "/root/slurm-pam_slurm-{{ slurm_rpm }}"
+    # These should be installed in the slurm_basic role:
+    # - "/root/slurm-{{ slurm_rpm }}"
+    # - "/root/slurm-perlapi-{{ slurm_rpm }}"
+    # - "/root/slurm-contribs-{{ slurm_rpm }}"
+    # - "/root/slurm-devel-{{ slurm_rpm }}"
+    state: present
+
+- name: Create slurmd log file owned by root in {{ slurm_logdir }}
+  file:
+    path: "{{ slurm_logdir }}/slurmd.log"
+    state: touch
+    owner: root
+    group: root
+    mode: 0600
+  # Ignore the "changed" status
+  changed_when: False
+
+- name: Create slurmd logrotate script
+  copy:
+    src: logrotate.slurm
+    dest: /etc/logrotate.d/slurm
+    owner: root
+    group: root
+    mode: 0644
+
+# Roles for limiting job core dump sizes to zero
+
+- name: Create /etc/systemd/system/slurmd.service.d directory 
+  file:
+    path: /etc/systemd/system/slurmd.service.d
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Copy slurmd service file core_limit.conf
+  copy:
+    src: core_limit.conf
+    dest: /etc/systemd/system/slurmd.service.d/
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Copy slurmd file /etc/sysconfig/slurm
+  copy:
+    src: slurm
+    dest: /etc/sysconfig
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Copy scripts in /etc/profile.d/
+  copy:
+    src: "{{ item }}"
+    dest: /etc/profile.d/
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - ulimit.sh
+    - omp_num_threads.sh
+    - omp_num_threads.csh
+
+- name: Add core dump limits to /etc/security/limits.conf
+  blockinfile:
+    path: /etc/security/limits.conf
+    state: present
+    insertafter: EOF
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    block: |
+      *  soft  core  0
+      *  hard  core  0
+
+# Restart slurmd daemon
+
+- name: Restart slurmd daemon
+  service:
+    name=slurmd
+    state=restarted
+    enabled=yes

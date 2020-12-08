@@ -1,0 +1,35 @@
+# Configure slurm-pam_slurm, see https://wiki.fysik.dtu.dk/niflheim/Slurm_configuration#pam-configuration
+
+- name: Create /etc/pam.d/password-auth-no-systemd
+  shell: cat /etc/pam.d/password-auth | grep -v pam_systemd.so > /etc/pam.d/password-auth-no-systemd
+
+- name: Add pam_slurm_adopt.so to /etc/pam.d/sshd
+  blockinfile:
+    path: /etc/pam.d/sshd
+    state: present
+    insertafter: 'account    required     pam_nologin.so'
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    block: |
+      # - PAM config for Slurm - BEGIN
+      account    sufficient   pam_slurm_adopt.so
+      account    required     pam_access.so
+      # - PAM config for Slurm - END
+
+- name: Replace password-auth line in /etc/pam.d/sshd
+  replace:
+    path: /etc/pam.d/sshd
+    regexp: 'session    include      password-auth$'
+    replace: 'session    include      password-auth-no-systemd'
+
+- name: "Add PAM config for Slurm to /etc/security/access.conf allowing SSH access for root and {{ ansible_user }}"
+  blockinfile:
+    path: /etc/security/access.conf
+    state: present
+    insertafter: EOF
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    block: |
+      # - PAM config for Slurm - BEGIN
+      + : root   : ALL
+      + : {{ ansible_user }}   : ALL
+      - : ALL    : ALL
+      # - PAM config for Slurm - END

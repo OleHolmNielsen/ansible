@@ -1,0 +1,37 @@
+---
+
+# This role installs some extra Slurm tools
+
+- name: Install Slurm manager tools from GitHub
+  get_url:
+    url: "https://raw.githubusercontent.com/OleHolmNielsen/Slurm_tools/master/{{ item }}"
+    dest: /usr/local/bin
+    owner: root
+    group: root
+    mode: 0755
+  with_items:
+    - pestat/pestat
+    - showuserjobs/showuserjobs
+    - showuserlimits/showuserlimits
+    - partitions/showpartitions
+    - jobs/showjob
+    - jobs/showjob
+    - jobs/warn_maxjobs
+    - jobs/jobnice
+    - jobs/jobqos
+    - jobs/psjob
+    - jobs/notifybadjob
+    - jobs/sbadjobs
+    - jobs/schedjobs
+    - nodes/sdrain
+    - nodes/sresume
+    - nodes/sversion
+    - nodes/psnode
+    - slurmacct/slurmacct
+    - triggers/notify_nodes_down
+    - triggers/notify_nodes_drained
+    - triggers/notify_primary_database_failure
+    - triggers/notify_primary_database_resumed_operation
+    - triggers/notify_slurmctld_acct_buffer_full
+    - triggers/notify_slurmdbd_down
+    - triggers/notify_slurmdbd_resumed

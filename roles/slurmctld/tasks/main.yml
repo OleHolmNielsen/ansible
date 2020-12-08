@@ -1,0 +1,44 @@
+# This role installs and configures the slurmd compute node packages
+
+# Install Slurm basics first
+- include_role:
+    name: slurm_basic
+
+- name: Install Slurm ctld version {{ slurm_version }} packages from local directory
+  yum:
+    name: 
+    - "{{ rpm_dir }}/slurm-slurmctld-{{ slurm_rpm }}"
+    state: present
+
+- name: Create StateSaveLocation /var/spool/slurmctld directory 
+  file:
+    path: /var/spool/slurmctld
+    state: directory
+    owner: slurm
+    group: slurm
+    mode: 0755
+
+- name: Create slurmctld log file owned by root in {{ slurm_logdir }}
+  file:
+    path: "{{ slurm_logdir }}/slurmctld.log"
+    state: touch
+    owner: root
+    group: root
+    mode: 0600
+  # Ignore the "changed" status
+  changed_when: False
+
+- name: Create slurm logrotate script
+  copy:
+    src: logrotate.slurm
+    dest: /etc/logrotate.d/slurm
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Start slurmctld service
+  systemd:
+    state: started
+    enabled: yes
+    name: slurmctld
+

@@ -1,0 +1,13 @@
+/var/log/slurm/slurmctld.log {
+weekly
+missingok
+notifempty
+sharedscripts
+create 0600 slurm slurm
+rotate 8
+compress
+# delaycompress
+postrotate
+	/bin/systemctl reload slurmctld.service > /dev/null 2>/dev/null || true
+endscript
+}

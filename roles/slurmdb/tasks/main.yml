@@ -1,0 +1,149 @@
+# This role installs and configures the slurmdb compute node packages
+
+- name: Install Slurm dbd version {{ slurm_version }} packages from local directory
+  yum:
+    disable_gpg_check: yes
+    name: 
+    - "{{ rpm_dir }}/slurm-slurmdbd-{{ slurm_rpm }}"
+    state: present
+
+- name: Copy slurmdbd.conf file to {{ slurm_dir }}
+  copy:
+    src: "slurmdbd.conf"
+    dest: "{{ slurm_dir }}/"
+    owner: slurm
+    group: slurm
+    mode: 0600
+
+- name: "Configure DbdHost={{ inventory_hostname }} and StoragePass in slurmdbd.conf "
+  blockinfile:
+    path: "{{ slurm_dir }}/slurmdbd.conf"
+    state: present
+    insertbefore: BOF
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    block: |
+      DbdHost={{ inventory_hostname }}
+      StoragePass={{ mysql_root_password }}
+
+- name: Create slurmdbd log file owned by root in {{ slurm_logdir }}
+  file:
+    path: "{{ slurm_logdir }}/slurmdbd.log"
+    state: touch
+    owner: root
+    group: root
+    mode: 0600
+  # Ignore the "changed" status
+  changed_when: False
+
+- name: Create slurm logrotate script
+  copy:
+    src: logrotate.slurm
+    dest: /etc/logrotate.d/slurm
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Install MariaDB database RPMs
+  yum:
+    name: 
+    - mariadb-server
+    - mariadb-devel
+    state: present
+
+- name: Install MySQL-python on CentOS7/RHEL7
+  yum:
+    name: 
+    - MySQL-python
+    state: present
+  when: ansible_facts['distribution_major_version'] == "7"
+  args:
+    warn: no
+
+# In RHEL8 the MySQL-python was renamed as python3-mysql
+- name: Install python3-mysql on CentOS8/RHEL8
+  dnf:
+    name: 
+    - python3-mysql
+    state: present
+  when: ansible_facts['distribution_major_version'] == "8"
+
+- name: Configure Innodb /etc/my.cnf.d/innodb.cnf file
+  ini_file:
+    path: /etc/my.cnf.d/innodb.cnf
+    section: mysqld
+    option: "{{ item.option }}"
+    value: "{{ item.value }}"
+  with_items:
+    - { option: "innodb_buffer_pool_size", value: "1024M" }
+    - { option: "innodb_log_file_size", value: "64M" }
+    - { option: "innodb_lock_wait_timeout", value: "900" }
+    
+- name: Start MariaDB database service
+  systemd:
+    state: started
+    enabled: yes
+    name: mariadb
+
+# See https://stackoverflow.com/questions/25136498/ansible-answers-to-mysql-secure-installation
+# The tasks below are equivalent to running: mysql_secure_installation
+
+- name: Set the MySQL root password 
+  mysql_user: login_user=root login_password="{{ mysql_root_password }}" name=root password="{{ mysql_root_password }}"
+  no_log: true
+
+- name: Secure the MySQL root user for IPV6 localhost (::1)
+  mysql_user: login_user=root login_password="{{ mysql_root_password }}" name=root password="{{ mysql_root_password }}" host="::1"
+  no_log: true
+
+- name: Secure the MySQL root user for IPV4 localhost (127.0.0.1)
+  mysql_user: login_user=root login_password="{{ mysql_root_password }}" name=root password="{{ mysql_root_password }}" host="127.0.0.1"
+  no_log: true
+
+- name: Secure the MySQL root user for localhost domain
+  mysql_user: login_user=root login_password="{{ mysql_root_password }}" name=root password="{{ mysql_root_password }}" host="localhost"
+  no_log: true
+
+#- name: "Secure the MySQL root user for server_hostname domain {{ ansible_fqdn }}"
+#  mysql_user: login_user=root login_password="{{ mysql_root_password }}" name=root password="{{ mysql_root_password }}" host="{{ ansible_fqdn }}"
+#  no_log: true
+
+- name: Deletes anonymous MySQL server user
+  mysql_user: login_user=root login_password="{{ mysql_root_password }}" name="" host_all=yes state=absent
+  no_log: true
+
+- name: Removes the MySQL test database
+  mysql_db: login_user=root login_password="{{ mysql_root_password }}" db=test state=absent
+
+# create database slurm_acct_db;
+- name: Create the MySQL slurm_acct_db database
+  mysql_db: login_user=root login_password="{{ mysql_root_password }}" db=slurm_acct_db state=present
+
+# grant all on slurm_acct_db.* TO 'slurm'@'localhost' identified by 'some_pass' with grant option;
+- name: Create slurm database user with password and all database privileges and 'WITH GRANT OPTION'
+  mysql_user:
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    name: slurm
+    password: "{{ mysql_root_password }}"
+    host: localhost
+    priv: "slurm_acct_db.*:ALL,GRANT"
+    state: present
+  no_log: true
+    
+- name: Start slurmdbd service
+  systemd:
+    state: started
+    enabled: yes
+    name: slurmdbd
+
+- name: "Inquire cluster {{ clustername }} in the Slurm database"
+  shell:
+    cmd: "sacctmgr -nP show cluster {{ clustername }} format=cluster"
+  register: sacctmgr_output
+  # Ignore the "changed" status
+  changed_when: False
+
+- name: "Create cluster {{ clustername }} if absent in the Slurm database"
+  shell:
+    cmd: "sacctmgr -i create cluster {{ clustername }}"
+  when: sacctmgr_output.stdout | length==0

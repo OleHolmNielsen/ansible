@@ -1,0 +1,13 @@
+# Need to set limits in the /etc/init.d/slurm script for correct limits at boot time.
+# The limits in /usr/lib/systemd/system/slurmd.service are NOT honored by the boot script:
+# LimitNOFILE=51200
+# LimitMEMLOCK=infinity
+# LimitSTACK=infinity
+
+echo Sourcing /etc/sysconfig/slurm
+ulimit -l unlimited -s unlimited -n 51200
+ulimit -a
+
+# Memlocks the slurmd process's memory so that if a node
+# starts swapping, the slurmd will continue to respond
+SLURMD_OPTIONS="-M"
