@@ -8,7 +8,7 @@
    - hostname
    - non_graphical
    - dnf_updates
-   - epel_repo8
+   - epel_repo
    - dnf_packages_minimal
    - server_packages8
    - proliant_centos8
