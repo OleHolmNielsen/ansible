@@ -18,6 +18,8 @@
     - patch
     - rsnapshot
     - iftop
+    - pv
+    - lbzip2
     - rdma-core
     - jwhois
     - expect
