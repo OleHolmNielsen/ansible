@@ -1,0 +1,4 @@
+- name: Install VMware packages
+  dnf:
+    name:
+    - open-vm-tools
