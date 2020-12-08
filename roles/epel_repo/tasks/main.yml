@@ -1,4 +1,46 @@
-  - name: Install the EPEL repository
-    yum:
-      name: epel-release
-      state: present
+# Ansible Conditionals for OS 'distribution':
+# https://docs.ansible.com/ansible/latest/user_guide/playbooks_conditionals.html#ansible-facts-distribution
+
+# CentOS7 / RHEL7
+
+- name: Install the EPEL repository for CentOS 7
+  yum:
+    name: epel-release
+    state: present
+  when: (ansible_facts['distribution'] == "CentOS" and ansible_facts['distribution_major_version'] == "7")
+  #args:
+  #  warn: no
+
+- name: Install the EPEL repository for RHEL 7
+  yum:
+    name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+    disable_gpg_check: yes
+    state: present
+  when: (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] == "7")
+  #args:
+  #  warn: no
+
+# CentOS8 / RHEL8
+
+- name: Install the EPEL repository for CentOS/RHEL 8
+  dnf:
+    name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+    disable_gpg_check: yes
+    state: present
+  when: ansible_facts['distribution_major_version'] == "8" 
+
+- name: Enable the EPEL PowerTools repository for CentOS 8
+  shell: "dnf config-manager --set-enabled powertools"
+  when: (ansible_facts['distribution'] == "CentOS" and ansible_facts['distribution_major_version'] == "8")
+  args:
+    warn: no
+  # Ignore the "changed" status
+  changed_when: False
+
+- name: Enable the codeready-builder-for-rhel-8-{{ ansible_architecture }} repository for RHEL 8
+  shell: "subscription-manager repos --enable codeready-builder-for-rhel-8-{{ ansible_architecture }}-rpms"
+  when: (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] == "8")
+  args:
+    warn: no
+  # Ignore the "changed" status
+  changed_when: False
