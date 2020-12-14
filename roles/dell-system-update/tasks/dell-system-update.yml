@@ -7,7 +7,10 @@
     - curl
 
 - name: Download dell-system-update.repo
-  shell: "curl https://linux.dell.com/repo/hardware/dsu/bootstrap.cgi | bash"
+  shell: "curl -O https://linux.dell.com/repo/hardware/dsu/bootstrap.cgi; bash bootstrap.cgi"
+
+#- name: Download GPG keys
+#  shell: "curl -s https://linux.dell.com/repo/hardware/dsu/copygpgkeys.sh | bash"
 
 - name: Install dell-system-update and racadm packages
   yum:
