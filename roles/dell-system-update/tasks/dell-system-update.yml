@@ -1,0 +1,24 @@
+# Install Dell System Update (DSU)
+# http://linux.dell.com/repo/hardware/dsu/
+
+- name: Install packages for CentOS 8
+  yum:
+    name:
+    - curl
+
+- name: Download dell-system-update.repo
+  shell: "curl https://linux.dell.com/repo/hardware/dsu/bootstrap.cgi | bash"
+
+- name: Install dell-system-update and racadm packages
+  yum:
+    name:
+    - dell-system-update
+    - srvadmin-idracadm7
+
+- name: Create soft-link for racadm command
+  file:
+    src: /opt/dell/srvadmin/bin/idracadm7
+    dest: /usr/local/bin/racadm
+    owner: root
+    group: root
+    state: link

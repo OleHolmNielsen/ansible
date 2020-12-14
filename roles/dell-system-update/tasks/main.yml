@@ -1,0 +1,9 @@
+
+- name: Get system product name
+  command: "dmidecode -s system-product-name"
+  register: system_product_name
+  changed_when: False
+
+# Run these tasks only for Dell PowerEdge servers
+- include_tasks: dell-system-update.yml
+  when: "'PowerEdge' in system_product_name.stdout"
