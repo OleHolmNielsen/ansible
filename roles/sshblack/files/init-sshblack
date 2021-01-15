@@ -43,6 +43,8 @@ start() {
     [ -x $exec ] || exit 5
     # Make sure that BLACKLIST chain has been created before adding rules
     firewall-cmd --permanent --direct --add-chain ipv4 filter BLACKLIST
+    # Make new SSH connections jump to the BLACKLIST chain first
+    firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT_direct 7 -p tcp --dport 22 -m state --state NEW -j BLACKLIST
     if test -x $SSHBLACK_RESTART
     then
 	echo Restoring SSHBLACK BLACKLIST rules
