@@ -42,7 +42,7 @@
     - rsnapshot-root-niflfs5.conf
     - rsnapshot-root-niflopt1.conf
     - rsnapshot-root-niflmgt.conf
-    - rsnapshot-root-listserv3.conf
+    - rsnapshot-root-listserv.conf
     - rsnapshot-root-cinfsql.conf
     - rsnapshot-root-servcinf.conf
     - rsnapshot-root-servxp.conf
@@ -74,6 +74,7 @@
     - root-servauth4
     - root-servnedi
     - root-servcamd3
+    - root-servcamd4
     - root-serv309
     - root-que
     - root-slurmdb
@@ -87,7 +88,7 @@
     - root-niflfs5
     - root-niflopt1
     - root-niflmgt
-    - root-listserv3
+    - root-listserv
     - root-cinfsql
     - root-servxp
 
