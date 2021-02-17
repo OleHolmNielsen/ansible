@@ -23,10 +23,10 @@ energy		-rsize=8192,wsize=8192,tcp,vers=3	niflfs2:/u/energy
 byg		-rsize=8192,wsize=8192,tcp,vers=3	niflfs2:/u/byg
 que		-rsize=8192,wsize=8192,tcp,vers=3	que:/scratch
 hrid		-rsize=8192,wsize=8192,tcp,vers=3	hrid:/u/raid
-qpit		-rsize=8192,wsize=8192,tcp,vers=3	serv309:/u/qpit
-fluids		-rsize=8192,wsize=8192,tcp,vers=3	serv309:/u/fluids
-TMF		-rsize=8192,wsize=8192,tcp,vers=3	serv309:/u/TMF
-tekhist		-rsize=8192,wsize=8192,tcp,vers=3	serv309:/u/tekhist
+# qpit		-rsize=8192,wsize=8192,tcp,vers=3	serv309:/u/qpit
+# fluids	-rsize=8192,wsize=8192,tcp,vers=3	serv309:/u/fluids
+# TMF		-rsize=8192,wsize=8192,tcp,vers=3	serv309:/u/TMF
+# tekhist	-rsize=8192,wsize=8192,tcp,vers=3	serv309:/u/tekhist
 mossbaur	-rsize=8192,wsize=8192,tcp,vers=3	servcamd3:/u/fys/mossbaur
 undervis	-rsize=8192,wsize=8192,tcp,vers=3	servcamd3:/u/fys/undervis
 tap307		-rsize=8192,wsize=8192,tcp,vers=3	servcamd3:/u/fys/tap
