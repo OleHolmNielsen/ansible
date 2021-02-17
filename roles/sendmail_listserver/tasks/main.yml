@@ -60,7 +60,11 @@
     insertafter: EOF
     block: |
       # Turn off TLS for SMTP relay {{ smtp_relay }}
-      Try_TLS:{{ smtp_relay}}           NO
+      Try_TLS:{{ smtp_relay}}	NO
+      # Turn off TLS for known domains that do not support TLS
+      Try_TLS:udel.edu		NO
+      Try_TLS:hri.res.in	NO
+      Try_TLS:agu.edu.tr	NO
   notify:
    - Restart Sendmail
 
@@ -86,6 +90,7 @@
       define(`LOCAL_RELAY', `{{ smtp_relay }}')dnl
       define(`confDOMAIN_NAME', `listserv.fysik.dtu.dk')dnl
       dnl # Relay mails from our domain
+      define(`confDH_PARAMETERS', `2048')dnl
       FEATURE(relay_entire_domain)dnl
   notify:
    - Restart Sendmail
