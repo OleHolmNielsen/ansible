@@ -36,7 +36,6 @@
     - python2-pip
     - PackageKit-gtk3-module
     - GitPython
-    - grace
     - screen
     - tree
     - glibc
