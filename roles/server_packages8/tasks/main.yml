@@ -5,10 +5,16 @@
     - nfs-utils
     - sysstat
     - mdadm
+    - policycoreutils
+    - selinux-policy
+    - selinux-policy-targeted
+    - setroubleshoot-server
     - policycoreutils-python-utils
     - chrony
     - sendmail
     - sendmail-cf
+    - make
+    - wget
     - man-pages
     - man-db
     - bind-utils
