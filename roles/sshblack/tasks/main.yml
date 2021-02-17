@@ -72,6 +72,12 @@
   command: firewall-cmd --permanent --direct --add-chain ipv4 filter BLACKLIST
   when: "'BLACKLIST' not in chains.stdout"
 
+- name: firewalld SSH jump to chain BLACKLIST
+  vars:
+    firewalld_needs_reload: "true"
+  command: firewall-cmd --direct --add-rule ipv4 filter INPUT_direct 7 -p tcp --dport 22 -m state --state NEW -j BLACKLIST
+  when: "'BLACKLIST' not in chains.stdout"
+
 - name: Create a cron job for sshblack-save-state (Checkpoint and Restart)
   cron:
     name: "sshblack-save-state"
