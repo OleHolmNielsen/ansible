@@ -1,0 +1,10 @@
+- name: Install the firewalld package
+  yum:
+    name: firewalld
+    state: present
+
+- name: Disable obsolete AllowZoneDrifting configuration
+  lineinfile:
+    path: /etc/firewalld/firewalld.conf
+    regexp: '^AllowZoneDrifting='
+    line: 'AllowZoneDrifting=no'
