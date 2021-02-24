@@ -3,13 +3,13 @@
 
 # CentOS7 / RHEL7
 
-- name: Install the EPEL repository for CentOS 7
-  yum:
-    name: epel-release
-    state: present
-  when: (ansible_facts['distribution'] == "CentOS" and ansible_facts['distribution_major_version'] == "7")
-  #args:
-  #  warn: no
+#- name: Install the EPEL repository for CentOS 7
+#  yum:
+#    name: epel-release
+#    state: present
+#  when: (ansible_facts['distribution'] == "CentOS" and ansible_facts['distribution_major_version'] == "7")
+#  #args:
+#  #  warn: no
 
 - name: Install the EPEL repository for RHEL 7
   yum:
@@ -20,6 +20,14 @@
   #args:
   #  warn: no
 
+- name: Disable slurm packages from the EPEL repository for CentOS 7
+  yum_repository:
+    name: epel
+    baseurl: https://download.fedoraproject.org/pub/epel/$releasever/$basearch/
+    description: EPEL YUM repo
+    exclude: "slurm*"
+  when: (ansible_facts['distribution'] == "CentOS" and ansible_facts['distribution_major_version'] == "7")
+
 # CentOS8 / RHEL8
 
 - name: Install the EPEL repository for CentOS/RHEL 8
@@ -29,6 +37,7 @@
     state: present
   when: ansible_facts['distribution_major_version'] == "8" 
 
+# PowerTools renamed as powertools in CentOS 8.3
 - name: Enable the EPEL PowerTools repository for CentOS 8
   shell: "dnf config-manager --set-enabled powertools"
   when: (ansible_facts['distribution'] == "CentOS" and ansible_facts['distribution_major_version'] == "8")
