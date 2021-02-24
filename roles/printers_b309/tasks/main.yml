@@ -66,7 +66,7 @@
     options: '-o OptionDuplex=True -o sides=two-sided-long-edge -o media=A4'
   when: "'HP-ColorLaserJet-4525-b309-201A' not in printerlist.stdout_lines"
 
-# Printer LY309-219-CO1 (KONICA MINOLTA bizhub C450i)
+# Printer LY309-241-CO1 (KONICA MINOLTA bizhub C450i)
 
 - name: Install {{ printer }} printer name {{ destination }}
   command: lpadmin -p {{ destination }} -v {{ printer }} -m {{ driver }} -E
