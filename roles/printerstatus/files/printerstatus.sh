@@ -25,7 +25,7 @@ then
 	export PRINTERLIST="$@"
 else
 	# Default list: all printers
-	export PRINTERLIST="b307-m830 ly307-225-co1 ly307-225-bw1 hpz6200 b307-m602 ly307-east-co1 case4015 ly307-001-bw1 b309-m725 cryoprt b309-4525 b309-4525-2 ly309-219-co1 ogprint ws4525 b309-m577 ppfe-5550dn b311-4525 ly311-070-co1 b312-m725 cinf4015 b312-m553 ipf8300"
+	export PRINTERLIST="b307-m830 ly307-225-co2 ly307-225-bw1 hpz6200 b307-m602 ly307-east-co1 case4015 ly307-001-bw1 b309-m725 cryoprt b309-4525 b309-4525-2 ly309-241-co1 ogprint ws4525 b309-m577 ppfe-5550dn b311-4525 ly311-070-co1 cinf4015 b312-m553 ipf8300"
 fi
 
 # Our SNMP read-only community string (default: public):
