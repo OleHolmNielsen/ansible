@@ -1,2 +1,3 @@
+tarball: https://github.com/OleHolmNielsen/sshblack/archive/3.0.1.tar.gz
 bin_dir: /usr/local/sbin/
 sshblack_pl: /usr/local/sbin/sshblack.pl
