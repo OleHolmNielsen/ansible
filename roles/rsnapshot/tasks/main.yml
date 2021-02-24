@@ -6,6 +6,7 @@
     - rsync
     - epel-release
     - rsnapshot
+    - logrotate
     - bash-completion
     - git-all
     - vim-enhanced
@@ -29,38 +30,29 @@
     - rsnapshot-root-intra5.conf
     - rsnapshot-root-servnedi.conf
     - rsnapshot-root-servcamd3.conf
-    - rsnapshot-root-serv309.conf
     - rsnapshot-root-que.conf
     - rsnapshot-root-slurmdb.conf
     - rsnapshot-root-niflbu1.conf
     - rsnapshot-root-niflbu2.conf
+    - rsnapshot-root-niflbu3.conf
     - rsnapshot-root-niflnet1.conf
     - rsnapshot-root-niflfs1.conf
     - rsnapshot-root-niflfs2.conf
     - rsnapshot-root-niflfs3.conf
     - rsnapshot-root-niflfs4.conf
     - rsnapshot-root-niflfs5.conf
+    - rsnapshot-root-niflfs6.conf
+    - rsnapshot-root-niflfs7.conf
     - rsnapshot-root-niflopt1.conf
     - rsnapshot-root-niflmgt.conf
     - rsnapshot-root-listserv.conf
     - rsnapshot-root-cinfsql.conf
     - rsnapshot-root-servcinf.conf
     - rsnapshot-root-servxp.conf
-    - rsnapshot-nexmap.conf
-    - rsnapshot-tap.conf
-    - rsnapshot-staff.conf
-    - rsnapshot-fysadm.conf
-    - rsnapshot-fluids.conf
-    - rsnapshot-qpit.conf
-    - rsnapshot-TMF.conf
-    - rsnapshot-tekhist.conf
-    - rsnapshot-fys.conf
-    - rsnapshot-camp.conf
     - rsnapshot-camd.conf
     - rsnapshot-niflopt1.conf
     - rsnapshot-modules.conf
     - rsnapshot-cinfsql.conf
-    - rsnapshot-hrid.conf
 
 - name: Create the rsnapshot top-level directories in /u/snapshots/
   file:
@@ -71,26 +63,31 @@
     mode: u=rwx,g=,o=
   with_items:
     - localhost
-    - root-servauth4
-    - root-servnedi
-    - root-servcamd3
-    - root-servcamd4
-    - root-serv309
-    - root-que
-    - root-slurmdb
-    - root-niflbu1
-    - root-niflbu2
-    - root-niflnet1
-    - root-niflfs1
-    - root-niflfs2
-    - root-niflfs3
-    - root-niflfs4
-    - root-niflfs5
-    - root-niflopt1
-    - root-niflmgt
-    - root-listserv
-    - root-cinfsql
-    - root-servxp
+    - roots/root-servauth4
+    - roots/root-servnedi
+    - roots/root-servcamd3
+    - roots/root-servcamd4
+    - roots/root-intra5
+    - roots/root-que
+    - roots/root-slurmdb
+    - roots/root-niflbu1
+    - roots/root-niflbu2
+    - roots/root-niflbu3
+    - roots/root-niflnet1
+    - roots/root-niflfs1
+    - roots/root-niflfs2
+    - roots/root-niflfs3
+    - roots/root-niflfs4
+    - roots/root-niflfs5
+    - roots/root-niflfs6
+    - roots/root-niflfs7
+    - roots/root-niflopt1
+    - roots/root-niflmgt
+    - roots/root-listserv
+    - roots/root-cinfsql
+    - roots/root-servxp
+    - roots/root-mirror2
+    - roots/root-web5
 
 - name: Create the rsnapshot top-level directories in /u/snapshots2/
   file:
@@ -100,26 +97,11 @@
     group: root
     mode: u=rwx,g=,o=
   with_items:
-    - root-mirror2
-    - root-web5
-    - root-intra5
-    - root-servcinf
-    - nexmap
-    - tap
-    - staff
-    - fysadm
-    - fluids
-    - qpit
-    - TMF
-    - tekhist
-    - fys
-    - camp
     - camd
     - servcinf
     - niflopt1
     - modules
     - cinfsql
-    - hrid
 
 - name: Copy the rsnapshots script from this server
   copy:
@@ -137,4 +119,12 @@
     minute: "1"
     hour: "23"
     job: "/root/rsnapshots"
+
+- name: Create rsnapshot logrotate script
+  copy:
+    src: logrotate.rsnapshot
+    dest: /etc/logrotate.d/rsnapshot
+    owner: root
+    group: root
+    mode: 0644
 
