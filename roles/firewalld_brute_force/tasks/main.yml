@@ -1,3 +1,6 @@
+- include_role:
+    name: firewalld_config
+
 - name: Get firewalld rules
   command: "firewall-cmd  --permanent --direct --get-all-rules"
   register: rules

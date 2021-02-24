@@ -1,3 +1,6 @@
+- include_role:
+    name: firewalld_config
+
 - name: Install the firewalld and ipset packages
   yum:
     name: firewalld,ipset
