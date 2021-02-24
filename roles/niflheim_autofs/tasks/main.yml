@@ -27,38 +27,38 @@
       que		-rsize=8192,wsize=8192,tcp,vers=3	que:/scratch
       camp		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/camd
       niflheim		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/camd
+      niflheim7		-rsize=8192,wsize=8192,tcp,vers=3	niflfs7:/u/camd
       nexmap		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/nexmap
       compute		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/compute
-      topsoe		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/topsoe
       fotonik		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/fotonik
       qwise		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/qwise
       ppfe		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/ppfe
       cat		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/cat
+      cat5		-rsize=8192,wsize=8192,tcp,vers=3	niflfs5:/u/cat
       mek		-rsize=8192,wsize=8192,tcp,vers=3	niflfs4:/u/mek
       nanomade		-rsize=8192,wsize=8192,tcp,vers=3	niflfs2:/u/nanomade
-      ntch		-rsize=8192,wsize=8192,tcp,vers=3	niflfs2:/u/ntch
-      mic		-rsize=8192,wsize=8192,tcp,vers=3	niflfs2:/u/ntch
       energy		-rsize=8192,wsize=8192,tcp,vers=3	niflfs2:/u/energy
-      byg		-rsize=8192,wsize=8192,tcp,vers=3	niflfs2:/u/byg
+      energy6		-rsize=8192,wsize=8192,tcp,vers=3	niflfs6:/u/energy
       opt		-rsize=8192,wsize=8192,tcp,vers=3	niflopt1:/u/opt
-      scratch1		-rsize=8192,wsize=8192,tcp,vers=3	scratch1:/u/scratch
-      archive		-rsize=8192,wsize=8192,tcp,vers=3	niflbu2:/u/archive
+      modules		-rsize=8192,wsize=8192,tcp,vers=3	niflopt1:/u/modules/$CPU_ARCH
+      scratch1		-rsize=8192,wsize=8192,tcp,vers=3	finbul:/u/scratch
+      scratch2		-rsize=8192,wsize=8192,tcp,vers=3	vid:/u/scratch2
   notify:
    - Restart autofs
 
-- name: Append modules mount-point to the {{ etc_auto_home }} file
+- name: Set CPU_ARCH in the {{ sysconfig }} file
   blockinfile:
-    path: "{{ etc_auto_home }}"
+    path: "{{ sysconfig }}"
     state: present
     insertafter: EOF
-    marker: "# {mark} ANSIBLE MANAGED BLOCK2"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
     block: |
-      modules		-rsize=8192,wsize=8192,tcp,vers=3	{{ module_path }}
+      OPTIONS="-DCPU_ARCH={{ cpu_arch }}"
 
 - name: Copy file {{ etc_auto_dtu }} 
   copy:
-    src: "{{ etc_auto_dtu }}"
-    dest: "/etc/{{ etc_auto_dtu }}"
+    src: "{{ auto_dtu }}"
+    dest: "{{ etc_auto_dtu }}"
     force: no
     owner: root
     group: root
