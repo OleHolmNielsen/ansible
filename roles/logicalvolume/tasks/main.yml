@@ -1,24 +1,44 @@
 # Create data disk XFS file system on a specified LVM volume
 # Variables must be defind in the host_vars/ hostname file
 
-- name: "Create a logical volume {{ lvdevice }} of size {{ lvsize }} in VG {{ volgroup }}"
+# Count the physical volumes in the disks array
+- debug:
+    msg: "{{ 'Number of disk volumes is ' + disks|length|string + ' on disks ' + disks|string }}"
+
+# Calculate the disk volume striping
+# Define LVM striping for multi-disk volume groups (defaults in ../defaults/main.yml)
+- set_fact:
+    striping: "{{ '--stripes ' + disks|length|string + ' --stripesize 64k' }}"
+  when: disks|length > 1
+
+# Create filesystems with corresponding parameters, for example:
+# filesystems:
+#   - lvname: lvsnap2
+#     lvsize: 15T
+#     mountpoint: /u/snapshots2
+
+- name: "Create logical volumes in VG {{ volgroup }} {{ striping}}"
   lvol:
     vg: "{{ volgroup }}"
-    lv: "{{ lvname }}"
-    size: "{{ lvsize }}"
+    lv: "{{ item.lvname }}"
+    size: "{{ item.lvsize }}"
+    opts: "{{ striping }}"
     resizefs: yes
     shrink: no
     state: present
+  with_items: "{{ filesystems }}"
 
-- name: "Create a {{ filesystem }} filesystem on {{ lvdevice }}"
+- name: "Create {{ fstype }} filesystems"
   filesystem:
-    fstype: "{{ filesystem }}"
-    dev: "{{ lvdevice }}"
+    fstype: "{{ fstype }}"
+    dev: "/dev/mapper/{{ volgroup }}-{{ item.lvname }}"
+  with_items: "{{ filesystems }}"
 
-- name: "Mount {{ lvdevice }} on {{ mountpoint }}"
+- name: "Mount filesystems"
   mount:
-    path: "{{ mountpoint  }}"
-    src: "{{ lvdevice }}"
-    fstype: "{{ filesystem }}"
+    path: "{{ item.mountpoint  }}"
+    src: "/dev/mapper/{{ volgroup }}-{{ item.lvname }}"
+    fstype: "{{ fstype }}"
     opts: "{{ mountopts }}"
     state: mounted
+  with_items: "{{ filesystems }}"
