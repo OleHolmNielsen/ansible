@@ -40,9 +40,28 @@
     state: present
     insertafter: EOF
     block: |
-      RedirectMatch ^/mailman[/]*$ http://{{ url_host }}/mailman/listinfo
+      # Block list creation from web page
+      <Location /mailman/create>
+      Deny from all
+      </Location>
+      # Block fake requests to non-existent lists and archives
+      # HTTP error codes: https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
+      RewriteEngine  on
+      RewriteRule ^/mailman/subscribe/ase-developers.*$ - [R=410,L,NC]
+      RewriteRule ^/pipermail/ase-developer.*$ - [R=410,L,NC]
+      RewriteRule ^/pipermail/gpaw-developer.*$ - [R=410,L,NC]
+      RewriteRule ^/pipermail/gridpaw-developer.*$ - [R=410,L,NC]
+      RewriteRule ^/pipermail/ase-svncheckin.*$ - [R=410,L,NC]
+      RewriteRule ^/pipermail/campos.*$ - [R=410,L,NC]
       # Redirect main page to Mailman page
+      RedirectMatch ^/mailman[/]*$ http://{{ url_host }}/mailman/listinfo
       RedirectMatch ^[/]*$ http://{{ url_host }}/mailman/listinfo
+      # Block downloads of .mbox files, see
+      # https://wiki.list.org/DOC/4.66%20How%20do%20I%20disable%20%22bulk%22%20pipermail%20archive%20files%20%28.mbox%20and%20.txt%29%3F
+      RedirectMatch permanent /mailman/private/.*/.*\.txt /mailman/
+      RedirectMatch permanent /mailman/private/.*/.*\.mbox /mailman/
+      RedirectMatch permanent /pipermail/.*/.*\.txt /pipermail/
+      RedirectMatch permanent /pipermail/.*/.*\.mbox /pipermail/
   notify:
    - Restart httpd
 
