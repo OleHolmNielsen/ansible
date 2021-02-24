@@ -10,6 +10,7 @@
       - bzip2
       - unzip
       - xz
+      - dos2unix
       - patch
       - python-setuptools
       - ksh
