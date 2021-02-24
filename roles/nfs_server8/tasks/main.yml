@@ -80,6 +80,18 @@
     - nfs
     - nfs3
 
+- name: Open port 111/tcp portmapper rpcbind in firewalld
+  firewalld:
+    port: 111/tcp
+    permanent: true
+    state: enabled
+
+- name: Open port 111/udp portmapper rpcbind in firewalld
+  firewalld:
+    port: 111/udp
+    permanent: true
+    state: enabled
+
 - name: Open port 875/tcp rquotad in firewalld
   firewalld:
     port: 875/tcp
@@ -101,6 +113,42 @@
 - name: Open port 892/udp mountd in firewalld
   firewalld:
     port: 892/udp
+    permanent: true
+    state: enabled
+
+- name: Open port 20048/tcp mountd in firewalld
+  firewalld:
+    port: 20048/tcp
+    permanent: true
+    state: enabled
+
+- name: Open port 20048/udp mountd in firewalld
+  firewalld:
+    port: 20048/udp
+    permanent: true
+    state: enabled
+
+- name: Open port 2049/tcp nfs in firewalld
+  firewalld:
+    port: 2049/tcp
+    permanent: true
+    state: enabled
+
+- name: Open port 2049/udp nfs in firewalld
+  firewalld:
+    port: 2049/udp
+    permanent: true
+    state: enabled
+
+- name: Open port 32769/tcp NFS filenet-rpc in firewalld
+  firewalld:
+    port: 32769/tcp
+    permanent: true
+    state: enabled
+
+- name: Open port 32769/udp NFS filenet-rpc in firewalld
+  firewalld:
+    port: 32769/udp
     permanent: true
     state: enabled
 
