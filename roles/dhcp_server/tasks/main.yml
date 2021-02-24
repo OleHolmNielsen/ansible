@@ -1,6 +1,11 @@
-- name: Install DHCPD packages
+- name: Install DHCPD and UEFI packages
   yum:
-    name: dhcp,dhcp-common,dhcp-devel,dhcp-libs
+    name:
+    - dhcp
+    - dhcp-common
+    - dhcp-devel
+    - dhcp-libs
+    - grub2-efi-x64
     state: present
 
 - name: Create /etc/dhcp/dhcpd.conf.d/ directory for client files
