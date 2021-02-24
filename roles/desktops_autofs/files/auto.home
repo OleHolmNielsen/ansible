@@ -1,31 +1,25 @@
 niflheim	-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/camd
-niflheim1	-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/camd
 niflheim2	-rsize=8192,wsize=8192,tcp,vers=3	niflfs3:/u/niflheim2
-qwise		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/qwise
-camp		-rsize=8192,wsize=8192,tcp,vers=3	servcamd3:/u/camp
+camp		-rsize=8192,wsize=8192,tcp,vers=3	servcamd4:/u/camd
 camd		-rsize=8192,wsize=8192,tcp,vers=3	servcamd4:/u/camd
-# camd2		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/camd
 surfcat		-rsize=8192,wsize=8192,tcp,vers=3	servcamd3:/u/surfcat
+nexmap		-rsize=8192,wsize=8192,tcp,vers=3	servcamd3:/u/nexmap
 compute		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/compute
 radphys		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/radphys
 fotonik		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/fotonik
 cat		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/cat
 ppfe		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/ppfe
-nexmap		-rsize=8192,wsize=8192,tcp,vers=3	servcamd3:/u/nexmap
-panda2		-rsize=8192,wsize=8192,tcp,vers=3	panda2:/u/nexmap
-panda2data	-rsize=8192,wsize=8192,tcp,vers=3	panda2:/u/data
+qwise		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/qwise
 opt		-rsize=8192,wsize=8192,tcp,vers=3	niflopt1:/u/opt
 modules		-rsize=8192,wsize=8192,tcp,vers=3	niflopt1:/u/modules/broadwell
 nanomade	-rsize=8192,wsize=8192,tcp,vers=3	niflfs2:/u/nanomade
 energy		-rsize=8192,wsize=8192,tcp,vers=3	niflfs2:/u/energy
 byg		-rsize=8192,wsize=8192,tcp,vers=3	niflfs2:/u/byg
 mek		-rsize=8192,wsize=8192,tcp,vers=3	niflfs4:/u/mek
-mek2		-rsize=8192,wsize=8192,tcp,vers=3	niflfs4:/u/mek
 que		-rsize=8192,wsize=8192,tcp,vers=3	que:/scratch
-qpit		-rsize=8192,wsize=8192,tcp,vers=3	serv309:/u/qpit
-fluids		-rsize=8192,wsize=8192,tcp,vers=3	serv309:/u/fluids
-tekhist		-rsize=8192,wsize=8192,tcp,vers=3	serv309:/u/tekhist
-servcinf-data1  -rsize=8192,wsize=8192,ro,tcp,vers=3    servcinf:/u/data1
-servcinf-www    -rsize=8192,wsize=8192,ro,tcp,vers=3    servcinf:/var/www
-servcinf-moin   -rsize=8192,wsize=8192,ro,tcp,vers=3    servcinf:/var/moin
-cinfsqlbackup   -rsize=8192,wsize=8192,ro,tcp,vers=3    cinfsql:/var/lib/mysqlbackup
+panda2		-rsize=8192,wsize=8192,tcp,vers=3	panda2:/u/nexmap
+panda2data	-rsize=8192,wsize=8192,tcp,vers=3	panda2:/u/data
+# servcinf-data1  -rsize=8192,wsize=8192,ro,tcp,vers=3    servcinf:/u/data1
+# servcinf-www    -rsize=8192,wsize=8192,ro,tcp,vers=3    servcinf:/var/www
+# servcinf-moin   -rsize=8192,wsize=8192,ro,tcp,vers=3    servcinf:/var/moin
+# cinfsqlbackup   -rsize=8192,wsize=8192,ro,tcp,vers=3    cinfsql:/var/lib/mysqlbackup
