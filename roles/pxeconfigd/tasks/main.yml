@@ -1,4 +1,5 @@
 # Install the pxeconfig tools from https://oss.trac.surfsara.nl/pxeconfig
+# Note: The tftp_server role should be executed before this role.
 
 - name: Unarchive pxeconfig.tar.gz
   unarchive:
@@ -27,10 +28,21 @@
     block: |
       pxeconfigd	{{ portnumber }}/tcp		# pxeconfig daemon
 
-- name: Install xinetd package
+- name: Install xinetd packages
   yum:
     name:
     - xinetd
+
+- name: Create /var/lib/tftpboot subdirectories
+  file:
+    path: "/var/lib/tftpboot/{{ item }}"
+    state: directory
+    mode: 0755
+    owner: root
+    group: root
+  with_items:
+    - pxelinux.cfg
+    - uefi
 
 - name: Add pxeconfigd service to xinetd
   blockinfile:
