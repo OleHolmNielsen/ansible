@@ -16,6 +16,7 @@
     - vim-X11
     - emacs
     - xemacs
+    - dos2unix
     - PackageKit-gtk3-module
     - mesa-libGLU
     - gnome-shell
