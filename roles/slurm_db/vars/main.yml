@@ -1,6 +1,0 @@
-slurm_version: 17.11.13-1
-slurm_rpm: "{{ slurm_version }}.el7.x86_64.rpm"
-slurm_id: 982
-rpm_dir: /home/que/RPMS
-slurm_dir: /etc/slurm
-slurm_logdir: /var/log/slurm
