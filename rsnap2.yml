@@ -1,0 +1,31 @@
+# Configure Rsnapshot backup server
+
+- hosts: rsnap2
+  roles:
+   - rhel7
+   - logicalvolume
+   - role: linux-system-roles.network
+   - hostname
+   - authorized_keys_command
+   - non_graphical
+   - epel_repo
+   - server_packages
+   - snmp
+   - rsnapshot_autofs
+   - rsnapshot
+   - ssh_known_hosts
+   - ipmi
+   - nhc
+   - logwatch
+   - proliant_centos
+   - no_libvirt
+   - sshd_config
+   - sshd_allow_users
+   - bashrc
+   - yum_updates
+   - sendmail_aliases
+   - sendmail_client
+   # Now set up MoinMoin wiki web service
+   # - apache_server
+   # - intrawiki
+   - firewalld_reload
