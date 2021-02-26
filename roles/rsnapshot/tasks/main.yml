@@ -11,6 +11,29 @@
     - git-all
     - vim-enhanced
 
+- name: Remove the mlocate package because we may have too many files
+  yum:
+    name: mlocate
+    state: absent
+
+# The /usr/share/doc/rsnapshot* folder is different for el7 and el8 rpms
+- name: Find rsnapshot files on remote machine
+  shell: "rpm -ql rsnapshot | grep rsnapreport.pl"
+  register: rsnapreport
+  # Ignore the "changed" status
+  changed_when: False
+  args:
+    warn: false
+
+- name: Copy the rsnapreport.pl script from the rsnapshot RPM
+  copy:
+    src: "{{ rsnapreport.stdout }}"
+    dest: "/usr/local/bin/"
+    remote_src: yes
+    owner: root
+    group: root
+    mode: u=rwx,g=rx,o=rx
+
 - name: Copy the rsnapshot configuration files from this server
   copy:
     src: "{{ item }}"
@@ -23,13 +46,14 @@
     - rsnapshot.exclude
     - rsnapshot-master.conf
     - rsnapshot-master-weekly.conf
-    - rsnapshot-localhost.conf
+    # - rsnapshot-localhost.conf
     - rsnapshot-root-servauth4.conf
     - rsnapshot-root-mirror2.conf
     - rsnapshot-root-web5.conf
     - rsnapshot-root-intra5.conf
     - rsnapshot-root-servnedi.conf
-    - rsnapshot-root-servcamd3.conf
+    # - rsnapshot-root-servcamd3.conf
+    - rsnapshot-root-servcamd4.conf
     - rsnapshot-root-que.conf
     - rsnapshot-root-slurmdb.conf
     - rsnapshot-root-niflbu1.conf
@@ -44,7 +68,7 @@
     - rsnapshot-root-niflfs6.conf
     - rsnapshot-root-niflfs7.conf
     - rsnapshot-root-niflopt1.conf
-    - rsnapshot-root-niflmgt.conf
+    - rsnapshot-root-niflmgt2.conf
     - rsnapshot-root-listserv.conf
     - rsnapshot-root-cinfsql.conf
     - rsnapshot-root-servcinf.conf
@@ -54,18 +78,22 @@
     - rsnapshot-modules.conf
     - rsnapshot-cinfsql.conf
 
-- name: Create the rsnapshot top-level directories in /u/snapshots/
+- name: "Create the rsnapshot top-level directories in {{ snapshot_root }}"
   file:
-    path: "/u/snapshots/{{ item }}"
+    path: "{{ snapshot_root }}/{{ item }}"
     state: directory
     owner: root
     group: root
     mode: u=rwx,g=,o=
   with_items:
-    - localhost
+    # - localhost
+    - camd
+    - niflopt1
+    - modules
+    - cinfsql
     - roots/root-servauth4
     - roots/root-servnedi
-    - roots/root-servcamd3
+    # - roots/root-servcamd3
     - roots/root-servcamd4
     - roots/root-intra5
     - roots/root-que
@@ -82,26 +110,53 @@
     - roots/root-niflfs6
     - roots/root-niflfs7
     - roots/root-niflopt1
-    - roots/root-niflmgt
+    - roots/root-niflmgt2
     - roots/root-listserv
     - roots/root-cinfsql
+    - roots/root-servcinf
     - roots/root-servxp
     - roots/root-mirror2
     - roots/root-web5
 
-- name: Create the rsnapshot top-level directories in /u/snapshots2/
+#- name: "Debug"
+#  debug:
+#    var: backups
+
+- name: "Create /etc/rsnapshot files"
+  blockinfile:
+    path: "/etc/rsnapshot-{{ item.backupname }}.conf"
+    state: present
+    create: yes
+    insertafter: BOF
+    marker: "# {mark} ANSIBLE MANAGED BLOCK {{ item.backupname }}"
+    block: |
+      # Rsnapshot backup
+      snapshot_root	{{ snapshot_root }}/{{ item.subdir|default }}{{ item.backupname }}
+      include_conf	/etc/rsnapshot-master.conf
+  # Backup items are defined in the node host_vars/ file
+  with_items:
+    - "{{ backups }}"
+
+- name: "Add backups to /etc/rsnapshot files"
+  blockinfile:
+    path: "/etc/rsnapshot-{{ item.backupname }}.conf"
+    state: present
+    insertafter: EOF
+    marker: "# {mark} ANSIBLE MANAGED BLOCK {{ item.backupname }} {{ item.dir }}"
+    block: |
+      backup	{{ item.ssh_connection|default }}{{ item.dir }}/	./	+rsync_long_args=--stats
+  with_items:
+    - "{{ backups }}"
+
+- name: "Create the rsnapshot top-level directories in {{ snapshot_root }}"
   file:
-    path: "/u/snapshots2/{{ item }}"
+    path: "{{ snapshot_root }}/{{ item.subdir|default }}{{ item.backupname }}"
     state: directory
     owner: root
     group: root
     mode: u=rwx,g=,o=
   with_items:
-    - camd
-    - servcinf
-    - niflopt1
-    - modules
-    - cinfsql
+    - "{{ backups }}"
 
 - name: Copy the rsnapshots script from this server
   copy:
