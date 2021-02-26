@@ -11,6 +11,6 @@
       noolddir
       rotate 4
       sharedscripts
-      size 100k
+      size 1000k
       create 644 root root
 }
