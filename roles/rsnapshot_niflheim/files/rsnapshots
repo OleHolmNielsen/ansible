@@ -1,0 +1,64 @@
+#!/bin/sh
+
+# Executing rsnapshot backups
+# Usage: rsnapshots [daily|weekly|monthly|hourly] (default: daily)
+
+# FILESYSTEMS="localhost modules opt energy camd cat ntch nexmap compute fotonik ppfe qwise topsoe mek2"
+FILESYSTEMS="localhost camd cat"
+
+# First a health check
+/usr/sbin/nhc
+
+RSNAPSHOT=/usr/bin/rsnapshot
+# RSNAPREPORT=/usr/bin/rsnapreport.pl
+# In RPM file /usr/share/doc/rsnapshot-1.4.3/utils/rsnapreport.pl
+RSNAPREPORT=/usr/local/bin/rsnapreport.pl
+# Config file basename:
+RSNAPCONFIG=/etc/rsnapshot
+
+if test $# -gt 0
+then
+	# Perform backup specified by command arguments
+	BACKUPNAME=$*
+else
+	# This scripts gets called daily, and runs only the "daily" task.
+	# On certain days, run the monthly and weekly tasks before that.
+	case `LANG=C date +%d` in
+		01) $0 monthly ;;
+	esac
+	
+	case `LANG=C date +%a` in
+		Sun) $0 weekly ;;
+	esac
+	# Default: daily backup
+	BACKUPNAME=daily
+fi
+
+echo
+echo Executing rsnapshot backups: $BACKUPNAME
+echo
+
+# Loop over file systems
+for i in $FILESYSTEMS
+do
+	# Configuration file for this backup
+	CONF=$RSNAPCONFIG-$i.conf
+	if ! test -s $CONF
+	then
+		echo ERROR: Configuration file $CONF does not exist or is empty
+		continue
+	fi
+	echo "====================================================================="
+	echo
+	echo Rsnapshot $BACKUPNAME backup of file system $i starting at `date`
+	echo
+	$RSNAPSHOT -c $CONF $BACKUPNAME 2>&1 | $RSNAPREPORT
+	# $RSNAPSHOT -c $CONF $BACKUPNAME 
+done
+
+echo Backups ended at `date`
+
+# Display filesystem data
+echo
+echo "====================================================================="
+df -Phx tmpfs
