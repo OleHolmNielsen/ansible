@@ -52,6 +52,7 @@
     - "rsnapshot-120months.conf"
     - "rsnapshot.exclude"
 
+# Backup items "backups" are defined in the respective host_vars/<nodename> files
 - name: "Create /etc/rsnapshot-xxx.conf files"
   blockinfile:
     path: "/etc/rsnapshot-{{ item.backupname }}.conf"
@@ -63,7 +64,6 @@
       # Rsnapshot backup of server {{ item.backupname }}
       snapshot_root	{{ snapshot_root }}/{{ item.subdir|default }}{{ item.backupname }}
       include_conf	/etc/{{ item.include_conf|default('rsnapshot-master.conf') }}
-  # Backup items are defined in the host_vars/<nodename> file
   with_items:
     - "{{ backups }}"
 
@@ -76,6 +76,7 @@
     block: |
       backup	{{ item.0.ssh_connection|default }}{{ item.1 }}/	./	+rsync_long_args=--stats
   loop: "{{ backups|subelements('dir') }}"
+
   # loop: "{{ backups|subelements('dir')|default(default_dirs) }}"
   # See https://docs.ansible.com/ansible/2.9/user_guide/playbooks_loops.html#with-subelements
   # The default_dirs is defined in vars/main.yml
@@ -94,15 +95,6 @@
   with_items:
     - "{{ backups }}"
 
-- name: Copy the rsnapshots script from this server
-  copy:
-    src: rsnapshots
-    dest: "/root/"
-    # backup: yes
-    owner: root
-    group: root
-    mode: u=rwx,g=rx,o=rx
-
 - name: Make a list of all backups
   set_fact:
     backuplist: "{{ backuplist|default }} {{ item.backupname }}"
@@ -112,8 +104,15 @@
   debug:
     var: backuplist
 
-# Ansible cannot detect duplicate substrings in lineinfile
-# so we have to do this in the shell script
+- name: Copy the rsnapshots script from this server
+  copy:
+    src: rsnapshots
+    dest: "/root/"
+    # backup: yes
+    owner: root
+    group: root
+    mode: u=rwx,g=rx,o=rx
+
 - name: Add backupnames to list in the rsnapshots script 
   lineinfile:
     path: /root/rsnapshots
@@ -121,6 +120,7 @@
     regexp: '(^FILESYSTEMS=")(.*)"'
     line: 'FILESYSTEMS="{{ backuplist }}"'
 
+    # Tried various other stuff:
     # insertbefore: '^EOF'
     # line: '{{ item.backupname }}'
     # backrefs: yes
@@ -133,9 +133,9 @@
   #   - "{{ backups }}"
 
 - cron:
-    name: "Make daily snapshots of roots and NFS server file systems"
+    name: "Make daily snapshots starting at {{ backup_start|default(23) }} hours"
     minute: "1"
-    hour: "23"
+    hour: "{{ backup_start|default(23) }}"
     job: "/root/rsnapshots"
 
 - name: Create rsnapshot logrotate script
