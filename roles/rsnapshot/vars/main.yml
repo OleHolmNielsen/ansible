@@ -1,1 +1,5 @@
 snapshot_root: /u/snapshots
+default_dirs: [ '/etc', '/root', '/var/log' ]
+# rsnapshot_master: rsnapshot-master.conf
+# rsnapshot_master_weekly: rsnapshot-master-weekly.conf
+# rsnapshot_exclude: rsnapshot.exclude
