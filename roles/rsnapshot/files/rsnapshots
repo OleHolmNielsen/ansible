@@ -3,10 +3,8 @@
 # Executing rsnapshot backups
 # Usage: rsnapshots [daily|weekly|monthly|hourly] (default: daily)
 
-# First the root file systems
-FILESYSTEMS="localhost root-servauth4 root-intra5 root-servnedi root-servcamd3 root-servcamd4 root-que root-slurmdb root-niflbu1 root-niflbu2 root-niflbu3 root-niflnet1 root-niflfs1 root-niflfs2 root-niflfs3 root-niflfs4 root-niflfs5 root-niflfs6 root-niflfs7 root-niflopt1 root-listserv root-cinfsql root-servcinf root-web5 root-mirror2"
-# Add the data file systems
-FILESYSTEMS="$FILESYSTEMS camd niflopt1 modules cinfsql "
+# We backup these file systems:
+FILESYSTEMS=""
 
 # Commands
 RSNAPSHOT=/usr/bin/rsnapshot
