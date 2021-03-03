@@ -1,0 +1,8 @@
+# CPU architecture
+cpu_arch: broadwell
+
+# Environment modules for this CPU architecture
+module_path: niflopt1:/u/modules/broadwell
+
+# SNMP location
+location: "DK;Lyngby;Niflheim;B309;059;rack 18;27;4"

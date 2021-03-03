@@ -1,0 +1,40 @@
+# SNMP location
+location: "DK;Lyngby;B309;Kaelder;918;rack 1;6;2"
+
+# Variables for the "datadisk" role creating a data disk:
+pvdisk: /dev/sdb
+partition: 1
+volgroup: vgraid
+lvname: lvcamd
+lvsize: 500G
+lvdevice: "/dev/mapper/{{ volgroup }}-{{ lvname }}"
+filesystem: xfs
+mountpoint: /u/camd
+mountopts: "defaults,quota,noatime,nodiratime,logbufs=8,nosuid,nodev,inode64"
+
+# XFS filesystem default quotas
+xfs_filesystem: "{{ mountpoint }}"
+xfs_bsoft: 20g
+xfs_bhard: 30g
+xfs_isoft: 50000
+xfs_ihard: 70000
+
+# Roles downloaded from https://galaxy.ansible.com/linux-system-roles/network/
+# See https://access.redhat.com/articles/3050101 (Red Hat Enterprise Linux (RHEL) System Roles)
+network_connections:
+  # Subnet 130.225.86.0/23 on adapter eno1 
+  - name: "eno1"
+    type: "ethernet"
+    autoconnect: no
+    ip:
+      dhcp4: no
+      route_metric4: 1
+      auto6: no
+  # PCIe dual-port 10/25 Gbit Ethernet adapter eno5
+  - name: "eno5"
+    type: "ethernet"
+    autoconnect: yes
+    ip:
+      dhcp4: yes
+      route_metric4: 1
+      auto6: no

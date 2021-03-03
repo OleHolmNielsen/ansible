@@ -1,0 +1,8 @@
+# CPU architecture
+cpu_arch: nehalem
+
+# Environment modules for this CPU architecture
+module_path: niflopt1:/u/modules/nehalem
+
+# SNMP location
+location: "DK;Lyngby;Niflheim;B309;059;rack 2;23"
