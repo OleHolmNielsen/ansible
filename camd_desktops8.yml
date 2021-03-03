@@ -4,7 +4,7 @@
    - bashrc
    - epel_repo
    - workstation
-   - dnf_updates
+   # - dnf_updates
    - dnf_packages
    - camd_packages8
    - authorized_keys_command

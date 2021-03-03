@@ -3,7 +3,7 @@
    - hostname
    - bashrc
    - epel_repo
-   - yum_updates
+   # - yum_updates
    - yum_packages
    - camd_packages
    - fusion_packages
