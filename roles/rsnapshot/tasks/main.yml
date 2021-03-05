@@ -11,13 +11,13 @@
     - git-all
     - vim-enhanced
 
-- name: Remove the mlocate package because we may have too many files
+- name: Remove the mlocate database package because we may have too many files
   yum:
     name: mlocate
     state: absent
 
-# The /usr/share/doc/rsnapshot* folder is different for el7 and el8 rpms
-- name: Find rsnapshot files on remote machine
+# The /usr/share/doc/rsnapshot* folder is different for el7 and el8 rpms, so we must query the package:
+- name: Find rsnapreport.pl file on remote machine
   shell: "rpm -ql rsnapshot | grep rsnapreport.pl"
   register: rsnapreport
   # Ignore the "changed" status
@@ -34,11 +34,22 @@
     group: root
     mode: u=rwx,g=rx,o=rx
 
+# Example "backups" variable:
+# backups:
+#   - backupname: localhost
+#     dir: [ '/etc', '/root', '/var/log', '/usr/local' ]
+#   - backupname: root-server
+#     ssh_connection: "root@server:"
+#     subdir: roots/
+#     dir: [ '/etc', '/root', '/var/log' ]
+#   - backupname: modules
+#     dir: [ '/home/modules' ]
+
 #- name: "Debug"
 #  debug:
 #    var: backups
 
-- name: "Copy the master rsnapshot configuration files from this server"
+- name: "Copy the rsnapshot master configuration files from this server"
   copy:
     src: "{{ item }}"
     dest: "/etc/"
@@ -52,7 +63,7 @@
     - "rsnapshot-120months.conf"
     - "rsnapshot.exclude"
 
-# Backup items "backups" are defined in the respective host_vars/<nodename> files
+# The backup items "backups" are defined in the server host_vars/<nodename> files
 - name: "Create /etc/rsnapshot-xxx.conf files"
   blockinfile:
     path: "/etc/rsnapshot-{{ item.backupname }}.conf"
@@ -67,6 +78,7 @@
   with_items:
     - "{{ backups }}"
 
+# See https://docs.ansible.com/ansible/2.9/user_guide/playbooks_loops.html#with-subelements
 - name: "Nested loop over backup servers and directories appending to /etc/rsnapshot-xxx.conf files"
   blockinfile:
     path: "/etc/rsnapshot-{{ item.0.backupname }}.conf"
@@ -77,10 +89,8 @@
       backup	{{ item.0.ssh_connection|default }}{{ item.1 }}/	./	+rsync_long_args=--stats
   loop: "{{ backups|subelements('dir') }}"
 
-  # loop: "{{ backups|subelements('dir')|default(default_dirs) }}"
-  # See https://docs.ansible.com/ansible/2.9/user_guide/playbooks_loops.html#with-subelements
-  # The default_dirs is defined in vars/main.yml
-  # Old method:
+  # We tried these methods previously:
+  # loop: "{{ backups|subelements('dir')|default(default_dirs) }}"	# The default_dirs is defined in vars/main.yml
   #with_subelements:
   #  - "{{ backups }}"
   #  - dir
@@ -113,7 +123,7 @@
     group: root
     mode: u=rwx,g=rx,o=rx
 
-- name: Add backupnames to list in the rsnapshots script 
+- name: Add backuplist names to the list in the /root/rsnapshots script 
   lineinfile:
     path: /root/rsnapshots
     backrefs: yes
@@ -132,8 +142,9 @@
   # with_items:
   #   - "{{ backups }}"
 
+# The backup_start variable defines a cron job start hour (default=23)
 - cron:
-    name: "Make daily snapshots starting at {{ backup_start|default(23) }} hours"
+    name: "Make daily crontab job for backups"
     minute: "1"
     hour: "{{ backup_start|default(23) }}"
     job: "/root/rsnapshots"
