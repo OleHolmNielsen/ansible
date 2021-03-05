@@ -17,7 +17,8 @@ NODES="$NODES sw02m sw04m sw05m sw06m sw07m"
 NODES="$NODES sw08d sw09d sw10d sw11d sw12d sw13d sw14d sw15d"
 NODES="$NODES sw08m sw09m sw10m sw11m sw12m sw13m sw14m sw15m"
 NODES="$NODES hpups8 hpups9"
-NODES="$NODES niflopt1 niflopt2 niflopa1 niflmgt2 niflfs1 niflfs2 niflfs3 niflfs4 niflfs5 finbul"
+NODES="$NODES niflopt1 niflopt2 niflopa1 niflmgt2 niflfs1 niflfs2 niflfs3 niflfs4 niflfs5 niflfs6 niflfs7 finbul"
+NODES="$NODES niflbu1 niflbu2 niflbu3"
 
 STOPFILEDIR=/var/lib/alive
 if test ! -d $STOPFILEDIR

@@ -25,7 +25,7 @@ fi
 # List of hosts 
 LIST="	ns.dtu.dk \
 	web5 servcamd3 servcamd4 servcinf cinfsql servauth4 demon3 \
-	intra5 serv309 servxp2 servtsm1 servtsm4 rsnap1 rsnap2 \
+	intra5 servxp2 servtsm1 servtsm4 rsnap1 rsnap2 \
 	mirror2 servnedi \
 	svol surt thul sylg svol fjorm slid finbul nigw2 \
 	que slurmdb niflfs1 niflfs2 niflfs3 niflfs4 niflfs5 \
