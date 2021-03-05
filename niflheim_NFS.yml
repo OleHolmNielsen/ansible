@@ -6,6 +6,8 @@
    - role: linux-system-roles.network
    - hostname
    - non_graphical
+   - datadisk
+   - xfs_quota
    - epel_repo
    - server_packages
    - niflheim_packages
@@ -25,7 +27,6 @@
    - flexlm_user
    - sshd_allow_users
    - bashrc
-   # Do not update automatically the file servers: yum_updates
    - sysctl_bignet
    - sendmail_aliases
    - sendmail_client
