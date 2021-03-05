@@ -24,7 +24,6 @@
    - sshd_config
    - sshd_allow_users
    - bashrc
-   - yum_updates
    - sysctl_bignet
    - sendmail_aliases
    - sendmail_client

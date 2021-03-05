@@ -24,7 +24,6 @@
    - authorized_keys_command
    - bashrc
    - ls_speedup
-   - yum_updates
    - niflheim_autofs
    - niflheim_firewalld
    - sendmail_aliases

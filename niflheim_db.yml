@@ -20,7 +20,6 @@
    - sshd_allow_users
    - bashrc
    - niflheim_autofs_servers
-   - yum_updates
    - slurm_basic
    - slurm_tools
    - slurm_db
