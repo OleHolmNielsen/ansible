@@ -1,6 +1,6 @@
 # NFS exports file from Ansible server
 # Optional software and users
-/u/opt 10.4.0.0/16(rw) 10.2.0.0/16(rw) 10.3.0.0/16(rw) servauth2(rw,no_root_squash,insecure,sync) hvergelmer2(rw,no_root_squash,insecure,sync) finbul2(rw,no_root_squash,insecure,sync) *.nifl.fysik.dtu.dk(rw) web4(rw) intra4(rw) slid(rw) fjorm(rw) surt(rw) thul(rw) svol(rw) que(rw) sylg(rw) demon(rw) demon2(rw) cmr-server(rw) bardeen(rw) jordan(rw) localhost(rw) *.fysik.dtu.dk(ro)
+/u/opt 10.4.0.0/16(rw) 10.2.0.0/16(rw) 10.3.0.0/16(rw) servauth4(rw,no_root_squash,insecure,sync) finbul2(rw,no_root_squash,insecure,sync) *.nifl.fysik.dtu.dk(rw) slid(rw) fjorm(rw) surt(rw) thul(rw) svol(rw) que(rw) sylg(rw) demon3(rw) demon2(rw) bardeen(rw) localhost(rw) *.fysik.dtu.dk(ro)
 #
 # Software modules
 #

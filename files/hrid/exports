@@ -1,2 +1,2 @@
 # NFS exports file from Ansible server
-/u/raid rsnap2(ro,no_root_squash,insecure,sync) localhost(rw)
+/u/raid niflbu1(ro,no_root_squash,insecure,sync) niflbu2(ro,no_root_squash,insecure,sync) niflbu3(ro,no_root_squash,insecure,sync) localhost(rw)
