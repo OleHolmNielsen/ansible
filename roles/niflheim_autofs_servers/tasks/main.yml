@@ -32,10 +32,9 @@
       # niflheim3		-rsize=8192,wsize=8192,tcp,vers=3	ylgr2:/u/raid
       que		-rsize=8192,wsize=8192,tcp,vers=3	que:/scratch
       hrid		-rsize=8192,wsize=8192,tcp,vers=3	hrid.fysik.dtu.dk:/u/raid
-      camd2		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1.nifl:/u/camd
-      camp		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1.nifl:/u/camd
+      camd		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1.nifl:/u/camd
       niflheim		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1.nifl:/u/camd
-      niflheim1		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1.nifl:/u/camd
+      niflheim7		-rsize=8192,wsize=8192,tcp,vers=3	niflfs7.nifl:/u/camd
       niflheim2		-rsize=8192,wsize=8192,tcp,vers=3	niflfs3.nifl:/u/niflheim2
       nexmap		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1.nifl:/u/nexmap
       compute		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1.nifl:/u/compute
@@ -44,12 +43,11 @@
       qwise		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1.nifl:/u/qwise
       ppfe		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1.nifl:/u/ppfe
       cat		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1.nifl:/u/cat
+      cat5		-rsize=8192,wsize=8192,tcp,vers=3	niflfs5.nifl:/u/cat
       mek		-rsize=8192,wsize=8192,tcp,vers=3	niflfs2.nifl:/u/mek
-      mek2		-rsize=8192,wsize=8192,tcp,vers=3	niflfs4.nifl:/u/mek
       ntch		-rsize=8192,wsize=8192,tcp,vers=3	niflfs2.nifl:/u/ntch
-      mic		-rsize=8192,wsize=8192,tcp,vers=3	niflfs2.nifl:/u/ntch
       energy		-rsize=8192,wsize=8192,tcp,vers=3	niflfs2.nifl:/u/energy
-      byg		-rsize=8192,wsize=8192,tcp,vers=3	niflfs2.nifl:/u/byg
+      energy6		-rsize=8192,wsize=8192,tcp,vers=3	niflfs6.nifl:/u/energy
       opt		-rsize=8192,wsize=8192,tcp,vers=3	niflopt1.nifl:/u/opt
       scratch1		-rsize=8192,wsize=8192,tcp,vers=3	finbul.nifl:/u/scratch
       scratch2		-rsize=8192,wsize=8192,tcp,vers=3	vid.nifl:/u/scratch2

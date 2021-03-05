@@ -25,7 +25,7 @@
       # Niflheim login node /etc/auto.home
       niflheim2		-rsize=8192,wsize=8192,tcp,vers=3	niflfs3:/u/niflheim2
       que		-rsize=8192,wsize=8192,tcp,vers=3	que:/scratch
-      camp		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/camd
+      camd		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/camd
       niflheim		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/camd
       niflheim7		-rsize=8192,wsize=8192,tcp,vers=3	niflfs7:/u/camd
       nexmap		-rsize=8192,wsize=8192,tcp,vers=3	niflfs1:/u/nexmap
