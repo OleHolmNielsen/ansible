@@ -34,21 +34,6 @@
     group: root
     mode: u=rwx,g=rx,o=rx
 
-# Example "backups" variable:
-# backups:
-#   - backupname: localhost
-#     dir: [ '/etc', '/root', '/var/log', '/usr/local' ]
-#   - backupname: root-server
-#     ssh_connection: "root@server:"
-#     subdir: roots/
-#     dir: [ '/etc', '/root', '/var/log' ]
-#   - backupname: modules
-#     dir: [ '/home/modules' ]
-
-#- name: "Debug"
-#  debug:
-#    var: backups
-
 - name: "Copy the rsnapshot master configuration files from this server"
   copy:
     src: "{{ item }}"
@@ -62,6 +47,33 @@
     - "rsnapshot-master-weekly.conf"
     - "rsnapshot-120months.conf"
     - "rsnapshot.exclude"
+
+# Example "backups" variable:
+# backups:
+#   - backupname: localhost
+#     dir: [ '/etc', '/root', '/var/log', '/usr/local' ]
+#   - backupname: root-server
+#     ssh_connection: "root@server:"
+#     subdir: roots/
+#     dir: [ '/etc', '/root', '/var/log' ]
+#   - backupname: modules
+#     dir: [ '/home/modules' ]
+
+# Cannot make this work to append variables to the backups dict:
+#- name: Detect root-XXX backups and set ssh_connection
+#  set_fact:
+#    # item: "{{ item|combine({'ssh_connection':item.backupname|regex_replace('^root-(.*)', 'root@\\1:')}, list_merge='append') }}"
+#    item: "{{ item|combine({'ssh_connection':item.backupname|regex_replace('^root-(.*)', 'root@\\1:')}, recursive=True) }}"
+#  when: item.backupname|regex_search('^root-')
+#  loop:
+#    "{{ backups }}"
+
+#- name: "Debug backups"
+#  debug:
+#    var: backups
+
+#- name: Pause until you can verify updates to an application were successful
+#  pause:
 
 # The backup items "backups" are defined in the server host_vars/<nodename> files
 - name: "Create /etc/rsnapshot-xxx.conf files"
@@ -88,12 +100,6 @@
     block: |
       backup	{{ item.0.ssh_connection|default }}{{ item.1 }}/	./	+rsync_long_args=--stats
   loop: "{{ backups|subelements('dir') }}"
-
-  # We tried these methods previously:
-  # loop: "{{ backups|subelements('dir')|default(default_dirs) }}"	# The default_dirs is defined in vars/main.yml
-  #with_subelements:
-  #  - "{{ backups }}"
-  #  - dir
 
 - name: "Create the rsnapshot top-level directories in {{ snapshot_root }}"
   file:
