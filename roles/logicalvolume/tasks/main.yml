@@ -1,15 +1,16 @@
 # Create data disk XFS file system on a specified LVM volume
-# Variables must be defind in the host_vars/ hostname file
+# Variables must be defind in the host_vars/<hostname>.yml file
 
 # Count the physical volumes in the disks array
 - debug:
     msg: "{{ 'Number of disk volumes is ' + disks|length|string + ' on disks ' + disks|string }}"
+  when: disks is defined
 
 # Calculate the disk volume striping
 # Define LVM striping for multi-disk volume groups (defaults in ../defaults/main.yml)
 - set_fact:
     striping: "{{ '--stripes ' + disks|length|string + ' --stripesize 64k' }}"
-  when: disks|length > 1
+  when: disks is defined and disks|length > 1
 
 # Create filesystems with corresponding parameters, for example:
 # filesystems:
