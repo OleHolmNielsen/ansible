@@ -1,0 +1,34 @@
+# Configure CAMD Gitlab runner servers
+# https://docs.gitlab.com/runner/install/
+
+# Install gitlab-runner as described in 
+# https://docs.gitlab.com/runner/install/linux-repository.html
+
+- hosts: camd_runners
+  roles:
+   - rhel8
+   - role: linux-system-roles.network
+   - hostname
+   - non_graphical
+   - logicalvolume
+   - xfs_quota
+   - epel_repo
+   - server_packages8
+   - dnf_updates
+   - docker
+   - gitlab-runner
+   - authorized_keys_command
+   - over_quota
+   - ipmi
+   - nhc
+   - rasdaemon
+   - logwatch
+   - logrotate
+   - proliant_centos8
+   - no_libvirt
+   - sshd_config
+   - sshd_allow_users
+   - bashrc
+   - sendmail_aliases
+   - sendmail_client
+   - firewalld_reload
