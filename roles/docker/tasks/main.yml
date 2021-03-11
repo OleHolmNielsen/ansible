@@ -1,0 +1,52 @@
+# Setup Docker on CentOS 8
+# https://docs.docker.com/engine/install/centos/
+
+- name: Add docker-ce repository
+  shell: 
+    cmd: dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+    warn: no
+  changed_when: False
+
+- name: Install Docker packages 
+  yum:
+    name:
+    - docker-ce
+    - docker-ce-cli
+    - containerd.io
+
+- name: Add the docker UNIX group
+  group:
+    name: docker
+
+# The gitlab-runner RPM creates the gitlab-runner user+group
+- name: Add the gitlab-runner UNIX group for Gitlab runners
+  group:
+    name: gitlab-runner
+
+- name: Add the gitlab-runner user and add to docker group
+  user:
+    name: gitlab-runner
+    group: gitlab-runner
+    comment: Gitlab runner
+    home: /home/gitlab-runner
+    # Insecure?
+    groups: docker
+    append: yes
+    generate_ssh_key: yes
+    ssh_key_type: ecdsa
+  # Required by https://docs.gitlab.com/runner/install/linux-repository.html
+  environment:
+    GITLAB_RUNNER_DISABLE_SKEL: true
+
+- name: Start docker service
+  service:
+    name=docker
+    state=started
+    enabled=yes
+
+- name: Start containerd service
+  service:
+    name=containerd
+    state=started
+    enabled=yes
+
