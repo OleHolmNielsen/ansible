@@ -1,10 +1,13 @@
 - name: Install popular packages for CAMD
-  yum:
+  package:
     name: 
+    - libxc-devel
     - gnome-tweaks
     - thunderbird
     - python3-devel
     - python3-tkinter
+    - python39
+    - python39-devel
     - openblas-devel
     - openmpi-devel
     - fftw-devel
@@ -21,12 +24,19 @@
     - gnome-shell
     - gnome-tweak-tool
     - screen
+    - ImageMagick
+    - sshfs
     - reptyr
     - rclone
+    - syncthing
+    - qrencode
+    # TeX Live system (if needed):
+    # - texlive
+    # - texlive-dvipng
     state: present
 
 - name: Install popular packages from the EPEL repository
-  yum:
+  package:
     name:
     - Lmod
     - git-all
@@ -36,7 +46,7 @@
     state: present
 
 - name: Uninstall environment-modules since we use Lmod
-  yum:
+  package:
     name:
     - environment-modules
     state: absent

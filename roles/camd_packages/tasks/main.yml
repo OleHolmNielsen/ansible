@@ -1,5 +1,5 @@
 - name: Install popular packages for CAMD
-  yum:
+  package:
     name: 
     - thunderbird
     - libxc-devel
@@ -29,7 +29,7 @@
     state: present
 
 - name: Install popular packages from the EPEL repository
-  yum:
+  package:
     name:
     - Lmod
     - git-all
