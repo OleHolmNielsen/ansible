@@ -1,11 +1,11 @@
-  - name: Editing the /root/.bashrc file
-    blockinfile:
-      path: /root/.bashrc
-      state: present
-      insertafter: '^alias mv=''mv -i'''
-      marker: "# {mark} ANSIBLE MANAGED BLOCK"
-      block: |
-        alias L='ls -la'
-        alias m=less
-        alias tailf='tail -f'
-        alias h=history
+- name: Editing the /root/.bashrc file
+  blockinfile:
+    path: /root/.bashrc
+    state: present
+    insertafter: '^alias mv=''mv -i'''
+    marker: "# {mark} ANSIBLE MANAGED BLOCK 1"
+    block: |
+      alias L='ls -la'
+      alias m=less
+      alias tailf='tail -f'
+      alias h=history
