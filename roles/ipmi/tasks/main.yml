@@ -1,12 +1,49 @@
-  - name: Install the IPMI packages
-    yum:
-      name:
-      - OpenIPMI 
-      - ipmitool
-      state: present
+- name: Install the IPMI packages
+  package:
+    name:
+    - OpenIPMI 
+    - ipmitool
+    - dmidecode
+    state: present
 
-  - name: Enable and start the IPMI service
-    service:
-      name=ipmi
-      state=started
-      enabled=yes
+- name: Enable and start the IPMI service
+  service:
+    name=ipmi
+    state=started
+    enabled=yes
+
+- name: Get system product name
+  command: "dmidecode -s system-product-name"
+  register: system_product_name
+  changed_when: False
+
+# Set IPMI lan channel and userno for Dell servers
+- set_fact:
+    ipmi_channel: 1
+  when: "'PowerEdge' in system_product_name.stdout"
+- set_fact:
+    ipmi_userno: 2
+  when: "'PowerEdge' in system_product_name.stdout"
+- set_fact:
+    ipmi_channel: 2
+  when: "'ProLiant' in system_product_name.stdout"
+- set_fact:
+    ipmi_userno: 1
+  when: "'ProLiant' in system_product_name.stdout"
+# Special cases for old HP ProLiant servers:
+- set_fact:
+    ipmi_userno: 2
+  when: "'DL160 G6' in system_product_name.stdout"
+
+- name: IPMI set username {{ ipmi_userno }} {{ ipmi_user }}
+  command:
+    ipmitool user set name {{ ipmi_userno }} {{ ipmi_user }}
+
+- name: IPMI set password for userno {{ ipmi_userno }}
+  command:
+    ipmitool user set password {{ ipmi_userno }} {{ ipmi_password }}
+
+- name: IPMI set IP source to DHCP for channel {{ ipmi_channel }}
+  command:
+    ipmitool lan set {{ ipmi_channel }} ipsrc dhcp
+
