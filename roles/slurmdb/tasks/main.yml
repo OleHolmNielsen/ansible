@@ -35,13 +35,27 @@
   # Ignore the "changed" status
   changed_when: False
 
-- name: Create slurm logrotate script
+- name: Create slurmdbd logrotate script
   copy:
-    src: logrotate.slurm
-    dest: /etc/logrotate.d/slurm
+    src: logrotate.slurmdbd
+    dest: /etc/logrotate.d/slurmdbd
     owner: root
     group: root
     mode: 0644
+
+- name: Create Slurm database backup logrotate script slurm_acct_db_backup
+  copy:
+    src: logrotate.slurm_acct_db_backup
+    dest: /etc/logrotate.d/slurm_acct_db_backup
+    owner: root
+    group: root
+    mode: 0644
+
+- name: "Replace DATABASEPASSWORD in slurm_acct_db_backup"
+  replace:
+    path: /etc/logrotate.d/slurm_acct_db_backup
+    regexp: 'DATABASEPASSWORD'
+    replace: '{{ mysql_root_password }}'
 
 - name: Install MariaDB database RPMs
   yum:
