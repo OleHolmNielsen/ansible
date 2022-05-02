@@ -1,11 +1,5 @@
 # Set up autofs
 
-- name: Start and enable the autofs service
-  service:
-    name=autofs
-    state=started
-    enabled=yes
-
 - name: Copy the {{ auto_home }} file from this server
   copy:
     src: "{{ auto_home }}"
@@ -55,6 +49,15 @@
     name: use_nfs_home_dirs
     state: yes
     persistent: yes
+
+- name: Create /u for some home directories and /scratch directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+  with_items:
+    - /u
+    - /scratch
 
 - name: Restart the autofs service
   service:
