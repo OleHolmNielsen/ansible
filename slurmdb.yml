@@ -3,8 +3,8 @@
 - hosts: pascal
   vars:
     rpm_dir: /root/rpmbuild/RPMS/x86_64
-    slurm_id: 1002
-    slurm_version: 20.02.6-1
+    slurm_id: 982
+    slurm_version: 21.08-6-1
     elversion: "el{{ ansible_facts['distribution_major_version']}}"
     slurm_rpm: "{{ slurm_version }}.{{ elversion }}.x86_64.rpm"
     slurm_dir: /etc/slurm
@@ -15,6 +15,7 @@
    - rhel8
    # - role: linux-system-roles.network
    - hostname
+   - sudoers
    - non_graphical
    # - datadisk
    # - xfs_quota

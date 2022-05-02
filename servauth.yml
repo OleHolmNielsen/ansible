@@ -5,6 +5,7 @@
    - rhel8
    - role: linux-system-roles.network
    - hostname
+   - sudoers
    - non_graphical
    - authorized_keys_command
    - nhc
@@ -17,11 +18,13 @@
    - epel_repo
    - dnf_updates
    - dnf_packages_minimal
+   - server_packages8
    - samba_client
    - proliant_centos8
    - sendmail_client
    - desktops_autofs
    - ansible
+   - aggregate6
    # - sshblack
    # - firewalld_whitelist
    # - firewalld_brute_force

@@ -5,6 +5,7 @@
    - rhel7
    - bashrc
    - hostname
+   - sudoers
    - non_graphical
    - epel_repo
    - server_packages
@@ -21,7 +22,9 @@
    - yum_updates
    - sendmail_aliases
    - sendmail_client
+   - aggregate6
    - apache_server
    - web_server
    - davmail
+   # - firewalld_ipset
    - firewalld_reload

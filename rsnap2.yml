@@ -6,6 +6,7 @@
    - logicalvolume
    - role: linux-system-roles.network
    - hostname
+   - sudoers
    - authorized_keys_command
    - non_graphical
    - epel_repo

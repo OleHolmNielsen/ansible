@@ -6,6 +6,7 @@
    - role: linux-system-roles.network
    - bashrc
    - hostname
+   - sudoers
    - non_graphical
    - epel_repo
    - server_packages
