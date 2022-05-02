@@ -16,14 +16,39 @@
     - azure.secrets
   notify: restart ipsec
 
-- name: Set IP forwarding on in /proc and in the sysctl file and reload if necessary
+- name: "Configure network parameters in /etc/ipsec.d/azure.conf"
+  blockinfile:
+    path: "/etc/ipsec.d/azure.conf"
+    insertafter: "conn azure"
+    block: |2
+      # Hack: Indent all lines by 2 spaces after this comment
+        leftsubnet={{ leftsubnet }}
+        leftsourceip={{ leftsourceip }}
+        rightsubnet={{ rightsubnet }}
+        left={{ left }}
+        right={{ right }}
+
+- name: "Set sysctl parameters"
   sysctl:
-    name: net.ipv4.ip_forward
+    name: "{{ item }}"
     value: '1'
     sysctl_set: yes
     state: present
     reload: yes
+  with_items:
+    - net.ipv4.ip_forward
+    - net.ipv6.conf.default.disable_ipv6
   # notify: restart network
+
+- name: "Unset sysctl parameters"
+  sysctl:
+    name: "{{ item }}"
+    value: '0'
+    sysctl_set: yes
+    state: present
+    reload: yes
+  with_items:
+    - net.ipv4.conf.default.rp_filter
 
 # See https://gist.github.com/mozart27/c00a4bb48d251c1f92de107a004a45e8
 - name: Configure firewalld for ipsec service
@@ -35,7 +60,7 @@
 
 - name: Add the IPsec interface vti01 to the trusted zone
   firewalld:
-    interface: vti01
+    interface: ip_vti0
     zone: trusted
     permanent: yes
     immediate: yes
