@@ -1,5 +1,5 @@
 - name: Install system packages 
-  dnf:
+  package:
     name: 
     - policycoreutils-python-utils
     # - libsemanage-python
@@ -10,7 +10,10 @@
     - sendmail-doc
     - tar
     - smartmontools
+    - ipmitool
     - net-tools
+    - traceroute
+    - whois
     - nfs-utils
     - bind-utils
     - cups
@@ -23,6 +26,8 @@
     - dos2unix
     - ntfs-3g
     - reptyr
+    - p7zip
+    - p7zip-plugins
     # - fuse-sshfs
     state: present
 
@@ -36,7 +41,7 @@
 #    warn: no
 
 - name: Install popular packages 
-  dnf:
+  package:
     name:
     - Lmod
     - git-all
@@ -63,3 +68,10 @@
     # - pysvn
     # - graphviz
     state: present
+
+- name: Remove unwanted packages 
+  package:
+    name:
+    - sssd-common
+    - sssd-client
+    state: absent
