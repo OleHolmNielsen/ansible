@@ -1,7 +1,18 @@
 - name: Install the EL7 RPM Fusion repository https://rpmfusion.org/
   yum:
     name: https://download1.rpmfusion.org/free/el/rpmfusion-free-release-7.noarch.rpm
+    disable_gpg_check: yes
     state: present
+  # Valid for RHEL, CentOS
+  when: ansible_os_family|lower == "redhat" and ansible_facts['distribution_major_version'] == "7"
+
+- name: Install the EL8 RPM Fusion repository https://rpmfusion.org/
+  yum:
+    name: https://download1.rpmfusion.org/free/el/rpmfusion-free-release-8.noarch.rpm
+    disable_gpg_check: yes
+    state: present
+  # Valid for RHEL, CentOS, AlmaLinux, RockyLinux
+  when: ansible_os_family|lower == "redhat" and ansible_facts['distribution_major_version'] == "8"
 
 - name: Install popular packages from the RPM Fusion repository
   yum:
