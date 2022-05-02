@@ -1,3 +1,7 @@
+#
+# Configure Apache webserver for mailman server
+#
+
 - name: Create empty file /etc/httpd/conf.d/00name-virtual-host.conf
   file:
     path: "/etc/httpd/conf.d/00name-virtual-host.conf"
