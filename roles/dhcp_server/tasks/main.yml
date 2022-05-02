@@ -1,4 +1,4 @@
-- name: Install DHCPD and UEFI packages
+- name: Install DHCPD and UEFI packages on EL7
   yum:
     name:
     - dhcp
@@ -7,6 +7,17 @@
     - dhcp-libs
     - grub2-efi-x64
     state: present
+  when: ansible_os_family|lower == "redhat" and ansible_facts['distribution_major_version'] == "7"
+
+- name: Install DHCPD and UEFI packages on EL8
+  yum:
+    name:
+    - dhcp-server
+    - dhcp-common
+    - dhcp-libs
+    - grub2-efi-x64
+    state: present
+  when: ansible_os_family|lower == "redhat" and ansible_facts['distribution_major_version'] == "8"
 
 - name: Create /etc/dhcp/dhcpd.conf.d/ directory for client files
   file:
@@ -38,8 +49,9 @@
     permanent: true
     state: enabled
 
-- name: Start and enable the DHCPD service 
-  service:
-    name=dhcpd
-    state=started
-    enabled=yes
+# DO NOT start the dhcpd service unless you have tested it!
+#- name: Start and enable the DHCPD service 
+#  service:
+#    name=dhcpd
+#    state=started
+#    enabled=yes
