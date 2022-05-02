@@ -1,4 +1,5 @@
-# Local copy of RPM package
-nhc_rpm: lbnl-nhc-1.4.2-1.el7.noarch.rpm
+# Local copy of RPM packages
+nhc_rpm_el7: lbnl-nhc-1.4.3-1.el7.noarch.rpm
+nhc_rpm_el8: lbnl-nhc-1.4.3-1.el8.noarch.rpm
 # Our global NHC config file
 nhc_conf: /etc/nhc/nhc.conf
