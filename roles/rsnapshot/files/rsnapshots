@@ -60,9 +60,7 @@ do
 		continue
 	fi
 	echo "====================================================================="
-	echo
 	echo Rsnapshot $BACKUPNAME backup of file system $i starting at `date`
-	echo
 	# NAS box grahams2 needs extra time to wake up, so first change directory to /home/grahams2
 	if test "$i" = "grahams2"
 	then
