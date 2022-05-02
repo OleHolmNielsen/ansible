@@ -3,11 +3,12 @@
     name:
     - httpd
     - mod_ssl
-    - libselinux-python
-    - libsemanage-python
-    - policycoreutils-python
     - selinux-policy-doc
     - rsync
+    # EL7 only:
+    # - libselinux-python
+    # - libsemanage-python
+    # - policycoreutils-python
     state: present
 
 - name: SELinux context /u/mirrors
@@ -24,20 +25,35 @@
 
 - name: Create Apache 01mirror.conf symlink
   file:
-    # src: /etc/httpd/conf.d/mirror.conf
     src: mirror.conf
     dest: /etc/httpd/conf.d/01mirror.conf
     owner: root
     group: root
     state: link
 
-- name: Copy mirror crontab script
+- name: Copy mirror crontab scripts
   copy:
-    src: rsync-centos
+    src: "{{ item }}"
     dest: /root/
     owner: root
     group: root
     mode: 0755
+  with_items:
+    - rsync-centos
+    - rsync-almalinux
+    - rsync-rockylinux
+
+- name: Create mirror directories
+  file:
+    path: "/u/mirrors/pub/linux/{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  with_items:
+    - centos
+    - almalinux
+    - rockylinux
 
 - name: Create a cron job for CentOS mirror
   cron:
@@ -45,4 +61,27 @@
     minute: "15"
     hour: "0-23/2"
     job: "/root/rsync-centos"
+
+- name: Create a cron job for AlmaLinux mirror
+  cron:
+    name: "AlmaLinux mirror"
+    minute: "20"
+    hour: "*/3"
+    job: "/root/rsync-almalinux"
+
+- name: Create a cron job for RockyLinux mirror
+  cron:
+    name: "RockyLinux mirror"
+    minute: "40"
+    hour: "*/3"
+    job: "/root/rsync-rockylinux"
+
+- name: Copy the catlogfiles script to /usr/local/bin
+  copy:
+    src: catlogfiles
+    dest: "/usr/local/bin/"
+    backup: yes
+    owner: root
+    group: root
+    mode: u=rwx,g=rx,o=rx
 
