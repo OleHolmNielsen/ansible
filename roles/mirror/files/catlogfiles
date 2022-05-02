@@ -1,0 +1,24 @@
+#!/bin/sh
+
+# Print all  httpd logfiles to stdout.
+# Both text and gzipped logfiles are printed.
+
+LOGDIR=/var/log/httpd
+cat $LOGDIR/mirror.access_log 
+# Ignore empty file lists:
+shopt -s nullglob
+
+for i in $LOGDIR/mirror.access_log-20??????
+do
+	if test -s $i
+	then
+		cat $i
+	fi
+done
+for i in $LOGDIR/mirror.access_log-20??????.gz
+do
+	if test -s $i
+	then
+		zcat $i
+	fi
+done

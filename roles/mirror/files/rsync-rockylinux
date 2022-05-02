@@ -1,0 +1,26 @@
+#!/bin/sh
+
+# This script mirrors the Rockylinux distribution
+
+# Temporary storage of alert data
+TMPDIR=/var/lib/rsync-rockylinux
+if test ! -d $TMPDIR
+then
+	mkdir -v $TMPDIR
+fi
+STOPFILE=$TMPDIR/rsync-rockylinux.stop
+LOCALDIR=/u/mirrors/pub/linux/rockylinux
+MIRROR=rsync://ftp.lysator.liu.se/rocky
+# VERBOSE="-v"
+QUIET="-q"
+OWNER="--no-owner --no-group"
+
+# Remove the stopfile if this script crashes
+trap "rm -f $STOPFILE" EXIT TERM INT QUIT
+
+/usr/bin/flock -n /var/run/rockylinux_rsync.lock -c "/usr/bin/rsync -aSH $VERBOSE $QUIET $OWNER -f 'R .~tmp~' --delete-delay --delay-updates $MIRROR/ $LOCALDIR/"
+
+# Fix ownerships
+# chown -R -f root: $LOCALDIR
+
+exit 0

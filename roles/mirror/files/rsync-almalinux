@@ -1,0 +1,26 @@
+#!/bin/sh
+
+# This script mirrors the AlmaLinux distribution
+
+# Temporary storage of alert data
+TMPDIR=/var/lib/rsync-almalinux
+if test ! -d $TMPDIR
+then
+	mkdir -v $TMPDIR
+fi
+STOPFILE=$TMPDIR/rsync-almalinux.stop
+LOCALDIR=/u/mirrors/pub/linux/almalinux
+MIRROR=rsync://rsync.repo.almalinux.org/almalinux
+# VERBOSE="-v"
+QUIET="-q"
+OWNER="--no-owner --no-group"
+
+# Remove the stopfile if this script crashes
+trap "rm -f $STOPFILE" EXIT TERM INT QUIT
+
+/usr/bin/flock -n /var/run/almalinux_rsync.lock -c "/usr/bin/rsync -aSH $VERBOSE $QUIET $OWNER -f 'R .~tmp~' --delete-delay --delay-updates $MIRROR/ $LOCALDIR/"
+
+# Fix ownerships
+# chown -R -f root: $LOCALDIR
+
+exit 0

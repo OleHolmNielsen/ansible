@@ -1,0 +1,14 @@
+/var/log/mariadb/slurm_acct_db_backup.bz2 {
+daily
+dateext
+dateyesterday
+rotate 8
+nocompress
+create 640 root adm
+postrotate
+# Dump ONLY the Slurm database slurm_acct_db
+# Strongly recommended: --single-transaction
+# Use lbzip2 for compression (could also use bzip2)
+/usr/bin/mysqldump --user=root --password=DATABASEPASSWORD --single-transaction -B slurm_acct_db | /usr/bin/lbzip2 --force -n 5 > /var/log/mariadb/slurm_acct_db_backup.bz2
+endscript
+}
