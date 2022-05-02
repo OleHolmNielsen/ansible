@@ -1,9 +1,14 @@
 - include_role:
     name: firewalld_config
 
+- include_role:
+    name: aggregate6
+
 - name: Install the firewalld and ipset packages
   yum:
-    name: firewalld,ipset
+    name:
+    - firewalld
+    - ipset
     state: present
 
 - name: Get firewalld version 
@@ -17,10 +22,10 @@
 #    fail: msg="The firewalld version must be at least 0.4"
 #    when: firewalld_version.stdout | version_compare('0.4', '<')
 
-- name: "Copy the {{ ipset7 }} file from this server"
+- name: "Copy the {{ ipset }} file from this server"
   copy:
-    src: "{{ ipset7 }}"
-    dest: "{{ ipset7 }}"
+    src: "{{ ipset }}"
+    dest: "{{ ipset }}"
     backup: yes
     owner: root
     group: root
@@ -57,7 +62,7 @@
   command: firewall-cmd --permanent --zone=drop --add-source=ipset:{{ ipsetname }}
   when: list_sources.stdout == ''
 
-- name: "Load ipset {{ ipsetname }} entries from file {{ ipset7 }}"
+- name: "Load ipset {{ ipsetname }} entries from file {{ ipset }}"
   vars:
     firewalld_needs_reload: "true"
-  command: firewall-cmd --permanent --ipset={{ ipsetname }} --add-entries-from-file={{ ipset7 }}
+  command: firewall-cmd --permanent --ipset={{ ipsetname }} --add-entries-from-file={{ ipset }}
