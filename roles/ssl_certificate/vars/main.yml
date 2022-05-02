@@ -3,8 +3,10 @@
 #
 local_path: "/root/SSL"
 local_key: "star_fysik_dtu_dk.key"
-local_crt: "star_fysik_dtu_dk.crt"
-local_intermediate: "DigiCertCA.crt"
+# local_crt: "star_fysik_dtu_dk.crt"
+# local_intermediate: "DigiCertCA.crt"
+local_crt: "__fysik_dtu_dk_cert.cer"
+local_intermediate: "__fysik_dtu_dk_interm.cer"
 
 #
 # SSL certificate files in fysik.dtu.dk web servers
