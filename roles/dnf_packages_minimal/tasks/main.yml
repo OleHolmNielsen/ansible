@@ -1,5 +1,5 @@
 - name: Install minimal system packages on CentOS8
-  dnf:
+  package:
     name: 
     - policycoreutils-python-utils
     - rsync
@@ -26,6 +26,12 @@
     - libstdc++
     state: present
 
+- name: Enable a Systemd timer for mlocate-updatedb.timer
+  systemd:
+    name: mlocate-updatedb.timer
+    state: started
+    enabled: yes
+
 # The Lmod package from EPEL requires (on CentOS 8) an additional PowerTools repository, see:
 # https://bugzilla.redhat.com/show_bug.cgi?id=1777262
 # However, Ansible doesn't have a module to run "dnf config-manager --set-enabled PowerTools"
@@ -37,7 +43,7 @@
 #    warn: no
 
 - name: Install popular packages 
-  dnf:
+  package:
     name:
     - git-all
     - bash-completion
