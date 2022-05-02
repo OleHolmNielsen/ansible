@@ -1,0 +1,6 @@
+# Configure Rsnapshot backup server
+
+- hosts: niflbu1,niflbu2,niflbu3,rsnap1,rsnap2
+  roles:
+   - logicalvolume
+   - rsnapshot

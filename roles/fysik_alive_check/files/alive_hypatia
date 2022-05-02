@@ -1,0 +1,57 @@
+#!/bin/sh
+
+#
+# Check if machines are alive (by ping)
+# To be run regularly from cron.
+#
+
+# Exit the script in case of control-C etc.
+trap "exit -1" SIGTERM SIGINT SIGQUIT
+
+PING="/bin/ping -c 1 -w 3"
+HOST=/usr/bin/host
+
+if test "$USER" = "root"
+then
+	STOPFILEDIR=/tmp
+	if test ! -d $STOPFILEDIR
+	then
+		mkdir -v $STOPFILEDIR
+	fi
+else
+	STOPFILEDIR=/tmp
+fi
+
+# List of hosts 
+LIST="panda2 elearn1 hypatia"
+
+for host in ${LIST}
+do
+	STOPFILE=$STOPFILEDIR/alive.${host}
+	# Check that the hostname exists in the name service
+	if $HOST ${host} 2>&1 > /dev/null
+	then
+		# Ping the host to see if it is alive
+		if $PING ${host} 2>&1 > /dev/null
+		then
+			if [ -f $STOPFILE ]
+			then
+				echo "Host ${host} is up again" |& mail -s 'Status of hypatia and panda2' pkwi@fysik.dtu.dk
+			fi
+			rm -f $STOPFILE
+		else
+			if [ ! -f $STOPFILE ]
+			then
+				echo "Cannot ping host ${host} !" |& mail -s 'Status of hypatia and panda2' pkwi@fysik.dtu.dk
+				touch $STOPFILE
+			fi
+		fi
+	else
+		if [ ! -f $STOPFILE ]
+		then
+			echo $0 ERROR: Cannot lookup host ${host} !
+			$HOST ${host}
+			touch $STOPFILE
+		fi
+	fi
+done

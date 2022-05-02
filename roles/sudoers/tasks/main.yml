@@ -1,0 +1,14 @@
+# See sudoers example in
+# https://docs.ansible.com/ansible/latest/collections/ansible/builtin/lineinfile_module.html
+
+- name: "Add users {{ sudoers }} to /etc/sudoers.d/"
+  lineinfile:
+    path: "/etc/sudoers.d/{{ item }}"
+    line: '{{ item }} ALL=(ALL) ALL'
+    state: present
+    mode: 0440
+    create: yes
+    validate: 'visudo -cf %s'
+  loop: "{{ sudoers }}"
+  # loop: "{{ lookup('sudoers', 'all', wantlist=True) }}"
+

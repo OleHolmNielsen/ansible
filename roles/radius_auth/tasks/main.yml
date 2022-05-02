@@ -1,0 +1,69 @@
+- include_role:
+    name: epel_repo
+
+- name: Install the pam_radius package
+  # Now you need to setup the RADIUS server in /etc/pam_radius.conf
+  package:
+    name: 
+    - pam_radius
+    - freeradius-utils
+    state: present
+
+# The /etc/pam_radius.conf file MUST be protected by mode 0600
+- name: "Copy /etc/pam_radius.conf for host {{ inventory_hostname }}"
+  copy:
+    src: "{{ inventory_hostname }}/pam_radius.conf"
+    dest: "/etc/pam_radius.conf"
+    owner: root
+    group: root
+    mode: 0600
+    backup: yes
+
+- name: Append access lines to /etc/security/access.conf
+  blockinfile:
+    path: /etc/security/access.conf
+    insertafter: EOF
+    block: |
+      # Logins from local IP range and crond
+      +:root:130.225.86.0/23
+      +:root:cron
+      -:root:ALL
+      +:ALL:130.225.86.0/23
+      # Additional network: DTU private networks
+      +:ALL:10.54.0.0/16
+      +:ALL:10.0.0.0/8
+      # Hosts with no "." in the name
+      # +:ALL:LOCAL
+
+# PAM: see http://www.linux-pam.org/Linux-PAM-html/sag-configuration-file.html
+
+- name: PAM configuration of /etc/pam.d/sshd
+  blockinfile:
+    path: /etc/pam.d/sshd
+    insertafter: "#%PAM-1.0"
+    block: |
+      auth sufficient pam_succeed_if.so user = root
+      # Access default file is /etc/security/access.conf
+      auth optional pam_access.so
+      # The RADIUS pam_radius module
+      # auth sufficient pam_radius_auth.so debug
+      # If RADIUS authentication fails then login is configured to fail:
+      auth [success=done default=die] pam_radius_auth.so debug retry=1
+
+- name: "Enable ChallengeResponseAuthentication in /etc/ssh/sshd_config"
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^ChallengeResponseAuthentication'
+    line: "ChallengeResponseAuthentication yes"
+
+- name: "Disable PasswordAuthentication in /etc/ssh/sshd_config"
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^PasswordAuthentication'
+    line: "PasswordAuthentication no"
+
+- name: "Restart sshd service"
+  service:
+    name=sshd
+    state=restarted
+    enabled=yes

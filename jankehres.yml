@@ -1,0 +1,19 @@
+- hosts: jankehres
+  roles:
+   - hostname
+   - sudoers
+   - bashrc
+   - logicalvolume
+   - epel_repo
+   - fusion_packages
+   - workstation
+   # - dnf_updates
+   - dnf_packages
+   - camd_packages8
+   - authorized_keys_command
+   - firewalld_whitelist
+   - sendmail_aliases
+   - sendmail_client
+   - desktops_autofs
+   # - printers_b309
+   - firewalld_reload

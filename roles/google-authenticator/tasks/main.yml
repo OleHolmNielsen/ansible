@@ -1,0 +1,60 @@
+- include_role:
+    name: epel_repo
+
+- name: Install Google Authenticator packages from EPEL and Base
+  package:
+    name: 
+    - google-authenticator
+    - qrencode
+    - qrencode-libs
+    state: present
+
+- name: Append access lines to /etc/security/access.conf
+  blockinfile:
+    path: /etc/security/access.conf
+    insertafter: EOF
+    block: |
+      # Logins from local IP range and crond
+      +:root:130.225.86.0/23
+      +:root:cron
+      -:root:ALL
+      +:ALL:130.225.86.0/23
+      # Additional network: DTU private networks
+      +:ALL:10.54.0.0/16
+      +:ALL:10.0.0.0/8
+      # Hosts with no "." in the name
+      # +:ALL:LOCAL
+
+# PAM: see http://www.linux-pam.org/Linux-PAM-html/sag-configuration-file.html
+
+- name: PAM configuration of /etc/pam.d/sshd
+  blockinfile:
+    path: /etc/pam.d/sshd
+    insertafter: "auth       include      postlogin"
+    # firstmatch: yes
+    block: |
+      auth [success=done default=ignore] pam_succeed_if.so user = root
+      # Access default file is /etc/security/access.conf
+      auth [success=ok default=ignore] pam_access.so
+      auth required pam_google_authenticator.so secret=${HOME}/.ssh/google_authenticator
+      # The nullok skips check for users without ${HOME}/.ssh/google_authenticator
+      # auth required pam_google_authenticator.so nullok secret=${HOME}/.ssh/google_authenticator
+
+- name: "Enable ChallengeResponseAuthentication in /etc/ssh/sshd_config"
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^ChallengeResponseAuthentication'
+    line: "ChallengeResponseAuthentication yes"
+
+- name: "Configure sshd for AuthenticationMethods publickey keyboard-interactive"
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    insertafter: EOF
+    line: "AuthenticationMethods publickey keyboard-interactive"
+
+- name: "Restart sshd service"
+  service:
+    name=sshd
+    state=restarted
+    enabled=yes
+

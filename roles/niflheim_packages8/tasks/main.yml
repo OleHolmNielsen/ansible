@@ -1,0 +1,77 @@
+- name: Install required and popular packages 
+  package:
+    name: 
+    - emacs
+    - gsl
+    - gsl-devel
+    - gcc-c++
+    - tar
+    - gzip
+    - bzip2
+    - unzip
+    - xz
+    - dos2unix
+    - patch
+    - ksh
+    - xterm
+    - xclip
+    - traceroute
+    - rclone
+    - openssl-devel
+    - libibverbs-devel
+    - libX11-devel
+    - libpciaccess-devel
+    - libxml2-devel 
+    - glibc-static
+    - vim-enhanced
+    - redhat-lsb-core
+    - asciidoc
+    - xmlto
+    - nano
+    - dos2unix
+    - harfbuzz-devel
+    - libfabric
+    - mesa-libGLU
+    - google-authenticator
+    - qrencode
+    - syncthing
+    state: present
+
+- name: Install popular packages for CAMD
+  package:
+    name: 
+    - gnome-tweaks
+    - python3-devel
+    - python3-tkinter
+    - vim-enhanced
+    - vim-X11
+    - nano
+    - emacs
+    - dos2unix
+    - screen
+    - reptyr
+    - rclone
+    state: present
+
+- name: Uninstall environment-modules since we use Lmod
+  package:
+    name:
+    - environment-modules
+    state: absent
+
+- name: Install popular packages from the EPEL repository
+  package:
+    name:
+    - epel-release
+    - Lmod
+    - meld
+    - git-all
+    - bash-completion
+    - htop
+    - rclone
+    - python39
+    - python39-pip
+    - python39-devel
+    - python39-tkinter 
+    - singularity
+    state: present

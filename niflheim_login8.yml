@@ -1,0 +1,36 @@
+# Configure Niflheim login node server: EL8
+
+- hosts: Niflheim_login8
+  roles:
+   - rhel8
+   - lvscratch
+   - bashrc
+   - hostname
+   - sudoers
+   - non_graphical
+   - epel_repo
+   - server_packages8
+   - niflheim_packages8
+   - dell-system-update
+   - dell-perccli
+   - ipmi
+   - niflheim_profile
+   - nhc
+   - rasdaemon
+   - logwatch
+   - logrotate
+   # - limits_conf
+   - proliant_centos
+   - snmp
+   - no_libvirt
+   - sshd_config
+   - authorized_keys_command
+   - bashrc
+   - ls_speedup
+   - niflheim_autofs
+   - niflheim_firewalld
+   - sendmail_aliases
+   - sendmail_client
+   - slurm_basic
+   - slurm_tools
+   - modules

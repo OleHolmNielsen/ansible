@@ -1,0 +1,32 @@
+# Configure Niflheim Slurm slurmctld server 
+
+- hosts: Niflheim_ctl8
+  roles:
+   - rhel8
+   - role: linux-system-roles.network
+   - hostname
+   - sudoers
+   - non_graphical
+   - epel_repo
+   - server_packages8
+   - dell-system-update
+   - dell-perccli
+   - authorized_keys_command
+   - ipmi
+   - nhc
+   - rasdaemon
+   - logwatch
+   - logrotate
+   # - proliant_centos
+   - no_libvirt
+   - sshd_config
+   - sshd_allow_users
+   - bashrc
+   - niflheim_autofs_servers
+   - slurm_basic
+   - slurm_tools
+     # - slurmdb
+   - sendmail_aliases
+   - sendmail_client
+   - firewalld_whitelist_niflheim
+   - firewalld_reload

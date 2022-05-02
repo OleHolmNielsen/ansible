@@ -1,0 +1,31 @@
+# Configure Rsnapshot backup server
+
+- hosts: rsnap3
+  roles:
+   - rhel8
+   - datadisk
+   - bashrc
+   - role: linux-system-roles.network
+   - hostname
+   - sudoers
+   - authorized_keys_command
+   - non_graphical
+   - epel_repo
+   - server_packages8
+   - snmp
+   - proliant_centos8
+   - rsnapshot_autofs
+   - rsnapshot
+   - ssh_known_hosts
+   - ipmi
+   - nhc
+   - logwatch
+   - no_libvirt
+   - sshd_config
+   - sshd_allow_users
+   - bashrc
+   - dnf_updates
+   - sendmail_aliases
+   # - sendmail_client
+   - sendmail_server
+   - firewalld_reload

@@ -1,0 +1,3 @@
+- hosts: camd-runner1 chandra demon2 demon3 finbul fysik-cmr01.win.dtu.dk fys-tsurfcatdata01.win.dtu.dk gamow intra5 listserv01 mail5 niflbu1 niflbu2 niflbu3 niflfs1 niflfs2 niflfs3 niflfs4 niflfs5 niflfs6 niflfs7 niflfs8 niflfs9 niflmgt2 niflnet1 niflnet2 niflopa1 niflopt1 niflopt2 nigw2 que2 que rsnap1 rsnap2 rsnap3 sandoval servauth4 servcamd4 servnedi servxp2 slid slurmdb2 slurmdb surt svol sylg thul vid web5
+  roles:
+   - sudoers

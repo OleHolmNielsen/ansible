@@ -1,0 +1,32 @@
+- name: Copy SSH host private keys
+  copy:
+    src: "{{ inventory_hostname }}/{{ item }}"
+    dest: /etc/ssh
+    owner: root
+    group: ssh_keys
+    mode: u=rw,g=r,o=
+  with_items:
+    - ssh_host_dsa_key
+    - ssh_host_ecdsa_key
+    - ssh_host_ed25519_key
+    - ssh_host_key
+    - ssh_host_rsa_key
+  notify:
+   - Restart sshd
+
+- name: Copy SSH host public keys
+  copy:
+    src: "{{ inventory_hostname }}/{{ item }}"
+    dest: /etc/ssh
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+  with_items:
+    - ssh_host_dsa_key.pub
+    - ssh_host_ecdsa_key.pub
+    - ssh_host_ed25519_key.pub
+    - ssh_host_key.pub
+    - ssh_host_rsa_key.pub
+  notify:
+   - Restart sshd
+

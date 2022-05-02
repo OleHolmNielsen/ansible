@@ -1,0 +1,29 @@
+# PostgreSQL installation see
+# https://www.postgresql.org/download/linux/redhat/
+# https://access.redhat.com/documentation/zh-cn/red_hat_enterprise_linux/8/html/deploying_different_types_of_servers/installing-postgresql_using-postgresql
+
+- name: Install postgresql 13 server
+  dnf:
+    name: "@postgresql:13/server"
+    state: present
+
+- name: Install additional postgresql 13 packages
+  dnf:
+    name: 
+      - postgresql-server-devel
+      - postgresql-plpython3
+      - postgresql-contrib
+      - postgresql-docs
+    state: present
+
+- name: Initialize the postgresql database
+  command: postgresql-setup --initdb
+  args:
+    creates: /var/lib/pgsql/initdb_postgresql.log
+
+- name: Start the postgresql service 
+  service:
+    name=postgresql
+    state=restarted
+    enabled=yes
+

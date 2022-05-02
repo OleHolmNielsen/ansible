@@ -1,0 +1,78 @@
+- name: Install CentOS server packages for Apache web server
+  yum:
+    name:
+    - httpd
+    - mod_ssl
+    - selinux-policy-doc
+    - rsync
+    # EL7 only:
+    #- libselinux-python
+    #- libsemanage-python
+    #- policycoreutils-python
+    state: present
+
+- name: Copy Apache config file mirror.conf
+  copy:
+    src: "{{ inventory_hostname }}/mirror.conf"
+    dest: /etc/httpd/conf.d/
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Create Apache 01mirror.conf symlink
+  file:
+    src: mirror.conf
+    dest: /etc/httpd/conf.d/01mirror.conf
+    owner: root
+    group: root
+    state: link
+
+- name: Create mirror directories
+  file:
+    path: "{{ mirror_path}}/{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  with_items:
+    - centos79
+    - centos84
+    - almalinux
+    - dell
+
+- name: "SELinux context {{ mirror_path}}"
+  command:
+    "chcon -R -t httpd_sys_content_t {{ mirror_path}}/{{ item }}"
+  with_items:
+    - centos79
+    - centos84
+    - almalinux
+    - dell
+
+# See http://sysadminsjourney.com/content/2010/02/01/apache-modproxy-error-13permission-denied-error-rhel/
+- name: Set SELinux httpd_can_network_connect required for Apache HTTP proxy
+  seboolean:
+    name: httpd_can_network_connect
+    state: yes
+    persistent: yes
+
+- name: Open firewall for the HTTP service
+  firewalld:
+    service: http
+    immediate: true
+    permanent: true
+    state: enabled
+
+#- name: Open firewall for the HTTPS service
+#  firewalld:
+#    service: https
+#    immediate: true
+#    permanent: true
+#    state: enabled
+
+- name: Restart and enable the Apache service 
+  service:
+    name=httpd
+    state=restarted
+    enabled=yes
+

@@ -1,0 +1,21 @@
+# Install Dell PERC CLI package downloaded from Dell Support:
+# https://www.dell.com/support/home/en-us/drivers/driversdetails?driverid=j91yg
+
+- name: "Copy {{ perccli_rpm }} RPM file"
+  copy:
+    src: "{{ perccli_rpm }}"
+    dest: "/root/{{ perccli_rpm }}"
+
+- name: Install perccli package from file
+  package:
+    name: "/root/{{ perccli_rpm }}"
+    disable_gpg_check: yes
+    state: present
+
+- name: Create soft-link for perccli command
+  file:
+    src: /opt/MegaRAID/perccli/perccli64
+    dest: /usr/local/bin/perccli
+    owner: root
+    group: root
+    state: link

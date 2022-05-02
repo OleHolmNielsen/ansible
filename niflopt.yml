@@ -1,0 +1,7 @@
+# Configure mirror server
+
+- hosts: niflopt1 niflopt2
+  roles:
+   - niflheim_mirror
+   - firewalld_reload
+

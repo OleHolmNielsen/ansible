@@ -1,0 +1,17 @@
+# Ansible Conditionals for OS 'distribution':
+# https://docs.ansible.com/ansible/latest/user_guide/playbooks_conditionals.html#ansible-facts-distribution
+
+- name: Add Oracle VirtualBox repository
+  yum_repository:
+    name: virtualbox
+    description: Oracle VirtualBox
+    baseurl: "http://download.virtualbox.org/virtualbox/rpm/el/$releasever/$basearch"
+    enabled: yes
+    gpgcheck: yes
+    gpgkey: https://www.virtualbox.org/download/oracle_vbox.asc
+    repo_gpgcheck: yes
+
+- name: Install VirtualBox
+  package:
+    name: VirtualBox-6.1
+    state: present
