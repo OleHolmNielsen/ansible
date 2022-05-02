@@ -1,8 +1,31 @@
----
+# ---
+# GPG key problems: see discussion in
+# https://gitlab.com/gitlab-org/omnibus-gitlab/-/issues/6701
+
+# The gitlab-runner RPM creates the gitlab-runner user+group
+- name: Add the gitlab-runner UNIX group for Gitlab runners
+  group:
+    name: gitlab-runner
+
+- name: Add the gitlab-runner user and add to docker group
+  user:
+    name: gitlab-runner
+    group: gitlab-runner
+    comment: Gitlab runner
+    home: /home/gitlab-runner
+    # Insecure?
+    groups: docker
+    append: yes
+    generate_ssh_key: yes
+    ssh_key_type: ed25519
+  # Required by https://docs.gitlab.com/runner/install/linux-repository.html
+  environment:
+    GITLAB_RUNNER_DISABLE_SKEL: true
 
 # From https://github.com/riemers/ansible-gitlab-runner
 # File https://github.com/riemers/ansible-gitlab-runner/blob/master/tasks/install-redhat.yml
 
+# https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.rpm.sh
 - name: (RedHat) Get Gitlab repository installation script
   get_url:
     url: "https://packages.gitlab.com/install/repositories/runner/{{ gitlab_runner_package_name }}/script.rpm.sh"
@@ -38,3 +61,10 @@
 # Does not seem to be needed any longer?
 #- name: Set systemd reload options
 #  import_tasks: systemd-reload.yml
+
+- name: Creates a crontab entry for user gitlab-runner
+  cron:
+    name: "Start gitlab-runner run at reboot"
+    special_time: reboot
+    job: "/usr/bin/gitlab-runner run"
+    user: gitlab-runner
