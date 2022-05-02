@@ -2,5 +2,6 @@
 
 - hosts: chandra pascal sandoval
   roles:
-   - datadisk
+   # - datadisk
+   - fusion_packages
    - cuda

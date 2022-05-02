@@ -7,6 +7,7 @@
    - role: linux-system-roles.network
    - rhel7
    - hostname
+   - sudoers
    - non_graphical
    - epel_repo
    - server_packages

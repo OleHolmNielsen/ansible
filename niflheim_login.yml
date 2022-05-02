@@ -5,6 +5,7 @@
    - rhel7
    - lvscratch
    - hostname
+   - sudoers
    - non_graphical
    - epel_repo
    - server_packages
