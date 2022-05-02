@@ -1,4 +1,4 @@
 - name: Set the permanent hostname with hostnamectl
   hostname:
-    # name: "{{ inventory_hostname }}"
-    name: "{{ ansible_nodename }}"
+    name: "{{ inventory_hostname }}"
+    # name: "{{ ansible_nodename }}"
