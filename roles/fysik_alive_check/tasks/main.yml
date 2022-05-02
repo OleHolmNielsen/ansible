@@ -10,12 +10,13 @@
     mode: u=rwx,g=rx,o=rx
   with_items:
     - alive
+    - alive_hypatia
 
 - cron:
     name: "Check if Fysik servers, printers and switches are alive"
     minute: "0,15,30,45"
     hour: "*"
-    job: "/usr/local/bin/alive"
+    job: "/usr/local/bin/alive; /usr/local/bin/alive_hypatia"
 
 - cron:
     name: "Daily cleanup of alive notifications"
