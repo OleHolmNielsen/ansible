@@ -1,6 +1,6 @@
 - name: Install BIND DNS packages
   yum:
-    name: bind,bind-libs,bind-utils,net-tools,jwhois
+    name: bind,bind-libs,bind-utils,net-tools
     state: present
 
 # Do NOT install bind-chroot because we use SELinux
