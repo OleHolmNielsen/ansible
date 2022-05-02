@@ -2,7 +2,9 @@
   roles:
    - hostname
    - bashrc
+   - sudoers
    - epel_repo
+   - fusion_packages
    - workstation
    # - dnf_updates
    - dnf_packages
