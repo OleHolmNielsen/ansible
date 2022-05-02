@@ -5,6 +5,7 @@
    - rhel7
    - bashrc
    - hostname
+   - sudoers
    - non_graphical
    - epel_repo
    - server_packages
@@ -19,14 +20,16 @@
    - sshd_config
    - sshd_allow_users
    - yum_updates
+   - fysik_alive_check
+   - printerstatus
    - sendmail_aliases
-   - sendmail_client
+   - sendmail_server
    - DNS_slave
    - tftp_server
    - ftp_server
    - dhcp_server
-   - samba_server
-   - samba_nmbd
+     # - samba_server
+     # - samba_nmbd
    - pxeconfigd
    - nfs_server
    - apache_server

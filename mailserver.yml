@@ -5,11 +5,12 @@
    - rhel7
    - bashrc
    - hostname
+   - sudoers
    - non_graphical
-   - printerstatus
+     # - printerstatus
    - epel_repo
    - server_packages
-   - fysik_alive_check
+     # - fysik_alive_check
    - nhc
    - rasdaemon
    - logwatch

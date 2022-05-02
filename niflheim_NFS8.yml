@@ -5,12 +5,15 @@
    - rhel8
    - role: linux-system-roles.network
    - hostname
+   - sudoers
+   - bashrc
    - non_graphical
    - datadisk
    - xfs_quota
    - epel_repo
    - server_packages8
    - dell-system-update
+   - dell-perccli
    - niflheim_autofs_servers
    - authorized_keys_command
    - snmp
@@ -26,11 +29,9 @@
    - flexlm_user
    - sshd_config
    - sshd_allow_users
-   - bashrc
    - sysctl_bignet
    - sendmail_aliases
    - sendmail_client
-   # - niflheim_autofs_servers
    - nfs_server8
    # - samba_server
    # - users
