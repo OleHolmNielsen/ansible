@@ -5,6 +5,7 @@
    - role: linux-system-roles.network
    - rhel8
    - hostname
+   - sudoers
    - non_graphical
    - epel_repo
    - server_packages8
