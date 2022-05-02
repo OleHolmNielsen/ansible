@@ -17,7 +17,7 @@
     minute: "0"
     hour: "12"
     weekday: "1-5"
-    job: "/usr/local/bin/printerstatus.sh |& mail -s 'Fysik printers status' adm-ohni@fysik.dtu.dk"
+    job: "/usr/local/bin/printerstatus.sh |& mail -s 'Fysik printers status' root"
 
 - cron:
     name: "Send printer reports to responsible people"
