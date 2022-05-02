@@ -1,60 +1,61 @@
-  - name: Install popular packages 
-    yum:
-      name: 
-      - libsemanage-python
-      - libselinux-python
-      - autofs
-      - smartmontools
-      - gnome-tweak-tool
-      - cups
-      - foomatic
-      - hplip
-      - sendmail-cf
-      - openssl-devel
-      - libibverbs-devel
-      - libX11-devel
-      - vim-enhanced
-      - nano
-      - ack
-      - okular
-      - python-matplotlib
-      - dos2unix
-      - ntfs-3g
-      - vim-X11
-      - emacs
-      - xemacs
-      - gnome-shell
-      - gnome-tweak-tool
-      - screen
-      - reptyr
-      state: present
-  - name: Install popular packages from the EPEL repository
-    yum:
-      name:
-      - Lmod
-      - git-all
-      - bash-completion
-      - meld
-      - xclip
-      - htop
-      - rclone
-      # DO NOT install the libxc package, it causes problems for GPAW (use modules)
-      - python34-pip
-      - python2-pip
-      - grace
-      - python34
-      - python-pip
-      - python34-pip
-      # Niflheim: Use modules in stead of these:
-      - vtk-python
-      - tkinter
-      - lapack-devel
-      - openblas-devel
-      - python3-idle 
-      - python3-tkinter 
-      - python3-devel
-      - GitPython
-      - pysvn
-      - graphviz
-      - fuse-sshfs
-      state: present
+- name: Install popular packages 
+  package:
+    name: 
+    - libsemanage-python
+    - libselinux-python
+    - autofs
+    - smartmontools
+    - gnome-tweak-tool
+    - cups
+    - foomatic
+    - hplip
+    - sendmail-cf
+    - openssl-devel
+    - libibverbs-devel
+    - libX11-devel
+    - vim-enhanced
+    - nano
+    - ack
+    - okular
+    - python-matplotlib
+    - dos2unix
+    - ntfs-3g
+    - vim-X11
+    - emacs
+    - xemacs
+    - gnome-shell
+    - gnome-tweak-tool
+    - screen
+    - reptyr
+    state: present
+
+- name: Install popular packages from the EPEL repository
+  package:
+    name:
+    - Lmod
+    - git-all
+    - bash-completion
+    - meld
+    - xclip
+    - htop
+    - rclone
+    # DO NOT install the libxc package, it causes problems for GPAW (use modules)
+    - python34-pip
+    - python2-pip
+    - grace
+    - python34
+    - python-pip
+    - python34-pip
+    # Niflheim: Use modules in stead of these:
+    - vtk-python
+    - tkinter
+    - lapack-devel
+    - openblas-devel
+    - python3-idle 
+    - python3-tkinter 
+    - python3-devel
+    - GitPython
+    - pysvn
+    - graphviz
+    - fuse-sshfs
+    state: present
