@@ -25,7 +25,7 @@ then
 	export PRINTERLIST="$@"
 else
 	# Default list: all printers
-	export PRINTERLIST="b307-m830 ly307-225-co2 ly307-225-bw1 hpz6200 b307-m602 ly307-east-co1 case4015 ly307-001-bw1 b309-m725 cryoprt b309-4525 b309-4525-2 ly309-241-co1 ogprint ws4525 b309-m577 ppfe-5550dn b311-4525 ly311-070-co1 cinf4015 b312-m553 ipf8300"
+	export PRINTERLIST="ly307-225-co2 ly307-225-bw1 hpz6200 b307-m602 ly307-east-co1 case4015 ly307-001-bw1 b309-m725 cryoprt ly309-101a-co1 ly309-201a-co1 ly309-241-co1 ogprint ws4525 b309-m577 ppfe-5550dn b311-4525 ly311-070-co1 cinf4015 b312-m553 ipf8300"
 fi
 
 # Our SNMP read-only community string (default: public):
@@ -40,7 +40,7 @@ LOCATIONMIB="SNMPv2-MIB::sysLocation.0"
 DEVICEMIB="HOST-RESOURCES-MIB::hrDeviceDescr.1"
 
 # Filtering of messages by sed:
-IGNORE="-e /Instance/d -e /Sleep/d -e /deleted/d -e /Ready/d -e /finished/d -e /Powersave/d -e /Checking/d -e /Preparing/d"
+IGNORE="-e /No.Such.Object/d -e /Instance/d -e /Sleep/d -e /deleted/d -e /Ready/d -e /finished/d -e /Powersave/d -e /Dvaletilstand/d -e /Preparing/d -e /Checking/d"
 EDIT="-e /$STATUSMIB/s//Status/ -e /STRING:/s///"
 
 if test ! -x $SNMPWALK
