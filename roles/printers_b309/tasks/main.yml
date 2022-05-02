@@ -40,31 +40,57 @@
     options: '-o sides=two-sided-long-edge -o media=A4'
   when: "'HP-LaserJet-p4015-b309-201A' not in printerlist.stdout_lines"
 
-# Printer b309-4525-2.fysik.dtu.dk (HP CP4525)
+# Printer ly309-201a-co1.fysik.dtu.dk (HP M652)
 
 - name: Install {{ printer }} printer name {{ destination }}
   command: lpadmin -p {{ destination }} -v {{ printer }} -m {{ driver }} -E
   vars:
     # We MUST use the IP-address here:
     printer: socket://10.54.4.27:9100
-    destination: HP-ColorLaserJet-4525-b309-201A
-    driver: drv:///hp/hpcups.drv/hp-color_laserjet_cp4520_series-pcl3.ppd
-  when: "'HP-ColorLaserJet-4525-b309-201A' not in printerlist.stdout_lines"
+    destination: HP-ColorLaserJet-M652-B309-201A
+    driver: lsb/usr/HP/hp-color_laserjet_m651-ps.ppd.gz
+  when: "'HP-ColorLaserJet-M652-B309-201A' not in printerlist.stdout_lines"
   register: newprinter
 
 - name: Set {{ destination }} plus options
   command: lpadmin -p {{ destination }} {{ options }}
   vars:
-    destination: HP-ColorLaserJet-4525-b309-201A
+    destination: HP-ColorLaserJet-M652-B309-201A
     options: '-o OptionDuplex=True -o sides=two-sided-long-edge -o media=A4'
-  when: "'HP-ColorLaserJet-4525-b309-201A' not in printerlist.stdout_lines"
+  when: "'HP-ColorLaserJet-M652-B309-201A' not in printerlist.stdout_lines"
 
 - name: Set {{ destination }} plus options
   command: lpadmin -p {{ destination }} {{ options }}
   vars:
-    destination: HP-ColorLaserJet-4525-b309-201A
+    destination: HP-ColorLaserJet-M652-B309-201A
     options: '-o OptionDuplex=True -o sides=two-sided-long-edge -o media=A4'
-  when: "'HP-ColorLaserJet-4525-b309-201A' not in printerlist.stdout_lines"
+  when: "'HP-ColorLaserJet-M652-B309-201A' not in printerlist.stdout_lines"
+
+# Printer ly309-101a-co1.fysik.dtu.dk (HP M652)
+
+- name: Install {{ printer }} printer name {{ destination }}
+  command: lpadmin -p {{ destination }} -v {{ printer }} -m {{ driver }} -E
+  vars:
+    # We MUST use the IP-address here:
+    printer: socket://10.54.4.27:9100
+    destination: HP-ColorLaserJet-M652-B309-101A
+    driver: lsb/usr/HP/hp-color_laserjet_m651-ps.ppd.gz
+  when: "'HP-ColorLaserJet-M652-B309-101A' not in printerlist.stdout_lines"
+  register: newprinter
+
+- name: Set {{ destination }} plus options
+  command: lpadmin -p {{ destination }} {{ options }}
+  vars:
+    destination: HP-ColorLaserJet-M652-B309-101A
+    options: '-o OptionDuplex=True -o sides=two-sided-long-edge -o media=A4'
+  when: "'HP-ColorLaserJet-M652-B309-101A' not in printerlist.stdout_lines"
+
+- name: Set {{ destination }} plus options
+  command: lpadmin -p {{ destination }} {{ options }}
+  vars:
+    destination: HP-ColorLaserJet-M652-B309-101A
+    options: '-o OptionDuplex=True -o sides=two-sided-long-edge -o media=A4'
+  when: "'HP-ColorLaserJet-M652-B309-101A' not in printerlist.stdout_lines"
 
 # Printer LY309-241-CO1 (KONICA MINOLTA bizhub C450i)
 
