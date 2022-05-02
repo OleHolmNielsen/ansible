@@ -9,6 +9,8 @@
   with_items:
     - aliases.orig
     - aliases.fysik
+    - aliases.mailman
+    - aliases.dtubasen
 
 - name: Create empty file /etc/aliases.dtubasen
   file:
