@@ -25,6 +25,15 @@
     dest: "/etc/httpd/conf.d/userdir.conf"
     backup: yes
 
+- name: Copy the catlogfiles script to /usr/local/bin
+  copy:
+    src: catlogfiles
+    dest: "/usr/local/bin/"
+    backup: yes
+    owner: root
+    group: root
+    mode: u=rwx,g=rx,o=rx
+
 - name: Set SELinux httpd_use_nfs
   seboolean:
     name: httpd_use_nfs
