@@ -31,13 +31,13 @@
     state: directory
     mode: 0755
 
-- name: Install prerequisites for EasyBuild
-  yum:
-    name: 
-    - GitPython
-    - pysvn
-    - graphviz
-    state: present
+#- name: Install prerequisites for EasyBuild
+#  yum:
+#    name: 
+#    - GitPython
+#    - pysvn
+#    - graphviz
+#    state: present
 
 - name: Copy command /usr/local/bin/make-modulerc
   copy:
