@@ -10,11 +10,11 @@
 - name: firewalld register INPUT_direct rule for port 22
   vars:
     firewalld_needs_reload: "true"
-  command: firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT_direct 2 -p tcp --dport 22 -m state --state NEW -m recent --set
-  when: "'INPUT_direct 2' not in rules.stdout"
+  command: firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT_direct 8 -p tcp --dport 22 -m state --state NEW -m recent --set
+  when: "'INPUT_direct 8' not in rules.stdout"
 
 - name: firewalld port 22 reject when hitcount exceeds 4 in 30 seconds
   vars:
     firewalld_needs_reload: "true"
-  command: firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT_direct 3 -p tcp --dport 22 -m state --state NEW -m recent --update --seconds 30 --hitcount 4 -j REJECT --reject-with tcp-reset
-  when: "'INPUT_direct 3' not in rules.stdout"
+  command: firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT_direct 9 -p tcp --dport 22 -m state --state NEW -m recent --update --seconds 30 --hitcount 4 -j REJECT --reject-with tcp-reset
+  when: "'INPUT_direct 9' not in rules.stdout"
