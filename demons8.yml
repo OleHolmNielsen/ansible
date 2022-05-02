@@ -5,6 +5,9 @@
    - rhel8
    - role: linux-system-roles.network
    - hostname
+   - sudoers
+   - logicalvolume
+   - motd
    - non_graphical
    - authorized_keys_command
    - nhc
@@ -12,6 +15,7 @@
    - logwatch
    - logrotate
    - no_libvirt
+   - ssh_host_keys
    - sshd_config
    - bashrc
    - epel_repo
@@ -21,7 +25,9 @@
    - sendmail_client
    - desktops_autofs
    - sshblack
+   - radius_auth
    - firewalld_whitelist
    - firewalld_brute_force
    - firewalld_ipset
    - firewalld_reload
+   - google-authenticator

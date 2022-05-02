@@ -1,6 +1,7 @@
 - hosts: Fedora_PCs
   roles:
    - hostname
+   - sudoers
    - bashrc
    - dnf_packages
 #   - dnf_updates
