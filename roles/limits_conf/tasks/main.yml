@@ -11,14 +11,15 @@
       # User jensj runs nightly test
       jensj           hard    cpu             240
       # Normal user limits
-      *               hard    cpu             20
-      *               hard    rss             50000000
-      *               hard    data            50000000
-      *               soft    stack           40000000
-      *               hard    stack           50000000
-      *               hard    nproc           250
+      #*               hard    cpu             20
+      #*               hard    rss             50000000
+      #*               hard    data            50000000
+      #*               soft    stack           40000000
+      #*               hard    stack           50000000
+      #*               hard    nproc           250
       modules               soft    stack           unlimited
       modules               hard    stack           unlimited
-      modules               hard    cpu             1000
+      modules               soft    cpu             4000
+      modules               hard    cpu             5000
       modules               hard    nproc           1000
       schiotz               hard    nproc           1000
