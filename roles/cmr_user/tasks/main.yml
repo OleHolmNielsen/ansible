@@ -4,22 +4,60 @@
 # by adding his SSH public key to ~/.ssh/authorized_keys
 
 # See https://docs.ansible.com/ansible/latest/modules/user_module.html
-- name: Add the user 'cmr' 
+- name: "Add the user cmr"
   user:
     name: cmr
     comment: Computational Materials Repository
+    # Jens Jorgen knows this password:
+    password: "$6$swl.Fj54KYik6E3F$IAGH68Yvcrl9b/Tbm5i6GinzJq3ttz9llEB84Uu.GQt/5Y43A8T.FZe2PHB7hILPyFOa5UG5A2D20N9gh8kPz."
+    generate_ssh_key: yes
+    ssh_key_type: ed25519
 
-- name: Open firewall port 8000/tcp for user "cmr" twistd server
+# Copy authorized_keys file from files/<hostname>/ directory
+- name: "Copy users SSH authorized_keys file"
+  copy:
+    src: "{{ inventory_hostname }}/authorized_keys.users"
+    dest: "~{{ item }}/.ssh/authorized_keys"
+    backup: yes
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    mode: u=rw,g=,o=
+  with_items:
+    - cmr
+    - postgres
+#- name: "User postgres: Copy the SSH authorized_keys file"
+#  copy:
+#    src: "{{ inventory_hostname }}/authorized_keys"
+#    dest: "~postgres/.ssh/"
+#    backup: yes
+#    owner: postgres
+#    group: postgres
+#    mode: u=rw,g=,o=
+
+- name: "Open firewall port 8000/tcp for user cmr twistd server"
   firewalld:
     port: 8000/tcp
     immediate: true
     permanent: true
     state: enabled
 
-- name: Install required packages from EPEL (python36 etc.)
-  yum:
+- name: Install packages from EPEL 
+  package:
     name:
     - epel-release
+    - xclip
+
+- name: Install EL8 python39 packages 
+  package:
+    name:
+    - python39
+    - python39-devel
+  when: ansible_os_family|lower == "redhat" and ansible_facts['distribution_major_version'] == "8"
+
+- name: Install EL7 python36 packages from EPEL 
+  package:
+    name:
     - python36
     - python36-devel
-    - xclip
+  when: ansible_os_family|lower == "redhat" and ansible_facts['distribution_major_version'] == "7"
+
