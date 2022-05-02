@@ -19,8 +19,9 @@
   yum_repository:
     name: HPE-MCP
     description: HPE Management Component Pack
-    # baseurl: http://downloads.linux.hpe.com/repo/mcp/centos/7/x86_64/current
-    baseurl: http://downloads.linux.hpe.com/repo/mcp/centos/7/x86_64/10.50
+    baseurl: http://downloads.linux.hpe.com/repo/mcp/centos/7/x86_64/current
+    # Obsolete software:
+    # baseurl: http://downloads.linux.hpe.com/repo/mcp/centos/7/x86_64/10.50
     enabled: yes
     gpgcheck: yes
     gpgkey: https://downloads.linux.hpe.com/SDR/repo/mcp/GPG-KEY-mcp
@@ -29,13 +30,13 @@
 - name: Install HPE MCP packages for CentOS 7
   yum:
     name:
-    - hp-ams
-    - hpdiags
-    - hp-health
-    - hponcfg
-    - hpsmh
-    - hp-smh-templates
-    - hp-snmp-agents
+    # - hp-ams
+    # - hpdiags
+    # - hp-health
+    # - hponcfg
+    # - hpsmh
+    # - hp-smh-templates
+    # - hp-snmp-agents
     - ssa
     - ssacli
     - ssaducli
