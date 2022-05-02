@@ -1,14 +1,30 @@
-- name: Copy {{ nhc_rpm }} RPM file
+- name: Copy {{ nhc_rpm }} EL7 RPM file
   copy:
-    src: "{{ nhc_rpm }}"
-    dest: "/tmp/{{ nhc_rpm }}"
+    src: "{{ nhc_rpm_el7 }}"
+    dest: "/root/"
+  when: ansible_os_family|lower == "redhat" and ansible_facts['distribution_major_version'] == "7"
 
-- name: Install the LBNL Node Health Check (NHC) package
+- name: Install the LBNL Node Health Check (NHC) package for EL7
   yum:
     # name: https://github.com/mej/nhc/releases/download/1.4.2/lbnl-nhc-1.4.2-1.el7.noarch.rpm
-    name: "/tmp/{{ nhc_rpm }}"
+    name: "/root/{{ nhc_rpm_el7 }}"
     disable_gpg_check: yes
     state: present
+  when: ansible_os_family|lower == "redhat" and ansible_facts['distribution_major_version'] == "7"
+
+- name: Copy {{ nhc_rpm }} EL8 RPM file
+  copy:
+    src: "{{ nhc_rpm_el8 }}"
+    dest: "/root/"
+  when: ansible_os_family|lower == "redhat" and ansible_facts['distribution_major_version'] == "8"
+
+- name: Install the LBNL Node Health Check (NHC) package for EL8
+  yum:
+    # name: https://github.com/mej/nhc/releases/download/1.4.2/lbnl-nhc-1.4.2-1.el8.noarch.rpm
+    name: "/root/{{ nhc_rpm_el8 }}"
+    disable_gpg_check: yes
+    state: present
+  when: ansible_os_family|lower == "redhat" and ansible_facts['distribution_major_version'] == "8"
 
 - name: Copy master file {{ nhc_conf }} 
   copy:
