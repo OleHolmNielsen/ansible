@@ -2,9 +2,32 @@
 # quota-rpc: https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html-single/considerations_in_adopting_rhel_8/index
 
 - name: Install the nfs-utils,quota,quota-rpc packages
-  yum:
+  package:
     name: nfs-utils,quota,quota-rpc
     state: present
+
+- name: Copy nfswatch RPM file
+  copy:
+    src: nfswatch-4.99.11-20.el8.x86_64.rpm
+    dest: "/root/"
+
+- name: Install the home-built nfswatch package
+  package:
+    name: /root/nfswatch-4.99.11-20.el8.x86_64.rpm
+    disable_gpg_check: yes
+    state: present
+
+- name: Adding nfswatch aliases the /root/.bashrc file
+  blockinfile:
+    path: /root/.bashrc
+    state: present
+    insertafter: '^alias mv=''mv -i'''
+    marker: "# {mark} ANSIBLE MANAGED BLOCK nfswatch"
+    block: |
+      # NFS watch clients
+      alias nfsw='nfswatch -allif -clients -usage 2>/dev/null'
+      # NFS watch users
+      alias nfsu='nfswatch -allif -auth -usage 2>/dev/null'
 
 - name: Editing mountd port in /etc/nfs.conf
   ini_file:
@@ -149,6 +172,12 @@
 - name: Open port 32769/udp NFS filenet-rpc in firewalld
   firewalld:
     port: 32769/udp
+    permanent: true
+    state: enabled
+
+- name: Open port 32803/tcp NFS filenet-rpc in firewalld
+  firewalld:
+    port: 32803/tcp
     permanent: true
     state: enabled
 
