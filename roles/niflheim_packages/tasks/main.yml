@@ -1,5 +1,5 @@
   - name: Install required and popular packages 
-    yum:
+    package:
       name: 
       - emacs
       - gsl
@@ -33,10 +33,12 @@
       - harfbuzz-devel
       - libfabric
       - mesa-libGLU
+      - google-authenticator
+      - qrencode
       state: present
 
   - name: Install Dell tools prerequisite packages 
-    yum:
+    package:
       name: 
       - usbutils
       - compat-libstdc++-33.i686
@@ -46,7 +48,7 @@
       state: present
 
   - name: Install popular packages from the EPEL repository
-    yum:
+    package:
       name:
       - epel-release
       - Lmod
