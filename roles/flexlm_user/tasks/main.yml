@@ -22,6 +22,13 @@
     permanent: true
     state: enabled
 
+- name: Open firewall port 27021/tcp for Synopsys flexlm license server
+  firewalld:
+    port: 27021/tcp
+    immediate: true
+    permanent: true
+    state: enabled
+
 - name: Install prerequisite RPMs
   yum:
     name:
