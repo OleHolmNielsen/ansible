@@ -6,19 +6,21 @@ REPQUOTA=/usr/sbin/repquota
 QUOTA=/usr/bin/quota
 MAIL=/bin/mail
 
-USERS=`${REPQUOTA} -a -s -v | grep + | sed /none/d | awk '{print $1}'`
+USERS=`${REPQUOTA} -asv | grep + | sed /none/d | awk '{print $1}'`
 HOST=`hostname`
 
 # Exclude users who don't want these warnings:
+# Remove leading # in numerical UIDs
 WUSERS=`echo $USERS | sed -e '
 /root/d
+/#/s///g
 '`
 
 # Temporary storage of alert data
 TMPDIR=/var/lib/over_quota
 if test ! -d $TMPDIR
 then
-        mkdir -v $TMPDIR
+	mkdir -v $TMPDIR
 fi
 MESSAGE=$TMPDIR/mesg.$$
 cat <<EOF > $MESSAGE
@@ -38,21 +40,26 @@ Please reduce your files as soon as possible, or contact the IT Support staff
 (niflheim-support@fysik.dtu.dk) for an adjustment of your disk quota (make sure to
 include the present mail for the support).
 
+For explanation of disk quota: https://en.wikipedia.org/wiki/Disk_quota
+
 EOF
 
 for i in `echo $WUSERS`
 do
-	( cat $MESSAGE; ${QUOTA} -iv $i) | \
-		${MAIL} -s "WARNING: Your disk quota is exceeded" ${i}
-
-	# Send a log to myself:
-	# NAME=`grep "^$i:" /etc/passwd | awk -F: '{print $5}'`
-	NAME=`getent passwd $i | awk -F: '{print $5}'`
 	echo
-	echo Sent quota warning for host ${HOST} to user $i, ${NAME}
-	echo Password entry: `getent passwd $i`
-	echo
-	${QUOTA} -s -v $i
+	# Check if the username is an integer UID:
+	if [[ ${i} =~ ^[0-9]+$ ]]
+	then
+		echo "User $i is an integer UID not in the passwd database"
+	else
+		( cat $MESSAGE; ${QUOTA} -i $i) | \
+			${MAIL} -s "WARNING: Your disk quota on server ${HOST} is exceeded" ${i}
+		NAME=`getent passwd $i | awk -F: '{print $5}'`
+		echo Sent quota warning for host ${HOST} to user $i, ${NAME}
+		echo Password entry: `getent passwd $i`
+		echo
+	fi
+	${QUOTA} -s $i
 done
 
 rm -f $MESSAGE
