@@ -15,5 +15,4 @@
     - showuserlimits/showuserlimits
     - partitions/showpartitions
     - jobs/showjob
-    - jobs/showjob
     - jobs/warn_maxjobs
