@@ -2,18 +2,30 @@
 # http://linux.dell.com/repo/hardware/dsu/
 
 - name: Install packages for CentOS 8
-  yum:
+  package:
     name:
     - curl
 
-- name: Download dell-system-update.repo
-  shell: "curl -O https://linux.dell.com/repo/hardware/dsu/bootstrap.cgi; bash bootstrap.cgi"
+- name: Copy Dell GPG keys
+  copy:
+    src: "copygpgkeys.sh"
+    dest: "/root/copygpgkeys.sh"
 
-#- name: Download GPG keys
-#  shell: "curl -s https://linux.dell.com/repo/hardware/dsu/copygpgkeys.sh | bash"
+- name: Install Dell GPG keys
+  # shell: "curl -s https://linux.dell.com/repo/hardware/dsu/copygpgkeys.sh | bash"
+  shell: "bash /root/copygpgkeys.sh"
+
+- name: Copy Dell DSU bootstrap.cgi
+  copy:
+    src: "bootstrap.cgi"
+    dest: "/root/bootstrap.cgi"
+
+- name: Install Dell dell-system-update.repo
+  # shell: "curl -O https://linux.dell.com/repo/hardware/dsu/bootstrap.cgi && (yes | bash bootstrap.cgi)"
+  shell: "(yes | bash /root/bootstrap.cgi)"
 
 - name: Install dell-system-update and racadm packages
-  yum:
+  package:
     name:
     - dell-system-update
     - srvadmin-idracadm7
