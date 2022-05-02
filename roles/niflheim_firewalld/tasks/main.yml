@@ -1,9 +1,5 @@
 # firewalld: Niflheim: whitelist special servers
 
-- include_role:
-    name: rhel7
-
-
 - name: "Open ports 8886-8890 for user remote access to their Jupyter notebooks"
   firewalld:
     port: 8886-8890/tcp
