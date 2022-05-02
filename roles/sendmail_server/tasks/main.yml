@@ -80,11 +80,17 @@
   notify:
    - Restart Sendmail
 
-- name: Restart and enable the Sendmail service
+- name: "Restart and enable the Sendmail service"
   service:
     name=sendmail
     state=restarted
     enabled=yes
+
+- name: "Open SMTP service in firewalld"
+  firewalld:
+    service: smtp
+    permanent: true
+    state: enabled
 
 - name: Create a cron job for daily restart of sendmail
   cron:
