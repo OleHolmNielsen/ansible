@@ -18,9 +18,10 @@
 #     lvsize: 15T
 #     mountpoint: /u/snapshots2
 
-- name: "Create logical volumes in VG {{ volgroup }} {{ striping}}"
+# - name: "Create logical volumes in VG {{ volgroup }} {{ striping}}"
+- name: "Create logical volumes in VGs {{ striping}}"
   lvol:
-    vg: "{{ volgroup }}"
+    vg: "{{ item.volgroup }}"
     lv: "{{ item.lvname }}"
     size: "{{ item.lvsize }}"
     opts: "{{ striping }}"
@@ -32,13 +33,13 @@
 - name: "Create {{ fstype }} filesystems"
   filesystem:
     fstype: "{{ fstype }}"
-    dev: "/dev/mapper/{{ volgroup }}-{{ item.lvname }}"
+    dev: "/dev/mapper/{{ item.volgroup }}-{{ item.lvname }}"
   with_items: "{{ filesystems }}"
 
 - name: "Mount filesystems"
   mount:
     path: "{{ item.mountpoint  }}"
-    src: "/dev/mapper/{{ volgroup }}-{{ item.lvname }}"
+    src: "/dev/mapper/{{ item.volgroup }}-{{ item.lvname }}"
     fstype: "{{ fstype }}"
     opts: "{{ mountopts }}"
     state: mounted
