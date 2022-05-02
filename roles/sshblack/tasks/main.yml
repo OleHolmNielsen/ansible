@@ -14,11 +14,11 @@
     group: root
     mode: u=rwx,g=rx,o=rx
   with_items:
-    - sshblack/sshblack.pl
-    - sshblack/bl
-    - sshblack/unbl
-    - sshblack/list
-    - sshblack/unlist
+    - sshblack-3.0.0/sshblack.pl
+    - sshblack-3.0.0/bl
+    - sshblack-3.0.0/unbl
+    - sshblack-3.0.0/list
+    - sshblack-3.0.0/unlist
     - sshblack-save-state
 
 - name: Copy sshblack logrotate file
