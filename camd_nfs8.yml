@@ -5,6 +5,7 @@
    - rhel8
    - role: linux-system-roles.network
    - hostname
+   - sudoers
    - non_graphical
    - datadisk
    - xfs_quota
