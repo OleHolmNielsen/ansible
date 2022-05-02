@@ -1,8 +1,9 @@
 - name: Install CentOS server packages
-  yum:
+  package:
     name:
     - man-pages
     - man-db
+    - vim
     - bind-utils
     - net-tools
     - sysstat
@@ -13,6 +14,7 @@
     - traceroute
     - smartmontools
     - mlocate
+    - mokutil
     - ack
     - tar
     - patch
@@ -50,7 +52,7 @@
     state: present
 
 - name: Remove unwanted packages
-  yum:
+  package:
     name:
     - qemu-*
     - postfix

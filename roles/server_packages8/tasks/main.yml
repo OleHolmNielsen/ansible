@@ -1,5 +1,5 @@
-- name: Install CentOS 8 server packages
-  dnf:
+- name: Install EL8 server packages
+  package:
     name:
     - autofs
     - nfs-utils
@@ -10,16 +10,20 @@
     - selinux-policy-targeted
     - setroubleshoot-server
     - policycoreutils-python-utils
+    - mokutil
     - chrony
     - sendmail
     - sendmail-cf
     - make
     - wget
+    - whois
+    - vim
     - man-pages
     - man-db
     - bind-utils
     - net-snmp
     - net-tools
+    - ipcalc
     - tcpdump
     - ipmitool
     - telnet
@@ -48,15 +52,28 @@
     - screen
     - tree
     - glibc
+    - gcc
     - libgcc
     - libstdc++
     - nss-softokn-freebl
     - unzip
+    - platform-python-devel
+    - autoconf
+    - automake
+    - fuse-devel
     state: present
 
+- name: Enable a Systemd timer for mlocate-updatedb.timer
+  systemd:
+    name: mlocate-updatedb.timer
+    state: started
+    enabled: yes
+
 - name: Remove unwanted packages
-  dnf:
+  package:
     name:
+    - sssd-common
+    - sssd-client
     - qemu-*
     - postfix
     - blas*
