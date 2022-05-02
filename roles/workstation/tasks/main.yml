@@ -1,4 +1,4 @@
-- name: Install CentOS 8 workstation package groups
+- name: Install EL8 workstation package groups
   dnf:
     name:
     - '@Anaconda tools'
@@ -7,10 +7,11 @@
     - '@Desktop Debugging and Performance Tools'
     - '@Fonts'
     - '@GNOME Applications'
-    - '@GNOME'
+    # - '@GNOME'
+    - '@Server with GUI'
     - '@Graphical Administration Tools'
     - '@Graphics Creation Tools'
-    - '@Input Methods'
+      # - '@Input Methods'
     - '@Internet Applications'
     - '@Internet Browser'
     - '@Java Platform'
@@ -18,13 +19,15 @@
     - '@Network File System Client'
     - '@Office Suite and Productivity'
     - '@Performance Tools'
-    - '@Printing Client'
+      # - '@Printing Client'
     - '@Remote Desktop Clients'
     - '@Development Tools'
     - '@Hardware Monitoring Utilities'
     - '@Scientific Support'
 
     # Explicit packages:
+    - gnome-terminal
+    - wmctrl
     - bind-utils
     - tree
     - wget
@@ -43,6 +46,12 @@
     - mcelog
     - hplip
     - bash-completion
+
+- name: Enable a Systemd timer for mlocate-updatedb.timer
+  systemd:
+    name: mlocate-updatedb.timer
+    state: started
+    enabled: yes
 
 - name: get default runlevel
   command: systemctl get-default
