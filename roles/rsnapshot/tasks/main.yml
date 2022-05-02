@@ -155,6 +155,13 @@
     hour: "{{ backup_start|default(23) }}"
     job: "/root/rsnapshots"
 
+# Copy the MoinMoin Wiki pages from backup to /var/moin
+- cron:
+    name: "Copy MoinMoin Wiki data from backup of intra5"
+    minute: "0"
+    hour: 7
+    job: "rsync -aq --delete /u/snapshots/roots/root-intra5/daily.0/var/moin/ /var/moin/"
+
 - name: Create rsnapshot logrotate script
   copy:
     src: logrotate.rsnapshot
